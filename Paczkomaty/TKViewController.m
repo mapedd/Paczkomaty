@@ -14,6 +14,7 @@
 @interface TKViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) NSArray *parcelLockers;
+
 @property (strong, nonatomic) UITableView *tableView;
 
 @end
@@ -26,6 +27,7 @@
     [self reloadData];
     return self;
 }
+
 - (void)viewDidLoad{
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];

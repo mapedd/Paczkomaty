@@ -30,6 +30,7 @@
 @end
 
 @implementation TKParcelLocker
+
 + (TKParcelLocker *)lockerWithXMLElement:(RXMLElement *)element{
     
     TKParcelLocker *locker = [[TKParcelLocker alloc] init];
@@ -59,4 +60,5 @@
 
     return locker;
 }
+
 @end
