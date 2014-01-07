@@ -13,8 +13,6 @@
 		04300B71187C520E00499DC9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04300B6F187C520E00499DC9 /* InfoPlist.strings */; };
 		04300B73187C520E00499DC9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04300B72187C520E00499DC9 /* main.m */; };
 		04300B77187C520E00499DC9 /* TKAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04300B76187C520E00499DC9 /* TKAppDelegate.m */; };
-		04300B7A187C520E00499DC9 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04300B78187C520E00499DC9 /* Main_iPhone.storyboard */; };
-		04300B7D187C520E00499DC9 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04300B7B187C520E00499DC9 /* Main_iPad.storyboard */; };
 		04300B80187C520E00499DC9 /* TKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04300B7F187C520E00499DC9 /* TKViewController.m */; };
 		04300B82187C520E00499DC9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04300B81187C520E00499DC9 /* Images.xcassets */; };
 		04300B89187C520F00499DC9 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04300B88187C520E00499DC9 /* XCTest.framework */; };
@@ -45,8 +43,6 @@
 		04300B74187C520E00499DC9 /* Paczkomaty-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Paczkomaty-Prefix.pch"; sourceTree = "<group>"; };
 		04300B75187C520E00499DC9 /* TKAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKAppDelegate.h; sourceTree = "<group>"; };
 		04300B76187C520E00499DC9 /* TKAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKAppDelegate.m; sourceTree = "<group>"; };
-		04300B79187C520E00499DC9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
-		04300B7C187C520E00499DC9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
 		04300B7E187C520E00499DC9 /* TKViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKViewController.h; sourceTree = "<group>"; };
 		04300B7F187C520E00499DC9 /* TKViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKViewController.m; sourceTree = "<group>"; };
 		04300B81187C520E00499DC9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -116,8 +112,6 @@
 			children = (
 				04300B75187C520E00499DC9 /* TKAppDelegate.h */,
 				04300B76187C520E00499DC9 /* TKAppDelegate.m */,
-				04300B78187C520E00499DC9 /* Main_iPhone.storyboard */,
-				04300B7B187C520E00499DC9 /* Main_iPad.storyboard */,
 				04300B7E187C520E00499DC9 /* TKViewController.h */,
 				04300B7F187C520E00499DC9 /* TKViewController.m */,
 				04300B81187C520E00499DC9 /* Images.xcassets */,
@@ -232,9 +226,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04300B7D187C520E00499DC9 /* Main_iPad.storyboard in Resources */,
 				04300B82187C520E00499DC9 /* Images.xcassets in Resources */,
-				04300B7A187C520E00499DC9 /* Main_iPhone.storyboard in Resources */,
 				04300B71187C520E00499DC9 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -285,22 +277,6 @@
 				04300B70187C520E00499DC9 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		04300B78187C520E00499DC9 /* Main_iPhone.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				04300B79187C520E00499DC9 /* Base */,
-			);
-			name = Main_iPhone.storyboard;
-			sourceTree = "<group>";
-		};
-		04300B7B187C520E00499DC9 /* Main_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				04300B7C187C520E00499DC9 /* Base */,
-			);
-			name = Main_iPad.storyboard;
 			sourceTree = "<group>";
 		};
 		04300B91187C520F00499DC9 /* InfoPlist.strings */ = {

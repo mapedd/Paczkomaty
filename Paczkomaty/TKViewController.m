@@ -14,16 +14,17 @@
 
 @implementation TKViewController
 
-- (void)viewDidLoad
-{
+- (id)init{
+    self = [super initWithNibName:nil bundle:nil];
+    if(!self)return nil;
+    self.title = NSLocalizedString(@"Paczkomaty",nil);
+    return self;
+}
+- (void)viewDidLoad{
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    self.view.backgroundColor = [UIColor whiteColor];
+
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 @end
