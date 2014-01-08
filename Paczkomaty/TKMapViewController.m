@@ -35,6 +35,8 @@
     self.mapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.mapView.showsUserLocation = YES;
     [self.view addSubview:self.mapView];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"arrow_io7"] style:(UIBarButtonItemStyleBordered) target:self action:@selector(showMe:)];
 
 }
 
@@ -49,14 +51,21 @@
     for (TKParcelLocker *locker in self.items) {
         [self.mapView addAnnotation:locker];
     }
-    
-    CLLocationCoordinate2D location;
-    location.latitude = 52.8;
-    location.longitude = 21.3;
-    self.mapView.centerCoordinate = location;
+
 }
 
-
+- (void)showMe:(id)sender{
+    CLLocationCoordinate2D location = self.mapView.userLocation.coordinate;
+    
+    MKCoordinateRegion mapRegion;
+    mapRegion.center.latitude = location.latitude;
+    mapRegion.center.longitude = location.longitude;
+    mapRegion.span.latitudeDelta = 0.05;
+    mapRegion.span.longitudeDelta = 0.05;
+    
+    [self.mapView setRegion:mapRegion animated: YES];
+    self.mapView.centerCoordinate = location;
+}
 
 - (void)setItems:(NSArray *)items{
     if (_items != items) {
@@ -66,8 +75,8 @@
 
 #pragma mark - MKMapViewDelegate
 
-- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
-{
+- (MKAnnotationView *)mapView:(MKMapView *)mapView
+            viewForAnnotation:(id <MKAnnotation>)annotation{
 	MKPinAnnotationView *annotationView = nil;
 	if ([annotation isKindOfClass:[TKParcelLocker class]])
 	{
@@ -82,5 +91,8 @@
 	return annotationView;
 }
 
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
+    [self showMe:nil];
+}
 
 @end

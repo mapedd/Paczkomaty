@@ -25,6 +25,8 @@
 		04300BA4187C586C00499DC9 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 04300BA3187C586C00499DC9 /* libsqlite3.dylib */; };
 		04D63A9C187D615E0030166E /* TKMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D63A9B187D615E0030166E /* TKMapViewController.m */; };
 		04D63A9F187D63B60030166E /* PGSQLController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D63A9E187D63B60030166E /* PGSQLController.m */; };
+		04FC3352187DAE23009908B4 /* arrow_io7.png in Resources */ = {isa = PBXBuildFile; fileRef = 04FC3350187DAE23009908B4 /* arrow_io7.png */; };
+		04FC3353187DAE23009908B4 /* arrow_io7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04FC3351187DAE23009908B4 /* arrow_io7@2x.png */; };
 		09993E06F753473BB4146D5E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9606C99E49D24398A2C28CDE /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +67,8 @@
 		04D63A9B187D615E0030166E /* TKMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKMapViewController.m; sourceTree = "<group>"; };
 		04D63A9D187D63B60030166E /* PGSQLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGSQLController.h; sourceTree = "<group>"; };
 		04D63A9E187D63B60030166E /* PGSQLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGSQLController.m; sourceTree = "<group>"; };
+		04FC3350187DAE23009908B4 /* arrow_io7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_io7.png; sourceTree = "<group>"; };
+		04FC3351187DAE23009908B4 /* arrow_io7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_io7@2x.png"; sourceTree = "<group>"; };
 		9606C99E49D24398A2C28CDE /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE6B40AC7DB44AF6B6379E36 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -133,6 +137,8 @@
 		04300B6C187C520E00499DC9 /* Paczkomaty */ = {
 			isa = PBXGroup;
 			children = (
+				04FC3350187DAE23009908B4 /* arrow_io7.png */,
+				04FC3351187DAE23009908B4 /* arrow_io7@2x.png */,
 				04300B75187C520E00499DC9 /* TKAppDelegate.h */,
 				04300B76187C520E00499DC9 /* TKAppDelegate.m */,
 				04300B7E187C520E00499DC9 /* TKViewController.h */,
@@ -274,6 +280,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				04300B82187C520E00499DC9 /* Images.xcassets in Resources */,
+				04FC3352187DAE23009908B4 /* arrow_io7.png in Resources */,
+				04FC3353187DAE23009908B4 /* arrow_io7@2x.png in Resources */,
 				04300B71187C520E00499DC9 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

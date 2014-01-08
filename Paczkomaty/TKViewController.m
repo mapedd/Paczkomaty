@@ -12,13 +12,19 @@
 #import "TKParcelLocker.h"
 #import "PGSQLController.h"
 
-@interface TKViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface TKViewController () <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate>
 
 @property (strong, nonatomic) NSArray *parcelLockers;
+
+@property (strong, nonatomic) NSArray *searchResults;
 
 @property (strong, nonatomic) UITableView *tableView;
 
 @property (strong, nonatomic) PGSQLController *controller;
+
+@property (strong, nonatomic) UISearchDisplayController *searchDisplay;
+
+@property (strong, nonatomic) UISearchBar *searchBar;
 
 @end
 
@@ -42,14 +48,24 @@
     self.tableView.dataSource = self;
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:self.tableView];
+    
+    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44.0f)];
+    [self.tableView setTableHeaderView:self.searchBar];
+    
+    self.searchDisplay  = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar
+                                                            contentsController:self];
+    self.searchDisplay.delegate = self;
+    [self.searchDisplay setSearchResultsDataSource:self];
+    
 }
 
 - (void)reloadData{
+    self.parcelLockers = [self.controller exportParcelsFromDataBase];
     [self.tableView reloadData];
     if (self.parcelLockers.count > 0) {
-        self.title = [NSString stringWithFormat:@"%@ (%ld)", NSLocalizedString(@"Paczkomaty",nil),(unsigned long)self.parcelLockers.count];
+        self.title = [NSString stringWithFormat:@"%@ (%ld)", NSLocalizedString(@"List",nil),(unsigned long)self.parcelLockers.count];
     }else{
-        self.title = NSLocalizedString(@"Paczkomaty",nil);
+        self.title = NSLocalizedString(@"List",nil);
     }
 }
 
@@ -69,9 +85,7 @@
                  [array addObject:locker];
              }];
              
-             bself.parcelLockers = [NSArray arrayWithArray:array];
-             PGSQLController *controller = [[PGSQLController alloc] init];
-             [controller importParcelsToDataBase:bself.parcelLockers];
+             [bself.controller importParcelsToDataBase:array];
              [bself reloadData];
              
          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -86,7 +100,15 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.parcelLockers.count;
+    if (tableView == self.tableView) {
+        return self.parcelLockers.count;
+    }
+    else if(tableView == self.searchDisplay.searchResultsTableView){
+        return self.searchResults.count;
+    }
+    else{
+        return 0;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -98,7 +120,15 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
-    TKParcelLocker *locker = self.parcelLockers[indexPath.row];
+    NSArray *array;
+    if (tableView == self.tableView) {
+        array = self.parcelLockers;
+    }
+    else if (tableView == self.searchDisplay.searchResultsTableView){
+        array = self.searchResults;
+    }
+    
+    TKParcelLocker *locker =array[indexPath.row];
     cell.textLabel.text = [NSString stringWithFormat:@"%@, (%@,%@)",locker.name,locker.town, locker.street];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%f,%f (%@)",locker.coordinate.latitude,locker.coordinate.latitude,locker.operatingHours];
     return cell;
@@ -111,5 +141,22 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 50.0f;
+}
+
+#pragma mark - UISearchDisplayDelegate
+
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
+    self.searchResults = [self.controller search:searchString];
+    return YES;
+}
+
+- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller{
+    controller.searchResultsTableView.dataSource = self;
+    controller.searchResultsTableView.delegate = self;
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willUnloadSearchResultsTableView:(UITableView *)tableView{
+    self.searchResults = nil;
 }
 @end

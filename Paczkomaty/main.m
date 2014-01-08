@@ -13,6 +13,14 @@
 int main(int argc, char * argv[])
 {
     @autoreleasepool {
-        return UIApplicationMain(argc, argv, nil, NSStringFromClass([TKAppDelegate class]));
+        @try {
+            return UIApplicationMain(argc, argv, nil, NSStringFromClass([TKAppDelegate class]));
+        }
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+        }
     }
 }

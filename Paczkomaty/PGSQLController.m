@@ -46,7 +46,7 @@
 }
 
 - (NSString *)databasePath{
-    if (!_databasePath) {
+    if (_databasePath == nil) {
         NSString *docsDir;
         NSArray *dirPaths;
         
@@ -64,32 +64,37 @@
 
 - (void)createDataBaseIfNotExist{
     
-    
-    NSFileManager *filemgr = [NSFileManager defaultManager];
-    
-    if (![filemgr fileExistsAtPath: self.databasePath])
-    {
-        const char *dbpath = [self.databasePath UTF8String];
+    @autoreleasepool {
+        NSFileManager *filemgr = [[NSFileManager alloc] init];
         
-        if (sqlite3_open(dbpath, &_database) == SQLITE_OK)
+        if (![filemgr fileExistsAtPath: self.databasePath])
         {
-            char *errMsg;
-            NSString *tableModel = [TKParcelLocker sqlTableModel];
-            const char *sql_stmt = [[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@", tableModel] UTF8String];
+            const char *dbpath = [self.databasePath UTF8String];
             
-            
-            if (sqlite3_exec(_database, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK)
+            if (sqlite3_open(dbpath, &_database) == SQLITE_OK)
             {
-                NSLog(@"Failed to create table");
+                char *errMsg;
+                NSString *tableModel = [TKParcelLocker sqlTableModel];
+                const char *sql_stmt = [[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@", tableModel] UTF8String];
+                
+                
+                if (sqlite3_exec(_database, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK)
+                {
+                    NSLog(@"Failed to create table");
+                }
+                else{
+                    NSLog(@"Create DB and added table clients");
+                }
+                sqlite3_close(_database);
+            } else {
+                NSLog(@"Failed to open/create database");
             }
-            else{
-                NSLog(@"Create DB and added table clients");
-            }
-            sqlite3_close(_database);
-        } else {
-            NSLog(@"Failed to open/create database");
+        }
+        else{
+            NSLog(@"Data base exists");
         }
     }
+    
 }
 
 - (void)importParcelsToDataBase:(NSArray *)parcels{
@@ -118,14 +123,20 @@
             
             sqlite3_finalize(statement);
             sqlite3_close(_database);
+        }else{
+            NSLog(@"Can't open database");
         }
     });
 }
 
 - (NSArray *)exportParcelsFromDataBase{
+    return [self exportParcelsFromDataBase:nil error:nil];
+}
+
+- (NSArray *)exportParcelsFromDataBase:(NSString *)searchQuery error:(NSError **)error{
     NSMutableArray *retval = [[NSMutableArray alloc] init];
     
-    NSString *query = @"SELECT * FROM lockers ORDER BY name";
+    NSString *query = searchQuery ?: @"SELECT * FROM lockers ORDER BY name";
     
     sqlite3_stmt *statement;
     const char *dbpath = [self.databasePath UTF8String];
@@ -141,10 +152,30 @@
                 
             }
             sqlite3_finalize(statement);
+        }else{
+            if (error != NULL) {
+                *error = [NSError errorWithDomain:@"SQLITE ERROR" code:status userInfo:nil];
+            }
+            return nil;
         }
         sqlite3_close(_database);
     }
     return retval;
+}
+
+- (NSArray *)search:(NSString *)string{
+    if (string.length == 0) {
+        return @[];
+    }
+    
+    NSString *query = [NSString stringWithFormat:@"SELECT * FROM lockers WHERE name LIKE '%%%@%%' OR town LIKE '%%%@%%' OR street LIKE '%%%@%%'",string ,string,string];
+    NSError * __autoreleasing error;
+    NSArray *results = [self exportParcelsFromDataBase:query error:&error];
+    if (results == nil) {
+        NSLog(@"%@", error);
+        return @[];
+    }
+    return results;
 }
 
 @end

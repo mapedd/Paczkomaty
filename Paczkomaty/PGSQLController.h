@@ -11,4 +11,5 @@
 @interface PGSQLController : NSObject
 - (void)importParcelsToDataBase:(NSArray *)parcels;
 - (NSArray *)exportParcelsFromDataBase;
+- (NSArray *)search:(NSString *)string;
 @end
