@@ -8,6 +8,7 @@
 
 #import "TKAppDelegate.h"
 #import "TKViewController.h"
+#import "TKMapViewController.h"
 
 @implementation TKAppDelegate
 
@@ -15,9 +16,16 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    TKViewController *vc = [TKViewController new];
-    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:vc];
-    self.window.rootViewController = nc;
+    TKViewController *vc1 = [TKViewController new];
+    UINavigationController *nc1 = [[UINavigationController alloc] initWithRootViewController:vc1];
+    
+    TKMapViewController *vc2 = [TKMapViewController new];
+    UINavigationController *nc2 = [[UINavigationController alloc] initWithRootViewController:vc2];
+    
+    UITabBarController *tabBar = [[UITabBarController alloc] init];
+    [tabBar setViewControllers:@[nc1,nc2]];
+    
+    self.window.rootViewController = tabBar;
     [self.window makeKeyAndVisible];
     return YES;
 }

@@ -23,6 +23,8 @@
 		04300BA0187C57A600499DC9 /* TKParcelLocker.m in Sources */ = {isa = PBXBuildFile; fileRef = 04300B9F187C57A600499DC9 /* TKParcelLocker.m */; };
 		04300BA2187C586500499DC9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04300BA1187C586500499DC9 /* MapKit.framework */; };
 		04300BA4187C586C00499DC9 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 04300BA3187C586C00499DC9 /* libsqlite3.dylib */; };
+		04D63A9C187D615E0030166E /* TKMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D63A9B187D615E0030166E /* TKMapViewController.m */; };
+		04D63A9F187D63B60030166E /* PGSQLController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D63A9E187D63B60030166E /* PGSQLController.m */; };
 		09993E06F753473BB4146D5E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9606C99E49D24398A2C28CDE /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +61,10 @@
 		04300B9F187C57A600499DC9 /* TKParcelLocker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKParcelLocker.m; sourceTree = "<group>"; };
 		04300BA1187C586500499DC9 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		04300BA3187C586C00499DC9 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		04D63A9A187D615E0030166E /* TKMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKMapViewController.h; sourceTree = "<group>"; };
+		04D63A9B187D615E0030166E /* TKMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKMapViewController.m; sourceTree = "<group>"; };
+		04D63A9D187D63B60030166E /* PGSQLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGSQLController.h; sourceTree = "<group>"; };
+		04D63A9E187D63B60030166E /* PGSQLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGSQLController.m; sourceTree = "<group>"; };
 		9606C99E49D24398A2C28CDE /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE6B40AC7DB44AF6B6379E36 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -131,6 +137,10 @@
 				04300B76187C520E00499DC9 /* TKAppDelegate.m */,
 				04300B7E187C520E00499DC9 /* TKViewController.h */,
 				04300B7F187C520E00499DC9 /* TKViewController.m */,
+				04D63A9A187D615E0030166E /* TKMapViewController.h */,
+				04D63A9B187D615E0030166E /* TKMapViewController.m */,
+				04D63A9D187D63B60030166E /* PGSQLController.h */,
+				04D63A9E187D63B60030166E /* PGSQLController.m */,
 				04300BA6187C5B3700499DC9 /* Network */,
 				04300BA5187C5B2E00499DC9 /* Model */,
 				04300B81187C520E00499DC9 /* Images.xcassets */,
@@ -316,8 +326,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04D63A9C187D615E0030166E /* TKMapViewController.m in Sources */,
 				04300B80187C520E00499DC9 /* TKViewController.m in Sources */,
 				04300BA0187C57A600499DC9 /* TKParcelLocker.m in Sources */,
+				04D63A9F187D63B60030166E /* PGSQLController.m in Sources */,
 				04300B73187C520E00499DC9 /* main.m in Sources */,
 				04300B77187C520E00499DC9 /* TKAppDelegate.m in Sources */,
 			);
@@ -441,10 +453,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tomasz Kuzma (2YZA5ZSYLF)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Paczkomaty/Paczkomaty-Prefix.pch";
 				INFOPLIST_FILE = "Paczkomaty/Paczkomaty-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "9EA92E18-CCDE-4610-90D3-21DB2E06A668";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -455,10 +471,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Tomasz Kuzma (2YZA5ZSYLF)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Paczkomaty/Paczkomaty-Prefix.pch";
 				INFOPLIST_FILE = "Paczkomaty/Paczkomaty-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "9EA92E18-CCDE-4610-90D3-21DB2E06A668";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -480,6 +500,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "PaczkomatyTests/PaczkomatyTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -499,6 +520,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Paczkomaty/Paczkomaty-Prefix.pch";
 				INFOPLIST_FILE = "PaczkomatyTests/PaczkomatyTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;

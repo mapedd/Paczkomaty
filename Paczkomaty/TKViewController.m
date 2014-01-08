@@ -10,12 +10,15 @@
 #import <AFNetworking.h>
 #import <RXMLElement.h>
 #import "TKParcelLocker.h"
+#import "PGSQLController.h"
 
 @interface TKViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) NSArray *parcelLockers;
 
 @property (strong, nonatomic) UITableView *tableView;
+
+@property (strong, nonatomic) PGSQLController *controller;
 
 @end
 
@@ -25,6 +28,8 @@
     self = [super initWithNibName:nil bundle:nil];
     if(!self)return nil;
     [self reloadData];
+    self.controller = [[PGSQLController alloc] init];
+    self.parcelLockers = [self.controller exportParcelsFromDataBase];
     return self;
 }
 
@@ -65,6 +70,8 @@
              }];
              
              bself.parcelLockers = [NSArray arrayWithArray:array];
+             PGSQLController *controller = [[PGSQLController alloc] init];
+             [controller importParcelsToDataBase:bself.parcelLockers];
              [bself reloadData];
              
          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -93,7 +100,7 @@
     
     TKParcelLocker *locker = self.parcelLockers[indexPath.row];
     cell.textLabel.text = [NSString stringWithFormat:@"%@, (%@,%@)",locker.name,locker.town, locker.street];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%f,%f (%@)",locker.location.latitude,locker.location.latitude,locker.operatingHours];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%f,%f (%@)",locker.coordinate.latitude,locker.coordinate.latitude,locker.operatingHours];
     return cell;
 }
 #pragma mark - UITableViewDelegate
