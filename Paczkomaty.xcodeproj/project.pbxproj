@@ -23,6 +23,17 @@
 		04300BA0187C57A600499DC9 /* TKParcelLocker.m in Sources */ = {isa = PBXBuildFile; fileRef = 04300B9F187C57A600499DC9 /* TKParcelLocker.m */; };
 		04300BA2187C586500499DC9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04300BA1187C586500499DC9 /* MapKit.framework */; };
 		04300BA4187C586C00499DC9 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 04300BA3187C586C00499DC9 /* libsqlite3.dylib */; };
+		046CFCE2188FECF6009B2208 /* TKNetworkController.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFCE1188FECF6009B2208 /* TKNetworkController.m */; };
+		046CFCE8188FF9B9009B2208 /* arrow_io6.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCE6188FF9B9009B2208 /* arrow_io6.png */; };
+		046CFCE9188FF9B9009B2208 /* arrow_io6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCE7188FF9B9009B2208 /* arrow_io6@2x.png */; };
+		046CFCEC188FFB6F009B2208 /* location_ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCEA188FFB6F009B2208 /* location_ios7.png */; };
+		046CFCED188FFB6F009B2208 /* location_ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCEB188FFB6F009B2208 /* location_ios7@2x.png */; };
+		046CFCF0188FFC2F009B2208 /* location_ios6.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCEE188FFC2F009B2208 /* location_ios6.png */; };
+		046CFCF1188FFC2F009B2208 /* location_ios6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCEF188FFC2F009B2208 /* location_ios6@2x.png */; };
+		046CFCF61890002A009B2208 /* list_ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCF21890002A009B2208 /* list_ios7.png */; };
+		046CFCF71890002A009B2208 /* list_ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCF31890002A009B2208 /* list_ios7@2x.png */; };
+		046CFCF81890002A009B2208 /* list_ios6.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCF41890002A009B2208 /* list_ios6.png */; };
+		046CFCF91890002A009B2208 /* list_ios6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCF51890002A009B2208 /* list_ios6@2x.png */; };
 		04D63A9C187D615E0030166E /* TKMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D63A9B187D615E0030166E /* TKMapViewController.m */; };
 		04D63A9F187D63B60030166E /* PGSQLController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D63A9E187D63B60030166E /* PGSQLController.m */; };
 		04FC3352187DAE23009908B4 /* arrow_io7.png in Resources */ = {isa = PBXBuildFile; fileRef = 04FC3350187DAE23009908B4 /* arrow_io7.png */; };
@@ -63,6 +74,18 @@
 		04300B9F187C57A600499DC9 /* TKParcelLocker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKParcelLocker.m; sourceTree = "<group>"; };
 		04300BA1187C586500499DC9 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		04300BA3187C586C00499DC9 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		046CFCE0188FECF6009B2208 /* TKNetworkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKNetworkController.h; sourceTree = "<group>"; };
+		046CFCE1188FECF6009B2208 /* TKNetworkController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKNetworkController.m; sourceTree = "<group>"; };
+		046CFCE6188FF9B9009B2208 /* arrow_io6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_io6.png; sourceTree = "<group>"; };
+		046CFCE7188FF9B9009B2208 /* arrow_io6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_io6@2x.png"; sourceTree = "<group>"; };
+		046CFCEA188FFB6F009B2208 /* location_ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location_ios7.png; sourceTree = "<group>"; };
+		046CFCEB188FFB6F009B2208 /* location_ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location_ios7@2x.png"; sourceTree = "<group>"; };
+		046CFCEE188FFC2F009B2208 /* location_ios6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location_ios6.png; sourceTree = "<group>"; };
+		046CFCEF188FFC2F009B2208 /* location_ios6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location_ios6@2x.png"; sourceTree = "<group>"; };
+		046CFCF21890002A009B2208 /* list_ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = list_ios7.png; sourceTree = "<group>"; };
+		046CFCF31890002A009B2208 /* list_ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_ios7@2x.png"; sourceTree = "<group>"; };
+		046CFCF41890002A009B2208 /* list_ios6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = list_ios6.png; sourceTree = "<group>"; };
+		046CFCF51890002A009B2208 /* list_ios6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_ios6@2x.png"; sourceTree = "<group>"; };
 		04D63A9A187D615E0030166E /* TKMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKMapViewController.h; sourceTree = "<group>"; };
 		04D63A9B187D615E0030166E /* TKMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKMapViewController.m; sourceTree = "<group>"; };
 		04D63A9D187D63B60030166E /* PGSQLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGSQLController.h; sourceTree = "<group>"; };
@@ -137,16 +160,11 @@
 		04300B6C187C520E00499DC9 /* Paczkomaty */ = {
 			isa = PBXGroup;
 			children = (
-				04FC3350187DAE23009908B4 /* arrow_io7.png */,
-				04FC3351187DAE23009908B4 /* arrow_io7@2x.png */,
+				046CFCE5188FF845009B2208 /* Assets */,
 				04300B75187C520E00499DC9 /* TKAppDelegate.h */,
 				04300B76187C520E00499DC9 /* TKAppDelegate.m */,
-				04300B7E187C520E00499DC9 /* TKViewController.h */,
-				04300B7F187C520E00499DC9 /* TKViewController.m */,
-				04D63A9A187D615E0030166E /* TKMapViewController.h */,
-				04D63A9B187D615E0030166E /* TKMapViewController.m */,
-				04D63A9D187D63B60030166E /* PGSQLController.h */,
-				04D63A9E187D63B60030166E /* PGSQLController.m */,
+				046CFCE4188FF734009B2208 /* View Controller */,
+				046CFCE3188FF726009B2208 /* Data Base */,
 				04300BA6187C5B3700499DC9 /* Network */,
 				04300BA5187C5B2E00499DC9 /* Model */,
 				04300B81187C520E00499DC9 /* Images.xcassets */,
@@ -196,8 +214,49 @@
 		04300BA6187C5B3700499DC9 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				046CFCE0188FECF6009B2208 /* TKNetworkController.h */,
+				046CFCE1188FECF6009B2208 /* TKNetworkController.m */,
 			);
 			name = Network;
+			sourceTree = "<group>";
+		};
+		046CFCE3188FF726009B2208 /* Data Base */ = {
+			isa = PBXGroup;
+			children = (
+				04D63A9D187D63B60030166E /* PGSQLController.h */,
+				04D63A9E187D63B60030166E /* PGSQLController.m */,
+			);
+			name = "Data Base";
+			sourceTree = "<group>";
+		};
+		046CFCE4188FF734009B2208 /* View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				04300B7E187C520E00499DC9 /* TKViewController.h */,
+				04300B7F187C520E00499DC9 /* TKViewController.m */,
+				04D63A9A187D615E0030166E /* TKMapViewController.h */,
+				04D63A9B187D615E0030166E /* TKMapViewController.m */,
+			);
+			name = "View Controller";
+			sourceTree = "<group>";
+		};
+		046CFCE5188FF845009B2208 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				04FC3350187DAE23009908B4 /* arrow_io7.png */,
+				04FC3351187DAE23009908B4 /* arrow_io7@2x.png */,
+				046CFCE6188FF9B9009B2208 /* arrow_io6.png */,
+				046CFCE7188FF9B9009B2208 /* arrow_io6@2x.png */,
+				046CFCEA188FFB6F009B2208 /* location_ios7.png */,
+				046CFCEB188FFB6F009B2208 /* location_ios7@2x.png */,
+				046CFCEE188FFC2F009B2208 /* location_ios6.png */,
+				046CFCEF188FFC2F009B2208 /* location_ios6@2x.png */,
+				046CFCF21890002A009B2208 /* list_ios7.png */,
+				046CFCF31890002A009B2208 /* list_ios7@2x.png */,
+				046CFCF41890002A009B2208 /* list_ios6.png */,
+				046CFCF51890002A009B2208 /* list_ios6@2x.png */,
+			);
+			name = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -280,9 +339,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				04300B82187C520E00499DC9 /* Images.xcassets in Resources */,
+				046CFCF91890002A009B2208 /* list_ios6@2x.png in Resources */,
+				046CFCF61890002A009B2208 /* list_ios7.png in Resources */,
+				046CFCE8188FF9B9009B2208 /* arrow_io6.png in Resources */,
+				046CFCF1188FFC2F009B2208 /* location_ios6@2x.png in Resources */,
 				04FC3352187DAE23009908B4 /* arrow_io7.png in Resources */,
+				046CFCF0188FFC2F009B2208 /* location_ios6.png in Resources */,
+				046CFCF81890002A009B2208 /* list_ios6.png in Resources */,
+				046CFCF71890002A009B2208 /* list_ios7@2x.png in Resources */,
+				046CFCED188FFB6F009B2208 /* location_ios7@2x.png in Resources */,
 				04FC3353187DAE23009908B4 /* arrow_io7@2x.png in Resources */,
 				04300B71187C520E00499DC9 /* InfoPlist.strings in Resources */,
+				046CFCEC188FFB6F009B2208 /* location_ios7.png in Resources */,
+				046CFCE9188FF9B9009B2208 /* arrow_io6@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,6 +406,7 @@
 				04D63A9C187D615E0030166E /* TKMapViewController.m in Sources */,
 				04300B80187C520E00499DC9 /* TKViewController.m in Sources */,
 				04300BA0187C57A600499DC9 /* TKParcelLocker.m in Sources */,
+				046CFCE2188FECF6009B2208 /* TKNetworkController.m in Sources */,
 				04D63A9F187D63B60030166E /* PGSQLController.m in Sources */,
 				04300B73187C520E00499DC9 /* main.m in Sources */,
 				04300B77187C520E00499DC9 /* TKAppDelegate.m in Sources */,
@@ -414,9 +484,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -448,8 +518,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				SDKROOT = iphoneos;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				SDKROOT = iphoneos6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -466,9 +536,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Paczkomaty/Paczkomaty-Prefix.pch";
 				INFOPLIST_FILE = "Paczkomaty/Paczkomaty-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "9EA92E18-CCDE-4610-90D3-21DB2E06A668";
+				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -484,9 +555,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Paczkomaty/Paczkomaty-Prefix.pch";
 				INFOPLIST_FILE = "Paczkomaty/Paczkomaty-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "9EA92E18-CCDE-4610-90D3-21DB2E06A668";
+				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -508,8 +580,9 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "PaczkomatyTests/PaczkomatyTests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos7.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -528,8 +601,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Paczkomaty/Paczkomaty-Prefix.pch";
 				INFOPLIST_FILE = "PaczkomatyTests/PaczkomatyTests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos7.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};

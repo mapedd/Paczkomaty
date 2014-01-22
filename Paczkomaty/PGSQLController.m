@@ -10,6 +10,10 @@
 #import <sqlite3.h>
 #import "TKParcelLocker.h"
 
+void errorLogCallback(void *pArg, int iErrCode, const char *zMsg);
+
+int executeCallback(void*pArg, int iErrCode, char** ,char**);
+
 @interface PGSQLController ()
 
 @property(strong, nonatomic) NSString *databasePath;
@@ -17,6 +21,8 @@
 @property (strong, nonatomic) dispatch_queue_t queue;
 
 @end
+
+
 
 @implementation PGSQLController{
     sqlite3 *_database;
@@ -33,6 +39,8 @@
         return nil;
     }
     
+    [self addErrorCallbackToDataBase];
+    
     _queue = dispatch_queue_create([[self description] UTF8String], 0);
     __unsafe_unretained typeof(self) bself = self;
     
@@ -40,9 +48,15 @@
         [bself createDataBaseIfNotExist];
     });
     
+
+    
     
     return self;
     
+}
+
+- (id)debugQuickLookObject{
+    return @"Hello!";
 }
 
 - (NSString *)databasePath{
@@ -66,62 +80,107 @@
     
     @autoreleasepool {
         NSFileManager *filemgr = [[NSFileManager alloc] init];
-        
+        const char *dbpath = [self.databasePath UTF8String];
         if (![filemgr fileExistsAtPath: self.databasePath])
         {
-            const char *dbpath = [self.databasePath UTF8String];
-            
-            if (sqlite3_open(dbpath, &_database) == SQLITE_OK)
+            NSInteger status = sqlite3_open(dbpath, &_database);
+            if (status == SQLITE_OK)
             {
                 char *errMsg;
                 NSString *tableModel = [TKParcelLocker sqlTableModel];
                 const char *sql_stmt = [[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@", tableModel] UTF8String];
                 
-                
-                if (sqlite3_exec(_database, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK)
-                {
-                    NSLog(@"Failed to create table");
+                if (sqlite3_exec(_database, sql_stmt, &executeCallback, NULL, &errMsg) != SQLITE_OK){
+                    NSLog(@"Failed to create table %@", [[NSString alloc] initWithUTF8String:errMsg]);
                 }
                 else{
-                    NSLog(@"Create DB and added table clients");
+                    NSLog(@"Create DB and added table 'lockers'");
                 }
-                sqlite3_close(_database);
+                if (_database != NULL) {
+                    sqlite3_close(NULL);
+                }
+                
             } else {
-                NSLog(@"Failed to open/create database");
+                NSLog(@"Failed to open/create database (%d)", status);
             }
         }
         else{
             NSLog(@"Data base exists");
+
+            NSInteger status = sqlite3_open(dbpath, &_database);
+            if (status == SQLITE_OK){
+                sqlite3_stmt *statement = NULL;
+                
+                const char * select_stmt = [@"SELECT name FROM sqlite_master WHERE type IN ('table','view') AND name NOT LIKE 'sqlite_%'" UTF8String];
+                
+                status = sqlite3_prepare_v2(_database, select_stmt, -1, &statement, NULL);
+                if (status == SQLITE_OK) {
+                    
+                    while (sqlite3_step(statement)==SQLITE_ROW) {
+                        char *name = (char *) sqlite3_column_text  (statement, 0);
+                        NSLog(@"table %@", [[NSString alloc] initWithUTF8String:name]);
+                    }
+                    
+                    sqlite3_finalize(statement);
+                    sqlite3_close(_database);
+                }else{
+                    NSLog(@"can't comple statement (%d)", status);
+                }
+            }
         }
     }
     
 }
 
+- (void)addErrorCallbackToDataBase{
+    NSInteger status = sqlite3_config(SQLITE_CONFIG_LOG, errorLogCallback, NULL);
+    if (status != SQLITE_OK) {
+        NSLog(@"can't register error callback %d", status);
+    }
+}
+
 - (void)importParcelsToDataBase:(NSArray *)parcels{
     
     dispatch_async(_queue, ^{
-        sqlite3_stmt    *statement;
+
         const char *dbpath = [self.databasePath UTF8String];
         
         if (sqlite3_open(dbpath, &_database) == SQLITE_OK)
         {
-            
+            sqlite3_stmt    *statement;
             for (TKParcelLocker *p in parcels) {
                 NSString *insertSQL = [p sqlInsert];
                 
                 const char *insert_stmt = [insertSQL UTF8String];
                 
-                sqlite3_prepare_v2(_database, insert_stmt,-1, &statement, NULL);
-                NSInteger status = sqlite3_step(statement);
+                NSInteger status = sqlite3_prepare_v2(_database, insert_stmt,-1, &statement, NULL);
+                
+                if (status != SQLITE_OK) {
+                    NSLog(@"can't compile statement (%d) %@", status, insertSQL);
+                    return ;
+                }
+                
+                status = sqlite3_step(statement);
                 if (status == SQLITE_DONE)
                 {
-                    NSLog(@"added client with id = %@", p.name);
-                } else {
-                    NSLog(@"can't add client with id = %@, status = %ld", p.name, (long)status);
+//                    NSLog(@"added object with id = %@", p.name);
                 }
+                else{
+                    if (status == SQLITE_CONSTRAINT) {
+                        NSLog(@"can't add object with id = %@, error: CONSTRAINT", p.name);
+                    }
+                    else if (status == SQLITE_MISUSE){
+                        NSLog(@"can't add object with id = %@, error: MISUSE", p.name);
+                    }
+                    else{
+                        NSLog(@"can't add object with id = %@, status = %ld", p.name, (long)status);
+                    }
+                    
+                }
+                sqlite3_finalize(statement);
             }
             
-            sqlite3_finalize(statement);
+            
             sqlite3_close(_database);
         }else{
             NSLog(@"Can't open database");
@@ -179,3 +238,12 @@
 }
 
 @end
+
+
+void errorLogCallback(void *pArg, int iErrCode, const char *zMsg){
+    fprintf(stderr, "(%d) %s\n", iErrCode, zMsg);
+}
+
+int executeCallback(void*pArg, int iErrCode, char** something1,char** something2){
+    return 1;
+}

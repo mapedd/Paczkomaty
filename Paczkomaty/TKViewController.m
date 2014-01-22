@@ -7,10 +7,10 @@
 //
 
 #import "TKViewController.h"
-#import <AFNetworking.h>
-#import <RXMLElement.h>
+#import "TKAppDelegate.h"
 #import "TKParcelLocker.h"
 #import "PGSQLController.h"
+#import "TKNetworkController.h"
 
 @interface TKViewController () <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate>
 
@@ -30,14 +30,33 @@
 
 @implementation TKViewController
 
+#pragma mark - NSObject
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (id)init{
     self = [super initWithNibName:nil bundle:nil];
     if(!self)return nil;
     [self reloadData];
-    self.controller = [[PGSQLController alloc] init];
+    self.controller = [TKAppDelegate sharedDelegate].controller;
     self.parcelLockers = [self.controller exportParcelsFromDataBase];
+    [self addToNotificationCenter];
+    self.title = NSLocalizedString(@"Paczkomaty",nil);
+    self.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"List",nil) image:[self tabBarImage] tag:1];
     return self;
 }
+
+- (UIImage *)tabBarImage{
+    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+        return [UIImage imageNamed:@"list_ios7"];
+    }else{
+        return [UIImage imageNamed:@"list_ios6"];
+    }
+}
+
+#pragma mark - UIViewController
 
 - (void)viewDidLoad{
     [super viewDidLoad];
@@ -59,38 +78,45 @@
     
 }
 
-- (void)reloadData{
-    self.parcelLockers = [self.controller exportParcelsFromDataBase];
-    [self.tableView reloadData];
-    if (self.parcelLockers.count > 0) {
-        self.title = [NSString stringWithFormat:@"%@ (%ld)", NSLocalizedString(@"List",nil),(unsigned long)self.parcelLockers.count];
-    }else{
-        self.title = NSLocalizedString(@"List",nil);
-    }
+#pragma mark - Private
+
+- (void)addToNotificationCenter{
+    NSNotificationCenter *c = [NSNotificationCenter defaultCenter];
+    SEL selector = @selector(notificationReceived:);
+    [c addObserver:self
+          selector:selector
+              name:TKNetworkControllerFetchedLockerDataNotificaiton
+            object:nil];
+    [c addObserver:self
+          selector:selector
+              name:TKNetworkControllerImportedDataNotificaiton
+            object:nil];
 }
 
 - (void)get{
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    AFHTTPResponseSerializer *serializer = [AFHTTPResponseSerializer serializer];
-    serializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-    __unsafe_unretained typeof(self) bself = self;
-    manager.responseSerializer = serializer;
-    [manager GET:@"http://api.paczkomaty.pl/?do=listmachines_xml&paymentavailable="
-      parameters:nil
-         success:^(AFHTTPRequestOperation *operation, id responseObject) {
-             NSMutableArray *array = [NSMutableArray array];
-             RXMLElement *element = [[RXMLElement alloc] initFromXMLData:responseObject];
-             [element iterate:@"machine" usingBlock: ^(RXMLElement *e) {
-                 TKParcelLocker *locker = [TKParcelLocker lockerWithXMLElement:e];
-                 [array addObject:locker];
-             }];
-             
-             [bself.controller importParcelsToDataBase:array];
-             [bself reloadData];
-             
-         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-             
-         }];
+    if (![[TKNetworkController sharedController] isFetchingParcels]) {
+        [[TKNetworkController sharedController] getAndImportData];
+        [self showActivityIndicator:YES];
+    }
+}
+
+- (void)showActivityIndicator:(BOOL)show{
+    
+    if (show) {
+        UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:(UIActivityIndicatorViewStyleGray)];
+        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:indicator];
+        [indicator startAnimating];
+        self.navigationItem.rightBarButtonItem = barButtonItem;
+    }
+    else{
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+    self.navigationItem.leftBarButtonItem.enabled = !show;
+}
+
+- (void)reloadData{
+    self.parcelLockers = [self.controller exportParcelsFromDataBase];
+    [self.tableView reloadData];
 }
 
 #pragma mark - UITableViewDataSource
@@ -133,6 +159,7 @@
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%f,%f (%@)",locker.coordinate.latitude,locker.coordinate.latitude,locker.operatingHours];
     return cell;
 }
+
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -159,4 +186,16 @@
 - (void)searchDisplayController:(UISearchDisplayController *)controller willUnloadSearchResultsTableView:(UITableView *)tableView{
     self.searchResults = nil;
 }
+
+
+#pragma mark - NSNotificationCenter
+
+- (void)notificationReceived:(NSNotification *)note{
+    if ([note.name isEqualToString:TKNetworkControllerFetchedLockerDataNotificaiton]) {
+        [self showActivityIndicator:NO];
+    }else if([note.name isEqualToString:TKNetworkControllerImportedDataNotificaiton]){
+        
+    }
+}
+
 @end

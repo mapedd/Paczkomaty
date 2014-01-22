@@ -38,6 +38,7 @@
 
 + (TKParcelLocker *)lockerWithXMLElement:(RXMLElement *)element;
 + (TKParcelLocker *)lockerWithSQLStatement:(sqlite3_stmt *)statement;
++ (NSString *)sqlTableName;
 + (NSString *)sqlTableModel;
 - (NSString *)sqlInsert;
 @end

@@ -9,11 +9,13 @@
 #import "TKAppDelegate.h"
 #import "TKViewController.h"
 #import "TKMapViewController.h"
+#import "PGSQLController.h"
+
+
 
 @implementation TKAppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     TKViewController *vc1 = [TKViewController new];
@@ -30,4 +32,15 @@
     return YES;
 }
 
+
+- (PGSQLController *)controller{
+    if (_controller == nil) {
+        _controller = [[PGSQLController alloc] init];
+    }
+    return _controller;
+}
+
++ (TKAppDelegate *)sharedDelegate{
+    return [UIApplication sharedApplication].delegate;
+}
 @end

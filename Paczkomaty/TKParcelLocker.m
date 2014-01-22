@@ -105,8 +105,12 @@
     return locker;
 }
 
++ (NSString *)sqlTableName{
+    return @"lockers";
+}
+
 + (NSString *)sqlTableModel{
-    return @"lockers (name TEXT PRIMARY KEY, postalCode TEXT, province TEXT, street TEXT, buildingNumber TEXT, town TEXT, longitude DOUBLE, latitude DOUBLE, locationDescription TEXT, paymentPointDescription TEXT, parterId INTEGER, paymentType TEXT, operatingHours TEXT, status TEXT, paymentAvailable INTEGER, type TEXT)";
+    return @"lockers (name TEXT NOT NULL, postalCode TEXT NOT NULL, province TEXT, street TEXT, buildingNumber TEXT, town TEXT, longitude DOUBLE, latitude DOUBLE, locationDescription TEXT, paymentPointDescription TEXT, parterId INTEGER, paymentType TEXT, operatingHours TEXT, status TEXT, paymentAvailable INTEGER, type TEXT)";
 }
 
 + (NSString *)sqlInsertFormat{
@@ -115,6 +119,11 @@
 
 - (NSString *)sqlInsert{
     NSString *format = [TKParcelLocker sqlInsertFormat];
+    
+    NSString *escapedLocationDescription = [self.locationDescription stringByReplacingOccurrencesOfString:@"\"" withString:@"'"];
+    
+    NSString *escapedPaymentPointDescription = [self.paymentPointDescription stringByReplacingOccurrencesOfString:@"\"" withString:@"'"];
+    
     return [NSString stringWithFormat:format,
             self.name ?: @"",
             self.postalCode ?: @"",
@@ -124,8 +133,8 @@
             self.town ?: @"",
             self.coordinate.longitude,
             self.coordinate.latitude,
-            self.locationDescription ?: @"",
-            self.paymentPointDescription ?: @"",
+            escapedLocationDescription ?: @"",
+            escapedPaymentPointDescription ?: @"",
             self.parternId,
             self.paymentType ?: @"",
             self.operatingHours ?: @"",

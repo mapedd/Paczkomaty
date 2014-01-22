@@ -9,6 +9,7 @@
 #import "TKMapViewController.h"
 #import <MapKit/MapKit.h>
 #import "TKParcelLocker.h"
+#import "TKAppDelegate.h"
 #import "PGSQLController.h"
 
 @interface TKMapViewController () <MKMapViewDelegate>
@@ -22,10 +23,20 @@
 - (id)init{
     self = [super initWithNibName:nil bundle:nil];
     if (!self) return nil;
-    self.title = NSLocalizedString(@"Map",nil);
-    self.controller = [[PGSQLController alloc] init];
+    self.title = NSLocalizedString(@"Paczkomaty",nil);
+    self.controller = [TKAppDelegate sharedDelegate].controller;
     self.items = [self.controller exportParcelsFromDataBase];
+    
+    self.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"Map",nil) image:[self tabBarImage] tag:1];
     return self;
+}
+
+- (UIImage *)tabBarImage{
+    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+        return [UIImage imageNamed:@"location_ios7"];
+    }else{
+        return [UIImage imageNamed:@"location_ios6"];
+    }
 }
 
 - (void)viewDidLoad{
@@ -36,14 +47,25 @@
     self.mapView.showsUserLocation = YES;
     [self.view addSubview:self.mapView];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"arrow_io7"] style:(UIBarButtonItemStyleBordered) target:self action:@selector(showMe:)];
-
+    
+    NSString *fileName ;
+    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+        fileName = @"arrow_io7";
+    }
+    else{
+        fileName = @"arrow_io6";
+    }
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:fileName]
+                                                                              style:(UIBarButtonItemStyleBordered)
+                                                                             target:self
+                                                                             action:@selector(showMe:)];
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     [self.mapView removeAnnotations:self.mapView.annotations];
-
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -51,7 +73,7 @@
     for (TKParcelLocker *locker in self.items) {
         [self.mapView addAnnotation:locker];
     }
-
+    
 }
 
 - (void)showMe:(id)sender{
