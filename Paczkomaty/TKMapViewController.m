@@ -8,6 +8,7 @@
 
 #import "TKMapViewController.h"
 #import <MapKit/MapKit.h>
+#import "TKParcelDetailViewController.h"
 #import "TKParcelLocker.h"
 #import "PGSQLController.h"
 
@@ -61,6 +62,8 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    self.items = [[PGSQLController sharedController] exportParcelsFromDataBase];
+//    self.items = [self.items subarrayWithRange:NSMakeRange(0, MIN(10, self.items.count))];
     for (TKParcelLocker *locker in self.items) {
         [self.mapView addAnnotation:locker];
     }
@@ -78,7 +81,7 @@
     mapRegion.span.latitudeDelta = 0.05;
     mapRegion.span.longitudeDelta = 0.05;
     
-    [self.mapView setRegion:mapRegion animated: YES];
+    [self.mapView setRegion:mapRegion animated: self.isViewLoaded];
     self.mapView.centerCoordinate = location;
 }
 
@@ -102,6 +105,13 @@
 
 #pragma mark - MKMapViewDelegate
 
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control{
+    TKParcelLocker *locker = (TKParcelLocker *)view.annotation;
+    TKParcelDetailViewController *detail = [[TKParcelDetailViewController alloc] init];
+    detail.parcel = locker;
+    [self.navigationController pushViewController:detail animated:YES];
+}
+
 - (MKAnnotationView *)mapView:(MKMapView *)mapView
             viewForAnnotation:(id <MKAnnotation>)annotation{
 	MKPinAnnotationView *annotationView = nil;
@@ -113,6 +123,10 @@
 			annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"Pin"];
 			annotationView.canShowCallout = YES;
 			annotationView.animatesDrop = NO;
+            
+            UIButton *rightCallout = [UIButton buttonWithType:UIButtonTypeInfoLight];
+            
+            annotationView.rightCalloutAccessoryView = rightCallout;
 		}
 	}
 	return annotationView;

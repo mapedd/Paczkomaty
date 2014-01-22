@@ -38,6 +38,7 @@
     self.parcelView = [[TKParcelView alloc] initWithFrame:self.view.bounds];
     self.parcelView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [self.scrollView addSubview:self.parcelView];
+    self.parcelView.scrollView = self.scrollView;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Select",nil)
                                                                style:(UIBarButtonItemStyleBordered)

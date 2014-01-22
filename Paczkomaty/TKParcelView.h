@@ -17,4 +17,6 @@
 @property (readonly, strong, nonatomic) UILabel *localisationLabel;
 @property (readonly, strong, nonatomic) UILabel *hoursLabel;
 @property (readonly, strong, nonatomic) UILabel *paymentLabel;
+
+@property (weak, nonatomic) UIScrollView *scrollView;
 @end

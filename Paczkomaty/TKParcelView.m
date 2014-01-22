@@ -22,6 +22,8 @@
 
 @implementation TKParcelView
 
+#pragma mark - NSObject
+
 - (void)dealloc{
     [self registerObservers:NO];
 }
@@ -34,10 +36,14 @@
     return self;
 }
 
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context{
     [self setNeedsLayout];
 }
+
+#pragma mark - UIView
 
 - (void)layoutSubviews{
     [super layoutSubviews];
@@ -83,7 +89,26 @@
     self.hoursLabel.frame = hoursLabeFrame;
     self.paymentLabel.frame = paymentLabelFrame;
     
+    CGFloat height = CGRectGetMaxY(paymentLabelFrame) + inset;
+    
+    CGRect frame = self.frame;
+    frame.size.height = height;
+    self.frame = frame;
+    
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.contentSize.width, height);
+    
 }
+
+#pragma mark - Setters
+
+- (void)setParcel:(TKParcelLocker *)parcel{
+    if (_parcel != parcel) {
+        _parcel = parcel;
+        [self reloadData];
+    }
+}
+
+#pragma mark - Private
 
 - (void)registerObservers:(BOOL)registerOrNot{
     if (registerOrNot) {
@@ -101,21 +126,6 @@
         [self.hoursLabel removeObserver:self forKeyPath:@"attributedText" context:NULL];
         [self.paymentLabel removeObserver:self forKeyPath:@"attributedText" context:NULL];
     }
-}
-
-- (void)setParcel:(TKParcelLocker *)parcel{
-    if (_parcel != parcel) {
-        _parcel = parcel;
-        [self reloadData];
-    }
-}
-
-- (UIFont *)TKBoldFontOfSize:(CGFloat)size{
-    return [UIFont fontWithName:@"HelveticaNeue-Bold" size:size];
-}
-
-- (UIFont *)TKMediumFontOfSize:(CGFloat)size{
-    return [UIFont fontWithName:@"HelveticaNeue-Medium" size:size];
 }
 
 - (void)setup{
@@ -164,20 +174,6 @@
     self.paymentLabel = paymentLabel;
 }
 
-- (NSAttributedString *)attributesStringWithBoldString:(NSString *)boldString normalString:(NSString *)normalString{
-    
-    NSDictionary *boldAttrs = @{UITextAttributeFont : [self TKBoldFontOfSize:18.0f]};
-    NSDictionary *normalAttrs = @{UITextAttributeFont : [self TKMediumFontOfSize:15.0f]};
-    
-    NSAttributedString *bold = [[NSAttributedString alloc] initWithString:boldString attributes:boldAttrs];
-    NSAttributedString *normal = [[NSAttributedString alloc] initWithString:normalString attributes:normalAttrs];
-    
-    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] init];
-    [string appendAttributedString:bold];
-    [string appendAttributedString:normal];
-    return [[NSAttributedString alloc] initWithAttributedString:string];
-}
-
 - (void)reloadData{
     [self.mapView removeAnnotations:self.mapView.annotations];
     [self.mapView addAnnotation:self.parcel];
@@ -201,5 +197,30 @@
     self.paymentLabel.attributedText = [self attributesStringWithBoldString:NSLocalizedString(@"Payment: ",nil)
                                                                normalString:self.parcel.paymentType ?: NSLocalizedString(@"No info",nil)];
 }
+
+#pragma mark - Helpers
+
+- (NSAttributedString *)attributesStringWithBoldString:(NSString *)boldString normalString:(NSString *)normalString{
+    
+    NSDictionary *boldAttrs = @{UITextAttributeFont : [self TKBoldFontOfSize:18.0f]};
+    NSDictionary *normalAttrs = @{UITextAttributeFont : [self TKMediumFontOfSize:15.0f]};
+    
+    NSAttributedString *bold = [[NSAttributedString alloc] initWithString:boldString attributes:boldAttrs];
+    NSAttributedString *normal = [[NSAttributedString alloc] initWithString:normalString attributes:normalAttrs];
+    
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] init];
+    [string appendAttributedString:bold];
+    [string appendAttributedString:normal];
+    return [[NSAttributedString alloc] initWithAttributedString:string];
+}
+
+- (UIFont *)TKBoldFontOfSize:(CGFloat)size{
+    return [UIFont fontWithName:@"HelveticaNeue-Bold" size:size];
+}
+
+- (UIFont *)TKMediumFontOfSize:(CGFloat)size{
+    return [UIFont fontWithName:@"HelveticaNeue-Medium" size:size];
+}
+
 
 @end
