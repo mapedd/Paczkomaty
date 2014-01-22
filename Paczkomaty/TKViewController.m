@@ -9,7 +9,10 @@
 #import "TKViewController.h"
 #import "TKParcelLocker.h"
 #import "PGSQLController.h"
+#import "TKParcelTableViewCell.h"
+#import "TKParcelTableViewCell+Configuration.h"
 #import "TKNetworkController.h"
+#import "TKParcelDetailViewController.h"
 
 @interface TKViewController () <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate>
 
@@ -38,7 +41,7 @@
     if(!self)return nil;
     [self reloadData];
     [self addToNotificationCenter];
-    self.title = NSLocalizedString(@"Paczkomaty",nil);
+    self.navigationItem.title = NSLocalizedString(@"Paczkomaty",nil);
     self.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"List",nil) image:[self tabBarImage] tag:1];
     return self;
 }
@@ -84,7 +87,7 @@
             object:nil];
     [c addObserver:self
           selector:selector
-              name:TKNetworkControllerImportedDataNotificaiton
+              name:PGSQLControllerImportedDataNotificaiton
             object:nil];
 }
 
@@ -132,15 +135,24 @@
     }
 }
 
+
+#pragma mark - UITableViewDataSource - CELL FOR ROW
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *CellIdentifier = @"Cell";
     
     
-    UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    TKParcelTableViewCell *cell = (TKParcelTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = [[TKParcelTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
+    [cell configureWithParcel:[self tableView:tableView lockerAtIndexPath:indexPath]];
+    
+    return cell;
+}
+
+- (TKParcelLocker *)tableView:(UITableView *)tableView lockerAtIndexPath:(NSIndexPath *)indexPath{
     NSArray *array;
     if (tableView == self.tableView) {
         array = self.parcelLockers;
@@ -148,11 +160,7 @@
     else if (tableView == self.searchDisplay.searchResultsTableView){
         array = self.searchResults;
     }
-    
-    TKParcelLocker *locker =array[indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@, (%@,%@)",locker.name,locker.town, locker.street];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%f,%f (%@)",locker.coordinate.latitude,locker.coordinate.latitude,locker.operatingHours];
-    return cell;
+    return array[indexPath.row];
 }
 
 #pragma mark - UITableViewDelegate
@@ -163,6 +171,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 50.0f;
+}
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath{
+    TKParcelDetailViewController *detail = [[TKParcelDetailViewController alloc] init];
+    detail.parcel = [self tableView:tableView lockerAtIndexPath:indexPath];
+    [self.navigationController pushViewController:detail animated:YES];
 }
 
 #pragma mark - UISearchDisplayDelegate
@@ -188,8 +202,8 @@
 - (void)notificationReceived:(NSNotification *)note{
     if ([note.name isEqualToString:TKNetworkControllerFetchedLockerDataNotificaiton]) {
         [self showActivityIndicator:NO];
-    }else if([note.name isEqualToString:TKNetworkControllerImportedDataNotificaiton]){
-        
+    }else if([note.name isEqualToString:PGSQLControllerImportedDataNotificaiton]){
+        [self reloadData];
     }
 }
 

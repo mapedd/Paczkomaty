@@ -13,7 +13,6 @@
 #import "PGSQLController.h"
 
 NSString *const TKNetworkControllerFetchedLockerDataNotificaiton = @"TKNetworkControllerFetchedLockerDataNotificaiton";
-NSString *const TKNetworkControllerImportedDataNotificaiton = @"TKNetworkControllerImportedDataNotificaiton";
 
 @interface TKNetworkController ()
 
@@ -55,7 +54,7 @@ NSString *const TKNetworkControllerImportedDataNotificaiton = @"TKNetworkControl
                  [array addObject:locker];
              }];
              
-             
+             [bself importLockersData:[NSArray arrayWithArray:array]];
              [bself postFetchSuccess:YES error:nil];
              
          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -75,8 +74,7 @@ NSString *const TKNetworkControllerImportedDataNotificaiton = @"TKNetworkControl
 }
 
 - (void)importLockersData:(NSArray *)lockers{
-    PGSQLController *controller = [[PGSQLController alloc] init];
-    [controller importParcelsToDataBase:lockers];
+    [[PGSQLController sharedController] importParcelsToDataBase:lockers];
 }
 
 @end

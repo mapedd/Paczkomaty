@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *const PGSQLControllerImportedDataNotificaiton;
+
 @interface PGSQLController : NSObject
 + (PGSQLController *)sharedController;
 - (void)importParcelsToDataBase:(NSArray *)parcels;

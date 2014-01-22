@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 
 extern NSString *const TKNetworkControllerFetchedLockerDataNotificaiton;
-extern NSString *const TKNetworkControllerImportedDataNotificaiton;
 
 @interface TKNetworkController : NSObject
 + (TKNetworkController *)sharedController;

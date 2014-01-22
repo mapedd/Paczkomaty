@@ -10,6 +10,8 @@
 #import <sqlite3.h>
 #import "TKParcelLocker.h"
 
+NSString *const PGSQLControllerImportedDataNotificaiton = @"PGSQLControllerImportedDataNotificaiton";
+
 void errorLogCallback(void *pArg, int iErrCode, const char *zMsg);
 
 int executeCallback(void*pArg, int iErrCode, char** ,char**);
@@ -44,11 +46,10 @@ int executeCallback(void*pArg, int iErrCode, char** ,char**);
 }
 
 - (id)init{
+    
     self = [super init];
     
-    if (!self) {
-        return nil;
-    }
+    if (self == nil) return nil;
     
     [self addErrorCallbackToDataBase];
     
@@ -58,9 +59,6 @@ int executeCallback(void*pArg, int iErrCode, char** ,char**);
     dispatch_async(_queue, ^{
         [bself createDataBaseIfNotExist];
     });
-    
-
-    
     
     return self;
     
@@ -89,54 +87,52 @@ int executeCallback(void*pArg, int iErrCode, char** ,char**);
 
 - (void)createDataBaseIfNotExist{
     
-    @autoreleasepool {
-        NSFileManager *filemgr = [[NSFileManager alloc] init];
-        const char *dbpath = [self.databasePath UTF8String];
-        if (![filemgr fileExistsAtPath: self.databasePath])
+    NSFileManager *filemgr = [[NSFileManager alloc] init];
+    const char *dbpath = [self.databasePath UTF8String];
+    if (![filemgr fileExistsAtPath: self.databasePath])
+    {
+        NSInteger status = sqlite3_open(dbpath, &_database);
+        if (status == SQLITE_OK)
         {
-            NSInteger status = sqlite3_open(dbpath, &_database);
-            if (status == SQLITE_OK)
-            {
-                char *errMsg;
-                NSString *tableModel = [TKParcelLocker sqlTableModel];
-                const char *sql_stmt = [[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@", tableModel] UTF8String];
-                
-                if (sqlite3_exec(_database, sql_stmt, &executeCallback, NULL, &errMsg) != SQLITE_OK){
-                    NSLog(@"Failed to create table %@", [[NSString alloc] initWithUTF8String:errMsg]);
-                }
-                else{
-                    NSLog(@"Create DB and added table 'lockers'");
-                }
-                if (_database != NULL) {
-                    sqlite3_close(NULL);
-                }
-                
-            } else {
-                NSLog(@"Failed to open/create database (%d)", status);
+            char *errMsg;
+            NSString *tableModel = [TKParcelLocker sqlTableModel];
+            const char *sql_stmt = [[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@", tableModel] UTF8String];
+            
+            if (sqlite3_exec(_database, sql_stmt, &executeCallback, NULL, &errMsg) != SQLITE_OK){
+                NSLog(@"Failed to create table %@", [[NSString alloc] initWithUTF8String:errMsg]);
             }
+            else{
+                NSLog(@"Create DB and added table 'lockers'");
+            }
+            if (_database != NULL) {
+                sqlite3_close(NULL);
+            }
+            
+        } else {
+            NSLog(@"Failed to open/create database (%d)", status);
         }
-        else{
-            NSLog(@"Data base exists");
-
-            NSInteger status = sqlite3_open(dbpath, &_database);
-            if (status == SQLITE_OK){
-                sqlite3_stmt *statement = NULL;
+    }
+    else{
+        NSLog(@"Data base exists");
+        
+        NSInteger status = sqlite3_open(dbpath, &_database);
+        if (status == SQLITE_OK){
+            sqlite3_stmt *statement = NULL;
+            
+            const char * select_stmt = [@"SELECT name FROM sqlite_master WHERE type IN ('table','view') AND name NOT LIKE 'sqlite_%'" UTF8String];
+            
+            status = sqlite3_prepare_v2(_database, select_stmt, -1, &statement, NULL);
+            if (status == SQLITE_OK) {
                 
-                const char * select_stmt = [@"SELECT name FROM sqlite_master WHERE type IN ('table','view') AND name NOT LIKE 'sqlite_%'" UTF8String];
-                
-                status = sqlite3_prepare_v2(_database, select_stmt, -1, &statement, NULL);
-                if (status == SQLITE_OK) {
-                    
-                    while (sqlite3_step(statement)==SQLITE_ROW) {
-                        char *name = (char *) sqlite3_column_text  (statement, 0);
-                        NSLog(@"table %@", [[NSString alloc] initWithUTF8String:name]);
-                    }
-                    
-                    sqlite3_finalize(statement);
-                    sqlite3_close(_database);
-                }else{
-                    NSLog(@"can't comple statement (%d)", status);
+                while (sqlite3_step(statement)==SQLITE_ROW) {
+                    char *name = (char *) sqlite3_column_text  (statement, 0);
+                    NSLog(@"table %@", [[NSString alloc] initWithUTF8String:name]);
                 }
+                
+                sqlite3_finalize(statement);
+                sqlite3_close(_database);
+            }else{
+                NSLog(@"can't comple statement (%d)", status);
             }
         }
     }
@@ -153,9 +149,9 @@ int executeCallback(void*pArg, int iErrCode, char** ,char**);
 - (void)importParcelsToDataBase:(NSArray *)parcels{
     
     dispatch_async(_queue, ^{
-
-        const char *dbpath = [self.databasePath UTF8String];
         
+        const char *dbpath = [self.databasePath UTF8String];
+        NSError * __autoreleasing error;
         if (sqlite3_open(dbpath, &_database) == SQLITE_OK)
         {
             sqlite3_stmt    *statement;
@@ -167,14 +163,15 @@ int executeCallback(void*pArg, int iErrCode, char** ,char**);
                 NSInteger status = sqlite3_prepare_v2(_database, insert_stmt,-1, &statement, NULL);
                 
                 if (status != SQLITE_OK) {
-                    NSLog(@"can't compile statement (%d) %@", status, insertSQL);
+                    error = [NSError errorWithDomain:@"com.paczkomaty.sql" code:1 userInfo:nil];
+                    [self postImportSuccess:NO error:error];
                     return ;
                 }
                 
                 status = sqlite3_step(statement);
                 if (status == SQLITE_DONE)
                 {
-//                    NSLog(@"added object with id = %@", p.name);
+                    //                    NSLog(@"added object with id = %@", p.name);
                 }
                 else{
                     if (status == SQLITE_CONSTRAINT) {
@@ -193,10 +190,24 @@ int executeCallback(void*pArg, int iErrCode, char** ,char**);
             
             
             sqlite3_close(_database);
+            [self postImportSuccess:YES error:nil];
+            
         }else{
             NSLog(@"Can't open database");
+            error = [NSError errorWithDomain:@"com.paczkomaty.sql" code:-1 userInfo:nil];
+            [self postImportSuccess:NO error:error];
         }
     });
+}
+
+- (void)postImportSuccess:(BOOL)success error:(NSError *)error{
+    NSDictionary *userInfo;
+    if (error) {
+        userInfo = @{@"error" : error};
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:PGSQLControllerImportedDataNotificaiton
+                                                        object:@(success)
+                                                      userInfo:userInfo];
 }
 
 - (NSArray *)exportParcelsFromDataBase{

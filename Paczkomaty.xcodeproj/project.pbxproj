@@ -35,6 +35,10 @@
 		046CFCF81890002A009B2208 /* list_ios6.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCF41890002A009B2208 /* list_ios6.png */; };
 		046CFCF91890002A009B2208 /* list_ios6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCF51890002A009B2208 /* list_ios6@2x.png */; };
 		046CFCFC18900229009B2208 /* TKParcelViewContoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFCFB18900229009B2208 /* TKParcelViewContoller.m */; };
+		046CFD00189008F4009B2208 /* TKParcelTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFCFF189008F4009B2208 /* TKParcelTableViewCell.m */; };
+		046CFD0318900A1B009B2208 /* TKParcelTableViewCell+Configuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFD0218900A1B009B2208 /* TKParcelTableViewCell+Configuration.m */; };
+		046CFD0618900C43009B2208 /* TKParcelDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFD0518900C43009B2208 /* TKParcelDetailViewController.m */; };
+		046CFD0918900D31009B2208 /* TKParcelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFD0818900D31009B2208 /* TKParcelView.m */; };
 		04D63A9C187D615E0030166E /* TKMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D63A9B187D615E0030166E /* TKMapViewController.m */; };
 		04D63A9F187D63B60030166E /* PGSQLController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D63A9E187D63B60030166E /* PGSQLController.m */; };
 		04FC3352187DAE23009908B4 /* arrow_io7.png in Resources */ = {isa = PBXBuildFile; fileRef = 04FC3350187DAE23009908B4 /* arrow_io7.png */; };
@@ -89,6 +93,14 @@
 		046CFCF51890002A009B2208 /* list_ios6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_ios6@2x.png"; sourceTree = "<group>"; };
 		046CFCFA18900229009B2208 /* TKParcelViewContoller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKParcelViewContoller.h; sourceTree = "<group>"; };
 		046CFCFB18900229009B2208 /* TKParcelViewContoller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKParcelViewContoller.m; sourceTree = "<group>"; };
+		046CFCFE189008F4009B2208 /* TKParcelTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKParcelTableViewCell.h; sourceTree = "<group>"; };
+		046CFCFF189008F4009B2208 /* TKParcelTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKParcelTableViewCell.m; sourceTree = "<group>"; };
+		046CFD0118900A1B009B2208 /* TKParcelTableViewCell+Configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKParcelTableViewCell+Configuration.h"; sourceTree = "<group>"; };
+		046CFD0218900A1B009B2208 /* TKParcelTableViewCell+Configuration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TKParcelTableViewCell+Configuration.m"; sourceTree = "<group>"; };
+		046CFD0418900C43009B2208 /* TKParcelDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKParcelDetailViewController.h; sourceTree = "<group>"; };
+		046CFD0518900C43009B2208 /* TKParcelDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKParcelDetailViewController.m; sourceTree = "<group>"; };
+		046CFD0718900D31009B2208 /* TKParcelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKParcelView.h; sourceTree = "<group>"; };
+		046CFD0818900D31009B2208 /* TKParcelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKParcelView.m; sourceTree = "<group>"; };
 		04D63A9A187D615E0030166E /* TKMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKMapViewController.h; sourceTree = "<group>"; };
 		04D63A9B187D615E0030166E /* TKMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKMapViewController.m; sourceTree = "<group>"; };
 		04D63A9D187D63B60030166E /* PGSQLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGSQLController.h; sourceTree = "<group>"; };
@@ -167,6 +179,7 @@
 				04300B75187C520E00499DC9 /* TKAppDelegate.h */,
 				04300B76187C520E00499DC9 /* TKAppDelegate.m */,
 				046CFCE4188FF734009B2208 /* View Controller */,
+				046CFCFD189008C5009B2208 /* Views */,
 				046CFCE3188FF726009B2208 /* Data Base */,
 				04300BA6187C5B3700499DC9 /* Network */,
 				04300BA5187C5B2E00499DC9 /* Model */,
@@ -241,6 +254,10 @@
 				04D63A9B187D615E0030166E /* TKMapViewController.m */,
 				046CFCFA18900229009B2208 /* TKParcelViewContoller.h */,
 				046CFCFB18900229009B2208 /* TKParcelViewContoller.m */,
+				046CFD0418900C43009B2208 /* TKParcelDetailViewController.h */,
+				046CFD0518900C43009B2208 /* TKParcelDetailViewController.m */,
+				046CFD0718900D31009B2208 /* TKParcelView.h */,
+				046CFD0818900D31009B2208 /* TKParcelView.m */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -262,6 +279,17 @@
 				046CFCF51890002A009B2208 /* list_ios6@2x.png */,
 			);
 			name = Assets;
+			sourceTree = "<group>";
+		};
+		046CFCFD189008C5009B2208 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				046CFCFE189008F4009B2208 /* TKParcelTableViewCell.h */,
+				046CFCFF189008F4009B2208 /* TKParcelTableViewCell.m */,
+				046CFD0118900A1B009B2208 /* TKParcelTableViewCell+Configuration.h */,
+				046CFD0218900A1B009B2208 /* TKParcelTableViewCell+Configuration.m */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -410,12 +438,16 @@
 			files = (
 				04D63A9C187D615E0030166E /* TKMapViewController.m in Sources */,
 				04300B80187C520E00499DC9 /* TKViewController.m in Sources */,
+				046CFD0618900C43009B2208 /* TKParcelDetailViewController.m in Sources */,
 				04300BA0187C57A600499DC9 /* TKParcelLocker.m in Sources */,
 				046CFCE2188FECF6009B2208 /* TKNetworkController.m in Sources */,
 				04D63A9F187D63B60030166E /* PGSQLController.m in Sources */,
 				046CFCFC18900229009B2208 /* TKParcelViewContoller.m in Sources */,
 				04300B73187C520E00499DC9 /* main.m in Sources */,
 				04300B77187C520E00499DC9 /* TKAppDelegate.m in Sources */,
+				046CFD0318900A1B009B2208 /* TKParcelTableViewCell+Configuration.m in Sources */,
+				046CFD0918900D31009B2208 /* TKParcelView.m in Sources */,
+				046CFD00189008F4009B2208 /* TKParcelTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

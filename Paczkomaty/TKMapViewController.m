@@ -18,6 +18,8 @@
 
 @implementation TKMapViewController
 
+#pragma mark - NSObject
+
 - (id)init{
     self = [super initWithNibName:nil bundle:nil];
     if (!self) return nil;
@@ -26,13 +28,7 @@
     return self;
 }
 
-- (UIImage *)tabBarImage{
-    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
-        return [UIImage imageNamed:@"location_ios7"];
-    }else{
-        return [UIImage imageNamed:@"location_ios6"];
-    }
-}
+#pragma mark - UIViewController
 
 - (void)viewDidLoad{
     [super viewDidLoad];
@@ -71,6 +67,8 @@
     
 }
 
+#pragma mark - Action
+
 - (void)showMe:(id)sender{
     CLLocationCoordinate2D location = self.mapView.userLocation.coordinate;
     
@@ -84,9 +82,21 @@
     self.mapView.centerCoordinate = location;
 }
 
+#pragma mark - Setters
+
 - (void)setItems:(NSArray *)items{
     if (_items != items) {
         _items = items;
+    }
+}
+
+#pragma mark - Getters
+
+- (UIImage *)tabBarImage{
+    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+        return [UIImage imageNamed:@"location_ios7"];
+    }else{
+        return [UIImage imageNamed:@"location_ios6"];
     }
 }
 
