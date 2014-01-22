@@ -7,12 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-@class PGSQLController;
+
 @interface TKAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
-@property (strong, nonatomic) PGSQLController *controller;
-
-+ (TKAppDelegate *)sharedDelegate;
 @end

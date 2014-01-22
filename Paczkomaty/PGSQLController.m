@@ -20,12 +20,23 @@ int executeCallback(void*pArg, int iErrCode, char** ,char**);
 
 @property (strong, nonatomic) dispatch_queue_t queue;
 
+@property (assign, nonatomic) sqlite3 *database;
+
 @end
 
 
 
-@implementation PGSQLController{
-    sqlite3 *_database;
+@implementation PGSQLController
+
++ (PGSQLController *)sharedController{
+    
+    static id _sharedController = nil;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        _sharedController = [[self class] new];
+    });
+    return _sharedController;
 }
 
 - (void)dealloc {

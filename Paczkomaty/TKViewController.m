@@ -7,7 +7,6 @@
 //
 
 #import "TKViewController.h"
-#import "TKAppDelegate.h"
 #import "TKParcelLocker.h"
 #import "PGSQLController.h"
 #import "TKNetworkController.h"
@@ -19,8 +18,6 @@
 @property (strong, nonatomic) NSArray *searchResults;
 
 @property (strong, nonatomic) UITableView *tableView;
-
-@property (strong, nonatomic) PGSQLController *controller;
 
 @property (strong, nonatomic) UISearchDisplayController *searchDisplay;
 
@@ -40,8 +37,6 @@
     self = [super initWithNibName:nil bundle:nil];
     if(!self)return nil;
     [self reloadData];
-    self.controller = [TKAppDelegate sharedDelegate].controller;
-    self.parcelLockers = [self.controller exportParcelsFromDataBase];
     [self addToNotificationCenter];
     self.title = NSLocalizedString(@"Paczkomaty",nil);
     self.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"List",nil) image:[self tabBarImage] tag:1];
@@ -115,7 +110,7 @@
 }
 
 - (void)reloadData{
-    self.parcelLockers = [self.controller exportParcelsFromDataBase];
+    self.parcelLockers = [[PGSQLController sharedController] exportParcelsFromDataBase];
     [self.tableView reloadData];
 }
 
@@ -174,7 +169,7 @@
 
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
-    self.searchResults = [self.controller search:searchString];
+    self.searchResults = [[PGSQLController sharedController] search:searchString];
     return YES;
 }
 

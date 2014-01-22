@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface PGSQLController : NSObject
++ (PGSQLController *)sharedController;
 - (void)importParcelsToDataBase:(NSArray *)parcels;
 - (NSArray *)exportParcelsFromDataBase;
 - (NSArray *)search:(NSString *)string;
