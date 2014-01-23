@@ -97,7 +97,7 @@
     locker.parternId = [[element child:@"partnerid"] textAsInt];
     locker.paymentType = [[element child:@"paymenttype"] text];
     locker.operatingHours = [[element child:@"operatinghours"] text];
-    locker.status = [[element child:@"operatinghours"] text];
+    locker.status = [[element child:@"status"] text];
     NSString *paymentavailable = [[element child:@"paymentavailable"] text];;
     locker.paymentAvailable = [paymentavailable isEqualToString:@"f"] ? YES :([paymentavailable isEqualToString:@"t"] ? NO : NO);
     locker.type = [[element child:@"type"] text];

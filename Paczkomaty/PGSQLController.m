@@ -26,19 +26,23 @@ int executeCallback(void*pArg, int iErrCode, char** ,char**);
 
 @end
 
-
+static id _sharedController = nil;
+static dispatch_once_t onceToken;
 
 @implementation PGSQLController
 
 + (PGSQLController *)sharedController{
     
-    static id _sharedController = nil;
-    static dispatch_once_t onceToken;
-    
     dispatch_once(&onceToken, ^{
-        _sharedController = [[self class] new];
+        if(_sharedController == nil)
+            _sharedController = [[self class] new];
     });
     return _sharedController;
+}
+
++ (void)setSharedController:(id)sharedController{
+    onceToken = 0;
+    _sharedController = sharedController;
 }
 
 - (void)dealloc {
@@ -109,7 +113,7 @@ int executeCallback(void*pArg, int iErrCode, char** ,char**);
             }
             
         } else {
-            NSLog(@"Failed to open/create database (%d)", status);
+            NSLog(@"Failed to open/create database (%ld)", (long)status);
         }
     }
     else{
@@ -132,7 +136,7 @@ int executeCallback(void*pArg, int iErrCode, char** ,char**);
                 sqlite3_finalize(statement);
                 sqlite3_close(_database);
             }else{
-                NSLog(@"can't comple statement (%d)", status);
+                NSLog(@"can't comple statement (%ld)", (long)status);
             }
         }
     }
@@ -142,7 +146,7 @@ int executeCallback(void*pArg, int iErrCode, char** ,char**);
 - (void)addErrorCallbackToDataBase{
     NSInteger status = sqlite3_config(SQLITE_CONFIG_LOG, errorLogCallback, NULL);
     if (status != SQLITE_OK) {
-        NSLog(@"can't register error callback %d", status);
+        NSLog(@"can't register error callback %ld", (long)status);
     }
 }
 
@@ -242,6 +246,27 @@ int executeCallback(void*pArg, int iErrCode, char** ,char**);
         sqlite3_close(_database);
     }
     return retval;
+}
+
+- (NSArray *)exportParcelsFromRegion:(MKCoordinateRegion)mapRegion{
+    
+    CGFloat maxLatitude = mapRegion.center.latitude + mapRegion.span.latitudeDelta/2;
+    CGFloat minLatitude = mapRegion.center.latitude - mapRegion.span.latitudeDelta/2;
+    
+    CGFloat maxLongitude = mapRegion.center.longitude+ mapRegion.span.longitudeDelta/2;
+    CGFloat minLongitude = mapRegion.center.longitude- mapRegion.span.longitudeDelta/2;
+    
+    NSString *query = [NSString stringWithFormat:
+                       @"SELECT * FROM lokcers"
+                       @"WHERE (longitude < %f AND longitude > %f) AND (latitude < %f AND latitude > %f)",
+                       maxLongitude,
+                       minLongitude,
+                       maxLatitude,
+                       minLatitude];
+    
+    NSError * __autoreleasing error;
+    NSArray *array = [self exportParcelsFromDataBase:query error:&error];
+    return array;
 }
 
 - (NSArray *)search:(NSString *)string{

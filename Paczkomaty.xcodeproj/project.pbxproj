@@ -19,7 +19,6 @@
 		04300B8A187C520F00499DC9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04300B66187C520E00499DC9 /* Foundation.framework */; };
 		04300B8B187C520F00499DC9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04300B6A187C520E00499DC9 /* UIKit.framework */; };
 		04300B93187C520F00499DC9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04300B91187C520F00499DC9 /* InfoPlist.strings */; };
-		04300B95187C520F00499DC9 /* PaczkomatyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 04300B94187C520F00499DC9 /* PaczkomatyTests.m */; };
 		04300BA0187C57A600499DC9 /* TKParcelLocker.m in Sources */ = {isa = PBXBuildFile; fileRef = 04300B9F187C57A600499DC9 /* TKParcelLocker.m */; };
 		04300BA2187C586500499DC9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04300BA1187C586500499DC9 /* MapKit.framework */; };
 		04300BA4187C586C00499DC9 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 04300BA3187C586C00499DC9 /* libsqlite3.dylib */; };
@@ -39,6 +38,11 @@
 		046CFD0318900A1B009B2208 /* TKParcelTableViewCell+Configuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFD0218900A1B009B2208 /* TKParcelTableViewCell+Configuration.m */; };
 		046CFD0618900C43009B2208 /* TKParcelDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFD0518900C43009B2208 /* TKParcelDetailViewController.m */; };
 		046CFD0918900D31009B2208 /* TKParcelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFD0818900D31009B2208 /* TKParcelView.m */; };
+		046CFD0B18912A4D009B2208 /* TKParcelLocker_tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFD0A18912A4D009B2208 /* TKParcelLocker_tests.m */; };
+		046CFD0C18912B39009B2208 /* TKParcelLocker.m in Sources */ = {isa = PBXBuildFile; fileRef = 04300B9F187C57A600499DC9 /* TKParcelLocker.m */; };
+		046CFD0E18912C26009B2208 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 046CFD0D18912C26009B2208 /* libPods.a */; };
+		046CFD1018912C2C009B2208 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 046CFD0F18912C2C009B2208 /* MapKit.framework */; };
+		046CFD1218912C78009B2208 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 046CFD1118912C78009B2208 /* libsqlite3.dylib */; };
 		04D63A9C187D615E0030166E /* TKMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D63A9B187D615E0030166E /* TKMapViewController.m */; };
 		04D63A9F187D63B60030166E /* PGSQLController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D63A9E187D63B60030166E /* PGSQLController.m */; };
 		04FC3352187DAE23009908B4 /* arrow_io7.png in Resources */ = {isa = PBXBuildFile; fileRef = 04FC3350187DAE23009908B4 /* arrow_io7.png */; };
@@ -74,7 +78,6 @@
 		04300B88187C520E00499DC9 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		04300B90187C520F00499DC9 /* PaczkomatyTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PaczkomatyTests-Info.plist"; sourceTree = "<group>"; };
 		04300B92187C520F00499DC9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		04300B94187C520F00499DC9 /* PaczkomatyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaczkomatyTests.m; sourceTree = "<group>"; };
 		04300B9E187C57A600499DC9 /* TKParcelLocker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKParcelLocker.h; sourceTree = "<group>"; };
 		04300B9F187C57A600499DC9 /* TKParcelLocker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKParcelLocker.m; sourceTree = "<group>"; };
 		04300BA1187C586500499DC9 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -101,6 +104,10 @@
 		046CFD0518900C43009B2208 /* TKParcelDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKParcelDetailViewController.m; sourceTree = "<group>"; };
 		046CFD0718900D31009B2208 /* TKParcelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKParcelView.h; sourceTree = "<group>"; };
 		046CFD0818900D31009B2208 /* TKParcelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKParcelView.m; sourceTree = "<group>"; };
+		046CFD0A18912A4D009B2208 /* TKParcelLocker_tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKParcelLocker_tests.m; sourceTree = "<group>"; };
+		046CFD0D18912C26009B2208 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
+		046CFD0F18912C2C009B2208 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/MapKit.framework; sourceTree = DEVELOPER_DIR; };
+		046CFD1118912C78009B2208 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/usr/lib/libsqlite3.dylib; sourceTree = DEVELOPER_DIR; };
 		04D63A9A187D615E0030166E /* TKMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKMapViewController.h; sourceTree = "<group>"; };
 		04D63A9B187D615E0030166E /* TKMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKMapViewController.m; sourceTree = "<group>"; };
 		04D63A9D187D63B60030166E /* PGSQLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGSQLController.h; sourceTree = "<group>"; };
@@ -129,6 +136,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				046CFD1218912C78009B2208 /* libsqlite3.dylib in Frameworks */,
+				046CFD1018912C2C009B2208 /* MapKit.framework in Frameworks */,
+				046CFD0E18912C26009B2208 /* libPods.a in Frameworks */,
 				04300B89187C520F00499DC9 /* XCTest.framework in Frameworks */,
 				04300B8B187C520F00499DC9 /* UIKit.framework in Frameworks */,
 				04300B8A187C520F00499DC9 /* Foundation.framework in Frameworks */,
@@ -161,6 +171,9 @@
 		04300B65187C520E00499DC9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				046CFD1118912C78009B2208 /* libsqlite3.dylib */,
+				046CFD0F18912C2C009B2208 /* MapKit.framework */,
+				046CFD0D18912C26009B2208 /* libPods.a */,
 				04300BA3187C586C00499DC9 /* libsqlite3.dylib */,
 				04300BA1187C586500499DC9 /* MapKit.framework */,
 				04300B66187C520E00499DC9 /* Foundation.framework */,
@@ -203,7 +216,7 @@
 		04300B8E187C520F00499DC9 /* PaczkomatyTests */ = {
 			isa = PBXGroup;
 			children = (
-				04300B94187C520F00499DC9 /* PaczkomatyTests.m */,
+				046CFD0A18912A4D009B2208 /* TKParcelLocker_tests.m */,
 				04300B8F187C520F00499DC9 /* Supporting Files */,
 			);
 			path = PaczkomatyTests;
@@ -455,7 +468,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04300B95187C520F00499DC9 /* PaczkomatyTests.m in Sources */,
+				046CFD0B18912A4D009B2208 /* TKParcelLocker_tests.m in Sources */,
+				046CFD0C18912B39009B2208 /* TKParcelLocker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -603,6 +617,7 @@
 		};
 		04300B9C187C520F00499DC9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BE6B40AC7DB44AF6B6379E36 /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Paczkomaty.app/Paczkomaty";
@@ -628,6 +643,7 @@
 		};
 		04300B9D187C520F00499DC9 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BE6B40AC7DB44AF6B6379E36 /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Paczkomaty.app/Paczkomaty";

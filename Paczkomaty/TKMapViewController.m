@@ -62,7 +62,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.items = [[PGSQLController sharedController] exportParcelsFromDataBase];
+    self.items = [[PGSQLController sharedController] exportParcelsFromRegion:[self userMapRegion]];
 //    self.items = [self.items subarrayWithRange:NSMakeRange(0, MIN(10, self.items.count))];
     for (TKParcelLocker *locker in self.items) {
         [self.mapView addAnnotation:locker];
@@ -72,7 +72,7 @@
 
 #pragma mark - Action
 
-- (void)showMe:(id)sender{
+- (MKCoordinateRegion)userMapRegion{
     CLLocationCoordinate2D location = self.mapView.userLocation.coordinate;
     
     MKCoordinateRegion mapRegion;
@@ -81,8 +81,15 @@
     mapRegion.span.latitudeDelta = 0.05;
     mapRegion.span.longitudeDelta = 0.05;
     
-    [self.mapView setRegion:mapRegion animated: self.isViewLoaded];
-    self.mapView.centerCoordinate = location;
+    return mapRegion;
+}
+
+- (void)showMe:(id)sender{
+
+    
+    [self.mapView setRegion:[self userMapRegion]
+                   animated: self.isViewLoaded];
+    self.mapView.centerCoordinate = self.mapView.userLocation.coordinate;
 }
 
 #pragma mark - Setters
