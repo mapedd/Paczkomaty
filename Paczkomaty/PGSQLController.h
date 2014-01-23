@@ -19,4 +19,8 @@ extern NSString *const PGSQLControllerImportedDataNotificaiton;
 - (NSArray *)exportParcelsFromDataBase;
 - (NSArray *)exportParcelsFromRegion:(MKCoordinateRegion)region;
 - (NSArray *)search:(NSString *)string;
+
+- (BOOL)databaseConnectionExists;
+- (BOOL)databaseModelIsValid;
+- (NSString *)databasePath;
 @end

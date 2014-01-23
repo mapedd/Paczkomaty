@@ -63,7 +63,6 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.items = [[PGSQLController sharedController] exportParcelsFromRegion:[self userMapRegion]];
-//    self.items = [self.items subarrayWithRange:NSMakeRange(0, MIN(10, self.items.count))];
     for (TKParcelLocker *locker in self.items) {
         [self.mapView addAnnotation:locker];
     }

@@ -21,18 +21,24 @@
 		04300B93187C520F00499DC9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04300B91187C520F00499DC9 /* InfoPlist.strings */; };
 		04300BA0187C57A600499DC9 /* TKParcelLocker.m in Sources */ = {isa = PBXBuildFile; fileRef = 04300B9F187C57A600499DC9 /* TKParcelLocker.m */; };
 		04300BA2187C586500499DC9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04300BA1187C586500499DC9 /* MapKit.framework */; };
-		04300BA4187C586C00499DC9 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 04300BA3187C586C00499DC9 /* libsqlite3.dylib */; };
+		043AE112189168AB00075EB0 /* list_ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = 043AE106189168AB00075EB0 /* list_ios7.png */; };
+		043AE113189168AB00075EB0 /* list_ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 043AE107189168AB00075EB0 /* list_ios7@2x.png */; };
+		043AE114189168AB00075EB0 /* list_ios6.png in Resources */ = {isa = PBXBuildFile; fileRef = 043AE108189168AB00075EB0 /* list_ios6.png */; };
+		043AE115189168AB00075EB0 /* list_ios6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 043AE109189168AB00075EB0 /* list_ios6@2x.png */; };
+		043AE116189168AB00075EB0 /* location_ios6.png in Resources */ = {isa = PBXBuildFile; fileRef = 043AE10A189168AB00075EB0 /* location_ios6.png */; };
+		043AE117189168AB00075EB0 /* location_ios6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 043AE10B189168AB00075EB0 /* location_ios6@2x.png */; };
+		043AE118189168AB00075EB0 /* arrow_io6.png in Resources */ = {isa = PBXBuildFile; fileRef = 043AE10C189168AB00075EB0 /* arrow_io6.png */; };
+		043AE119189168AB00075EB0 /* arrow_io6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 043AE10D189168AB00075EB0 /* arrow_io6@2x.png */; };
+		043AE11A189168AB00075EB0 /* arrow_io7.png in Resources */ = {isa = PBXBuildFile; fileRef = 043AE10E189168AB00075EB0 /* arrow_io7.png */; };
+		043AE11B189168AB00075EB0 /* arrow_io7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 043AE10F189168AB00075EB0 /* arrow_io7@2x.png */; };
+		043AE11C189168AB00075EB0 /* location_ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 043AE110189168AB00075EB0 /* location_ios7@2x.png */; };
+		043AE11D189168AB00075EB0 /* location_ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = 043AE111189168AB00075EB0 /* location_ios7.png */; };
+		043AE12518916A7D00075EB0 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 043AE12418916A7D00075EB0 /* libsqlite3.dylib */; };
+		043AE12618916AA100075EB0 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 043AE12418916A7D00075EB0 /* libsqlite3.dylib */; };
+		043AE12818916E1600075EB0 /* PGSQLController_tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 043AE12718916E1600075EB0 /* PGSQLController_tests.m */; };
+		043AE12B18916E3600075EB0 /* PGMockSQLController.m in Sources */ = {isa = PBXBuildFile; fileRef = 043AE12A18916E3600075EB0 /* PGMockSQLController.m */; };
+		043AE12C18916E6400075EB0 /* PGSQLController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D63A9E187D63B60030166E /* PGSQLController.m */; };
 		046CFCE2188FECF6009B2208 /* TKNetworkController.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFCE1188FECF6009B2208 /* TKNetworkController.m */; };
-		046CFCE8188FF9B9009B2208 /* arrow_io6.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCE6188FF9B9009B2208 /* arrow_io6.png */; };
-		046CFCE9188FF9B9009B2208 /* arrow_io6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCE7188FF9B9009B2208 /* arrow_io6@2x.png */; };
-		046CFCEC188FFB6F009B2208 /* location_ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCEA188FFB6F009B2208 /* location_ios7.png */; };
-		046CFCED188FFB6F009B2208 /* location_ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCEB188FFB6F009B2208 /* location_ios7@2x.png */; };
-		046CFCF0188FFC2F009B2208 /* location_ios6.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCEE188FFC2F009B2208 /* location_ios6.png */; };
-		046CFCF1188FFC2F009B2208 /* location_ios6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCEF188FFC2F009B2208 /* location_ios6@2x.png */; };
-		046CFCF61890002A009B2208 /* list_ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCF21890002A009B2208 /* list_ios7.png */; };
-		046CFCF71890002A009B2208 /* list_ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCF31890002A009B2208 /* list_ios7@2x.png */; };
-		046CFCF81890002A009B2208 /* list_ios6.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCF41890002A009B2208 /* list_ios6.png */; };
-		046CFCF91890002A009B2208 /* list_ios6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 046CFCF51890002A009B2208 /* list_ios6@2x.png */; };
 		046CFCFC18900229009B2208 /* TKParcelViewContoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFCFB18900229009B2208 /* TKParcelViewContoller.m */; };
 		046CFD00189008F4009B2208 /* TKParcelTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFCFF189008F4009B2208 /* TKParcelTableViewCell.m */; };
 		046CFD0318900A1B009B2208 /* TKParcelTableViewCell+Configuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFD0218900A1B009B2208 /* TKParcelTableViewCell+Configuration.m */; };
@@ -42,11 +48,8 @@
 		046CFD0C18912B39009B2208 /* TKParcelLocker.m in Sources */ = {isa = PBXBuildFile; fileRef = 04300B9F187C57A600499DC9 /* TKParcelLocker.m */; };
 		046CFD0E18912C26009B2208 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 046CFD0D18912C26009B2208 /* libPods.a */; };
 		046CFD1018912C2C009B2208 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 046CFD0F18912C2C009B2208 /* MapKit.framework */; };
-		046CFD1218912C78009B2208 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 046CFD1118912C78009B2208 /* libsqlite3.dylib */; };
 		04D63A9C187D615E0030166E /* TKMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D63A9B187D615E0030166E /* TKMapViewController.m */; };
 		04D63A9F187D63B60030166E /* PGSQLController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D63A9E187D63B60030166E /* PGSQLController.m */; };
-		04FC3352187DAE23009908B4 /* arrow_io7.png in Resources */ = {isa = PBXBuildFile; fileRef = 04FC3350187DAE23009908B4 /* arrow_io7.png */; };
-		04FC3353187DAE23009908B4 /* arrow_io7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04FC3351187DAE23009908B4 /* arrow_io7@2x.png */; };
 		09993E06F753473BB4146D5E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9606C99E49D24398A2C28CDE /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -81,19 +84,24 @@
 		04300B9E187C57A600499DC9 /* TKParcelLocker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKParcelLocker.h; sourceTree = "<group>"; };
 		04300B9F187C57A600499DC9 /* TKParcelLocker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKParcelLocker.m; sourceTree = "<group>"; };
 		04300BA1187C586500499DC9 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		04300BA3187C586C00499DC9 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		043AE106189168AB00075EB0 /* list_ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = list_ios7.png; path = Assets/list_ios7.png; sourceTree = "<group>"; };
+		043AE107189168AB00075EB0 /* list_ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "list_ios7@2x.png"; path = "Assets/list_ios7@2x.png"; sourceTree = "<group>"; };
+		043AE108189168AB00075EB0 /* list_ios6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = list_ios6.png; path = Assets/list_ios6.png; sourceTree = "<group>"; };
+		043AE109189168AB00075EB0 /* list_ios6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "list_ios6@2x.png"; path = "Assets/list_ios6@2x.png"; sourceTree = "<group>"; };
+		043AE10A189168AB00075EB0 /* location_ios6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = location_ios6.png; path = Assets/location_ios6.png; sourceTree = "<group>"; };
+		043AE10B189168AB00075EB0 /* location_ios6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "location_ios6@2x.png"; path = "Assets/location_ios6@2x.png"; sourceTree = "<group>"; };
+		043AE10C189168AB00075EB0 /* arrow_io6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arrow_io6.png; path = Assets/arrow_io6.png; sourceTree = "<group>"; };
+		043AE10D189168AB00075EB0 /* arrow_io6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "arrow_io6@2x.png"; path = "Assets/arrow_io6@2x.png"; sourceTree = "<group>"; };
+		043AE10E189168AB00075EB0 /* arrow_io7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arrow_io7.png; path = Assets/arrow_io7.png; sourceTree = "<group>"; };
+		043AE10F189168AB00075EB0 /* arrow_io7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "arrow_io7@2x.png"; path = "Assets/arrow_io7@2x.png"; sourceTree = "<group>"; };
+		043AE110189168AB00075EB0 /* location_ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "location_ios7@2x.png"; path = "Assets/location_ios7@2x.png"; sourceTree = "<group>"; };
+		043AE111189168AB00075EB0 /* location_ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = location_ios7.png; path = Assets/location_ios7.png; sourceTree = "<group>"; };
+		043AE12418916A7D00075EB0 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/usr/lib/libsqlite3.dylib; sourceTree = DEVELOPER_DIR; };
+		043AE12718916E1600075EB0 /* PGSQLController_tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGSQLController_tests.m; sourceTree = "<group>"; };
+		043AE12918916E3600075EB0 /* PGMockSQLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGMockSQLController.h; sourceTree = "<group>"; };
+		043AE12A18916E3600075EB0 /* PGMockSQLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGMockSQLController.m; sourceTree = "<group>"; };
 		046CFCE0188FECF6009B2208 /* TKNetworkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKNetworkController.h; sourceTree = "<group>"; };
 		046CFCE1188FECF6009B2208 /* TKNetworkController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKNetworkController.m; sourceTree = "<group>"; };
-		046CFCE6188FF9B9009B2208 /* arrow_io6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_io6.png; sourceTree = "<group>"; };
-		046CFCE7188FF9B9009B2208 /* arrow_io6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_io6@2x.png"; sourceTree = "<group>"; };
-		046CFCEA188FFB6F009B2208 /* location_ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location_ios7.png; sourceTree = "<group>"; };
-		046CFCEB188FFB6F009B2208 /* location_ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location_ios7@2x.png"; sourceTree = "<group>"; };
-		046CFCEE188FFC2F009B2208 /* location_ios6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location_ios6.png; sourceTree = "<group>"; };
-		046CFCEF188FFC2F009B2208 /* location_ios6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location_ios6@2x.png"; sourceTree = "<group>"; };
-		046CFCF21890002A009B2208 /* list_ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = list_ios7.png; sourceTree = "<group>"; };
-		046CFCF31890002A009B2208 /* list_ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_ios7@2x.png"; sourceTree = "<group>"; };
-		046CFCF41890002A009B2208 /* list_ios6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = list_ios6.png; sourceTree = "<group>"; };
-		046CFCF51890002A009B2208 /* list_ios6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_ios6@2x.png"; sourceTree = "<group>"; };
 		046CFCFA18900229009B2208 /* TKParcelViewContoller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKParcelViewContoller.h; sourceTree = "<group>"; };
 		046CFCFB18900229009B2208 /* TKParcelViewContoller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKParcelViewContoller.m; sourceTree = "<group>"; };
 		046CFCFE189008F4009B2208 /* TKParcelTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKParcelTableViewCell.h; sourceTree = "<group>"; };
@@ -105,15 +113,12 @@
 		046CFD0718900D31009B2208 /* TKParcelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKParcelView.h; sourceTree = "<group>"; };
 		046CFD0818900D31009B2208 /* TKParcelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKParcelView.m; sourceTree = "<group>"; };
 		046CFD0A18912A4D009B2208 /* TKParcelLocker_tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKParcelLocker_tests.m; sourceTree = "<group>"; };
-		046CFD0D18912C26009B2208 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
+		046CFD0D18912C26009B2208 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		046CFD0F18912C2C009B2208 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/MapKit.framework; sourceTree = DEVELOPER_DIR; };
-		046CFD1118912C78009B2208 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/usr/lib/libsqlite3.dylib; sourceTree = DEVELOPER_DIR; };
 		04D63A9A187D615E0030166E /* TKMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKMapViewController.h; sourceTree = "<group>"; };
 		04D63A9B187D615E0030166E /* TKMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKMapViewController.m; sourceTree = "<group>"; };
 		04D63A9D187D63B60030166E /* PGSQLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGSQLController.h; sourceTree = "<group>"; };
 		04D63A9E187D63B60030166E /* PGSQLController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGSQLController.m; sourceTree = "<group>"; };
-		04FC3350187DAE23009908B4 /* arrow_io7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_io7.png; sourceTree = "<group>"; };
-		04FC3351187DAE23009908B4 /* arrow_io7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow_io7@2x.png"; sourceTree = "<group>"; };
 		9606C99E49D24398A2C28CDE /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE6B40AC7DB44AF6B6379E36 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -123,7 +128,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04300BA4187C586C00499DC9 /* libsqlite3.dylib in Frameworks */,
+				043AE12618916AA100075EB0 /* libsqlite3.dylib in Frameworks */,
 				04300BA2187C586500499DC9 /* MapKit.framework in Frameworks */,
 				04300B69187C520E00499DC9 /* CoreGraphics.framework in Frameworks */,
 				04300B6B187C520E00499DC9 /* UIKit.framework in Frameworks */,
@@ -136,7 +141,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				046CFD1218912C78009B2208 /* libsqlite3.dylib in Frameworks */,
+				043AE12518916A7D00075EB0 /* libsqlite3.dylib in Frameworks */,
 				046CFD1018912C2C009B2208 /* MapKit.framework in Frameworks */,
 				046CFD0E18912C26009B2208 /* libPods.a in Frameworks */,
 				04300B89187C520F00499DC9 /* XCTest.framework in Frameworks */,
@@ -171,10 +176,9 @@
 		04300B65187C520E00499DC9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				046CFD1118912C78009B2208 /* libsqlite3.dylib */,
+				043AE12418916A7D00075EB0 /* libsqlite3.dylib */,
 				046CFD0F18912C2C009B2208 /* MapKit.framework */,
 				046CFD0D18912C26009B2208 /* libPods.a */,
-				04300BA3187C586C00499DC9 /* libsqlite3.dylib */,
 				04300BA1187C586500499DC9 /* MapKit.framework */,
 				04300B66187C520E00499DC9 /* Foundation.framework */,
 				04300B68187C520E00499DC9 /* CoreGraphics.framework */,
@@ -217,6 +221,9 @@
 			isa = PBXGroup;
 			children = (
 				046CFD0A18912A4D009B2208 /* TKParcelLocker_tests.m */,
+				043AE12718916E1600075EB0 /* PGSQLController_tests.m */,
+				043AE12918916E3600075EB0 /* PGMockSQLController.h */,
+				043AE12A18916E3600075EB0 /* PGMockSQLController.m */,
 				04300B8F187C520F00499DC9 /* Supporting Files */,
 			);
 			path = PaczkomatyTests;
@@ -278,18 +285,18 @@
 		046CFCE5188FF845009B2208 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				04FC3350187DAE23009908B4 /* arrow_io7.png */,
-				04FC3351187DAE23009908B4 /* arrow_io7@2x.png */,
-				046CFCE6188FF9B9009B2208 /* arrow_io6.png */,
-				046CFCE7188FF9B9009B2208 /* arrow_io6@2x.png */,
-				046CFCEA188FFB6F009B2208 /* location_ios7.png */,
-				046CFCEB188FFB6F009B2208 /* location_ios7@2x.png */,
-				046CFCEE188FFC2F009B2208 /* location_ios6.png */,
-				046CFCEF188FFC2F009B2208 /* location_ios6@2x.png */,
-				046CFCF21890002A009B2208 /* list_ios7.png */,
-				046CFCF31890002A009B2208 /* list_ios7@2x.png */,
-				046CFCF41890002A009B2208 /* list_ios6.png */,
-				046CFCF51890002A009B2208 /* list_ios6@2x.png */,
+				043AE106189168AB00075EB0 /* list_ios7.png */,
+				043AE107189168AB00075EB0 /* list_ios7@2x.png */,
+				043AE108189168AB00075EB0 /* list_ios6.png */,
+				043AE109189168AB00075EB0 /* list_ios6@2x.png */,
+				043AE10A189168AB00075EB0 /* location_ios6.png */,
+				043AE10B189168AB00075EB0 /* location_ios6@2x.png */,
+				043AE10C189168AB00075EB0 /* arrow_io6.png */,
+				043AE10D189168AB00075EB0 /* arrow_io6@2x.png */,
+				043AE10E189168AB00075EB0 /* arrow_io7.png */,
+				043AE10F189168AB00075EB0 /* arrow_io7@2x.png */,
+				043AE110189168AB00075EB0 /* location_ios7@2x.png */,
+				043AE111189168AB00075EB0 /* location_ios7.png */,
 			);
 			name = Assets;
 			sourceTree = "<group>";
@@ -385,19 +392,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				04300B82187C520E00499DC9 /* Images.xcassets in Resources */,
-				046CFCF91890002A009B2208 /* list_ios6@2x.png in Resources */,
-				046CFCF61890002A009B2208 /* list_ios7.png in Resources */,
-				046CFCE8188FF9B9009B2208 /* arrow_io6.png in Resources */,
-				046CFCF1188FFC2F009B2208 /* location_ios6@2x.png in Resources */,
-				04FC3352187DAE23009908B4 /* arrow_io7.png in Resources */,
-				046CFCF0188FFC2F009B2208 /* location_ios6.png in Resources */,
-				046CFCF81890002A009B2208 /* list_ios6.png in Resources */,
-				046CFCF71890002A009B2208 /* list_ios7@2x.png in Resources */,
-				046CFCED188FFB6F009B2208 /* location_ios7@2x.png in Resources */,
-				04FC3353187DAE23009908B4 /* arrow_io7@2x.png in Resources */,
+				043AE11A189168AB00075EB0 /* arrow_io7.png in Resources */,
+				043AE115189168AB00075EB0 /* list_ios6@2x.png in Resources */,
+				043AE117189168AB00075EB0 /* location_ios6@2x.png in Resources */,
+				043AE11C189168AB00075EB0 /* location_ios7@2x.png in Resources */,
+				043AE116189168AB00075EB0 /* location_ios6.png in Resources */,
 				04300B71187C520E00499DC9 /* InfoPlist.strings in Resources */,
-				046CFCEC188FFB6F009B2208 /* location_ios7.png in Resources */,
-				046CFCE9188FF9B9009B2208 /* arrow_io6@2x.png in Resources */,
+				043AE114189168AB00075EB0 /* list_ios6.png in Resources */,
+				043AE113189168AB00075EB0 /* list_ios7@2x.png in Resources */,
+				043AE118189168AB00075EB0 /* arrow_io6.png in Resources */,
+				043AE112189168AB00075EB0 /* list_ios7.png in Resources */,
+				043AE11B189168AB00075EB0 /* arrow_io7@2x.png in Resources */,
+				043AE11D189168AB00075EB0 /* location_ios7.png in Resources */,
+				043AE119189168AB00075EB0 /* arrow_io6@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -469,7 +476,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				046CFD0B18912A4D009B2208 /* TKParcelLocker_tests.m in Sources */,
+				043AE12B18916E3600075EB0 /* PGMockSQLController.m in Sources */,
 				046CFD0C18912B39009B2208 /* TKParcelLocker.m in Sources */,
+				043AE12818916E1600075EB0 /* PGSQLController_tests.m in Sources */,
+				043AE12C18916E6400075EB0 /* PGSQLController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

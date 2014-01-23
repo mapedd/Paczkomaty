@@ -105,6 +105,34 @@
     return locker;
 }
 
++ (TKParcelLocker *)lockerWithNSDictionary:(NSDictionary *)dictionary{
+    TKParcelLocker *locker = [[TKParcelLocker alloc] init];
+    
+    locker.name = dictionary[@"name"];
+    locker.postalCode = dictionary[@"postcode"];
+    locker.province = dictionary[@"province"];
+    locker.street = dictionary[@"street"];
+    locker.buildingNumber = dictionary[@"buildingnumber"];
+    locker.town = dictionary[@"town"];
+    
+    CLLocationCoordinate2D coordinate;
+    coordinate.longitude = [dictionary[@"longitude"] doubleValue];
+    coordinate.latitude = [dictionary[@"latitude"] doubleValue];
+    locker.coordinate = coordinate;
+    
+    locker.locationDescription = dictionary[@"locationdescription"];
+    locker.paymentPointDescription = dictionary[@"paymentpointdescr"];
+    
+    locker.parternId = [dictionary[@"partnerid"] integerValue];
+    locker.paymentType = dictionary[@"paymenttype"];
+    locker.operatingHours = dictionary[@"operatinghours"];
+    locker.status = dictionary[@"status"];
+    locker.paymentAvailable = [dictionary[@"paymentavailable"] boolValue];
+    locker.type = dictionary[@"type"];
+    
+    return locker;
+}
+
 + (NSString *)sqlTableName{
     return @"lockers";
 }
@@ -148,8 +176,36 @@
 - (NSString *)title{
     return [NSString stringWithFormat:@"%@", self.name];
 }
+
 - (NSString *)subtitle{
     return [NSString stringWithFormat:@"%@, %@ %@", self.town ?: @"", self.street ?: @"", self.buildingNumber ?: @""];
+}
+
+#pragma mark - IsEqual
+
+- (BOOL)isEqual:(id)object{
+    if (object == nil) {
+        return NO;
+    }
+    
+    if (![object isKindOfClass:[self class]]) {
+        return NO;
+    }
+    
+    double epsilon = 0.000001;
+    TKParcelLocker *locker = (TKParcelLocker *)object;
+    BOOL nameEqual = [self.name isEqualToString:locker.name];
+    CLLocationCoordinate2D first_cllc2d =  locker.coordinate;
+    CLLocationCoordinate2D second_cllc2d =  locker.coordinate;
+    
+    BOOL coordinatesEqual = (fabs(first_cllc2d.latitude - second_cllc2d.latitude) <= epsilon &&
+                             fabs(first_cllc2d.longitude - second_cllc2d.longitude) <= epsilon);
+    
+    return nameEqual && coordinatesEqual;
+}
+
+- (NSUInteger)hash{
+    return (self.coordinate.latitude + self.coordinate.longitude) * 1000;
 }
 
 @end

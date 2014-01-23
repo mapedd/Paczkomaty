@@ -16,13 +16,14 @@ void errorLogCallback(void *pArg, int iErrCode, const char *zMsg);
 
 int executeCallback(void*pArg, int iErrCode, char** ,char**);
 
-@interface PGSQLController ()
+@interface PGSQLController (){
+    sqlite3 *_database;
+}
 
 @property(strong, nonatomic) NSString *databasePath;
 
 @property (strong, nonatomic) dispatch_queue_t queue;
 
-@property (assign, nonatomic) sqlite3 *database;
 
 @end
 
@@ -49,6 +50,10 @@ static dispatch_once_t onceToken;
     sqlite3_close(_database);
 }
 
+- (BOOL)databaseConnectionExists{
+    return _database != NULL;
+}
+
 - (id)init{
     
     self = [super init];
@@ -58,11 +63,8 @@ static dispatch_once_t onceToken;
     [self addErrorCallbackToDataBase];
     
     _queue = dispatch_queue_create([[self description] UTF8String], 0);
-    __unsafe_unretained typeof(self) bself = self;
     
-    dispatch_async(_queue, ^{
-        [bself createDataBaseIfNotExist];
-    });
+    [self createDataBaseIfNotExist];
     
     return self;
     
@@ -118,29 +120,36 @@ static dispatch_once_t onceToken;
     }
     else{
         NSLog(@"Data base exists");
-        
-        NSInteger status = sqlite3_open(dbpath, &_database);
-        if (status == SQLITE_OK){
-            sqlite3_stmt *statement = NULL;
-            
-            const char * select_stmt = [@"SELECT name FROM sqlite_master WHERE type IN ('table','view') AND name NOT LIKE 'sqlite_%'" UTF8String];
-            
-            status = sqlite3_prepare_v2(_database, select_stmt, -1, &statement, NULL);
-            if (status == SQLITE_OK) {
-                
-                while (sqlite3_step(statement)==SQLITE_ROW) {
-                    char *name = (char *) sqlite3_column_text  (statement, 0);
-                    NSLog(@"table %@", [[NSString alloc] initWithUTF8String:name]);
-                }
-                
-                sqlite3_finalize(statement);
-                sqlite3_close(_database);
-            }else{
-                NSLog(@"can't comple statement (%ld)", (long)status);
-            }
-        }
+
     }
     
+}
+
+- (BOOL)databaseModelIsValid{
+    const char *dbpath = [self.databasePath UTF8String];
+    NSInteger status = sqlite3_open(dbpath, &_database);
+    BOOL onlyOneGoodTable = NO;
+    if (status == SQLITE_OK){
+        sqlite3_stmt *statement = NULL;
+        
+        const char * select_stmt = [@"SELECT name FROM sqlite_master WHERE type IN ('table','view') AND name NOT LIKE 'sqlite_%'" UTF8String];
+        
+        status = sqlite3_prepare_v2(_database, select_stmt, -1, &statement, NULL);
+        if (status == SQLITE_OK) {
+            NSInteger i = 0;
+            while (sqlite3_step(statement)==SQLITE_ROW) {
+                char *name = (char *) sqlite3_column_text  (statement, 0);
+                NSString *tableName = [[NSString alloc] initWithUTF8String:name];
+                onlyOneGoodTable = i == 0 && [tableName isEqualToString:@"lockers"];
+            }
+            
+            sqlite3_finalize(statement);
+            sqlite3_close(_database);
+        }else{
+            NSLog(@"can't comple statement (%ld)", (long)status);
+        }
+    }
+    return onlyOneGoodTable;
 }
 
 - (void)addErrorCallbackToDataBase{
@@ -151,57 +160,54 @@ static dispatch_once_t onceToken;
 }
 
 - (void)importParcelsToDataBase:(NSArray *)parcels{
-    
-    dispatch_async(_queue, ^{
         
-        const char *dbpath = [self.databasePath UTF8String];
-        NSError * __autoreleasing error;
-        if (sqlite3_open(dbpath, &_database) == SQLITE_OK)
-        {
-            sqlite3_stmt    *statement;
-            for (TKParcelLocker *p in parcels) {
-                NSString *insertSQL = [p sqlInsert];
-                
-                const char *insert_stmt = [insertSQL UTF8String];
-                
-                NSInteger status = sqlite3_prepare_v2(_database, insert_stmt,-1, &statement, NULL);
-                
-                if (status != SQLITE_OK) {
-                    error = [NSError errorWithDomain:@"com.paczkomaty.sql" code:1 userInfo:nil];
-                    [self postImportSuccess:NO error:error];
-                    return ;
-                }
-                
-                status = sqlite3_step(statement);
-                if (status == SQLITE_DONE)
-                {
-                    //                    NSLog(@"added object with id = %@", p.name);
-                }
-                else{
-                    if (status == SQLITE_CONSTRAINT) {
-                        NSLog(@"can't add object with id = %@, error: CONSTRAINT", p.name);
-                    }
-                    else if (status == SQLITE_MISUSE){
-                        NSLog(@"can't add object with id = %@, error: MISUSE", p.name);
-                    }
-                    else{
-                        NSLog(@"can't add object with id = %@, status = %ld", p.name, (long)status);
-                    }
-                    
-                }
-                sqlite3_finalize(statement);
+    const char *dbpath = [self.databasePath UTF8String];
+    NSError * __autoreleasing error;
+    if (sqlite3_open(dbpath, &_database) == SQLITE_OK)
+    {
+        sqlite3_stmt    *statement;
+        for (TKParcelLocker *p in parcels) {
+            NSString *insertSQL = [p sqlInsert];
+            
+            const char *insert_stmt = [insertSQL UTF8String];
+            
+            NSInteger status = sqlite3_prepare_v2(_database, insert_stmt,-1, &statement, NULL);
+            
+            if (status != SQLITE_OK) {
+                error = [NSError errorWithDomain:@"com.paczkomaty.sql" code:1 userInfo:nil];
+                [self postImportSuccess:NO error:error];
+                return ;
             }
             
-            
-            sqlite3_close(_database);
-            [self postImportSuccess:YES error:nil];
-            
-        }else{
-            NSLog(@"Can't open database");
-            error = [NSError errorWithDomain:@"com.paczkomaty.sql" code:-1 userInfo:nil];
-            [self postImportSuccess:NO error:error];
+            status = sqlite3_step(statement);
+            if (status == SQLITE_DONE)
+            {
+                //                    NSLog(@"added object with id = %@", p.name);
+            }
+            else{
+                if (status == SQLITE_CONSTRAINT) {
+                    NSLog(@"can't add object with id = %@, error: CONSTRAINT", p.name);
+                }
+                else if (status == SQLITE_MISUSE){
+                    NSLog(@"can't add object with id = %@, error: MISUSE", p.name);
+                }
+                else{
+                    NSLog(@"can't add object with id = %@, status = %ld", p.name, (long)status);
+                }
+                
+            }
+            sqlite3_finalize(statement);
         }
-    });
+        
+        
+        sqlite3_close(_database);
+        [self postImportSuccess:YES error:nil];
+        
+    }else{
+        NSLog(@"Can't open database");
+        error = [NSError errorWithDomain:@"com.paczkomaty.sql" code:-1 userInfo:nil];
+        [self postImportSuccess:NO error:error];
+    }
 }
 
 - (void)postImportSuccess:(BOOL)success error:(NSError *)error{
@@ -257,15 +263,14 @@ static dispatch_once_t onceToken;
     CGFloat minLongitude = mapRegion.center.longitude- mapRegion.span.longitudeDelta/2;
     
     NSString *query = [NSString stringWithFormat:
-                       @"SELECT * FROM lokcers"
-                       @"WHERE (longitude < %f AND longitude > %f) AND (latitude < %f AND latitude > %f)",
+                       @"SELECT * FROM lockers WHERE ((longitude < %f AND longitude > %f) AND (latitude < %f AND latitude > %f))",
                        maxLongitude,
                        minLongitude,
                        maxLatitude,
                        minLatitude];
     
     NSError * __autoreleasing error;
-    NSArray *array = [self exportParcelsFromDataBase:query error:&error];
+    NSArray *array = [self exportParcelsFromDataBase:nil error:&error];
     return array;
 }
 
