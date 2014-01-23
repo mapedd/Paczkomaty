@@ -99,8 +99,7 @@ NSString * machineXML(NSString *name,
 
 @implementation TKParcelLocker_tests
 
-- (void)setUp
-{
+- (void)setUp{
     
     [super setUp];
     name = @"ALL123";
@@ -138,8 +137,7 @@ NSString * machineXML(NSString *name,
                                                             paymentType)];
 }
 
-- (void)tearDown
-{
+- (void)tearDown{
     name = nil;
     type = nil;
     postCode = nil;
@@ -198,8 +196,7 @@ NSString * machineXML(NSString *name,
     }];
 }
 
-- (void)testExample
-{
+- (void)testExample{
     XCTAssertEqual(1, 1, "hello");
     
 }
