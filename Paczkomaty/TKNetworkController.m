@@ -21,6 +21,16 @@ NSString *const TKNetworkControllerFetchedLockerDataNotificaiton = @"TKNetworkCo
 @end
 
 @implementation TKNetworkController
+
+- (id)init{
+    NSURL *baseURL = [NSURL URLWithString:@"http://api.paczkomaty.pl"];
+    self = [super initWithBaseURL:baseURL];
+    if(self == nil)return nil;
+    
+    [self registerHTTPOperationClass:[AFXMLRequestOperation class]];
+    [self setDefaultHeader:@"Accept" value:@"text/html"];
+    return self;
+}
 + (TKNetworkController *)sharedController{
     
     static id _sharedController = nil;
@@ -37,29 +47,25 @@ NSString *const TKNetworkControllerFetchedLockerDataNotificaiton = @"TKNetworkCo
 }
 
 - (void)getAndImportData{
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    AFHTTPResponseSerializer *serializer = [AFHTTPResponseSerializer serializer];
-    serializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     __unsafe_unretained typeof(self) bself = self;
-    manager.responseSerializer = serializer;
-   self.operation =  [manager GET:@"http://api.paczkomaty.pl/?do=listmachines_xml&paymentavailable="
-      parameters:nil
-         success:^(AFHTTPRequestOperation *operation, id responseObject) {
-             
-             NSMutableArray *array = [NSMutableArray array];
-             RXMLElement *element = [[RXMLElement alloc] initFromXMLData:responseObject];
-             [element iterate:@"machine" usingBlock: ^(RXMLElement *e) {
-                 TKParcelLocker *locker = [TKParcelLocker lockerWithXMLElement:e];
-                 [array addObject:locker];
-             }];
-             
-             [bself importLockersData:[NSArray arrayWithArray:array]];
-             [bself postFetchSuccess:YES error:nil];
-             
-         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            [bself postFetchSuccess:YES error:nil];
-         }];
+    
+    [self getPath:@"?do=listmachines_xml&paymentavailable="
+       parameters:nil
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              NSMutableArray *array = [NSMutableArray array];
+              RXMLElement *element = [[RXMLElement alloc] initFromXMLData:responseObject];
+              [element iterate:@"machine" usingBlock: ^(RXMLElement *e) {
+                  TKParcelLocker *locker = [TKParcelLocker lockerWithXMLElement:e];
+                  [array addObject:locker];
+              }];
+              
+              [bself importLockersData:[NSArray arrayWithArray:array]];
+              [bself postFetchSuccess:YES error:nil];
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              [bself postFetchSuccess:YES error:nil];
+          }];
+    
+    
 }
 
 

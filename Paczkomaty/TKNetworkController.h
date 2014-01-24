@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AFHTTPClient.h"
 
 extern NSString *const TKNetworkControllerFetchedLockerDataNotificaiton;
 
-@interface TKNetworkController : NSObject
+@interface TKNetworkController : AFHTTPClient
 + (TKNetworkController *)sharedController;
 - (void)getAndImportData;
 - (BOOL)isFetchingParcels;
