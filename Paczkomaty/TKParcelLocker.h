@@ -10,6 +10,9 @@
 #import <MapKit/MapKit.h>
 #import <sqlite3.h>
 
+
+NSString * TKNSStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coordinate);
+
 @class RXMLElement;
 
 @interface TKParcelLocker : NSObject <MKAnnotation>

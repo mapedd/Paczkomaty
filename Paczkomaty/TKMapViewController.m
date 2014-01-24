@@ -12,9 +12,17 @@
 #import "TKParcelLocker.h"
 #import "PGSQLController.h"
 
-@interface TKMapViewController () <MKMapViewDelegate>
+@interface TKMapViewController () <MKMapViewDelegate>{
+    BOOL _userLocationWasShown;
+}
 @property (strong, nonatomic) MKMapView *mapView;
-@property (strong, nonatomic) NSArray *items;
+
+@property (strong, nonatomic) NSSet *visibleAnnotationsBeforeUpdate;
+
+@property (strong, nonatomic) dispatch_queue_t queue;
+
+
+@property (strong, nonatomic) NSArray *sortDescriptors;
 @end
 
 @implementation TKMapViewController
@@ -26,6 +34,8 @@
     if (!self) return nil;
     self.title = NSLocalizedString(@"Paczkomaty",nil);
     self.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"Map",nil) image:[self tabBarImage] tag:1];
+    self.queue = dispatch_queue_create("com.paczkomaty.databaseFetchQueue", NULL);
+    self.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"hash" ascending:YES]];
     return self;
 }
 
@@ -40,17 +50,9 @@
     [self.view addSubview:self.mapView];
     
     
-    NSString *fileName ;
-    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
-        fileName = @"arrow_io7";
-    }
-    else{
-        fileName = @"arrow_io6";
-    }
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:fileName]
-                                                                              style:(UIBarButtonItemStyleBordered)
-                                                                             target:self
-                                                                             action:@selector(showMe:)];
+    [self loadNavBarButton];
+    
+    [self attachToMapViewGestureRecognizers];
     
 }
 
@@ -62,41 +64,26 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.items = [[PGSQLController sharedController] exportParcelsFromRegion:[self userMapRegion]];
-    for (TKParcelLocker *locker in self.items) {
-        [self.mapView addAnnotation:locker];
-    }
-    
 }
 
 #pragma mark - Action
 
-- (MKCoordinateRegion)userMapRegion{
-    CLLocationCoordinate2D location = self.mapView.userLocation.coordinate;
-    
-    MKCoordinateRegion mapRegion;
-    mapRegion.center.latitude = location.latitude;
-    mapRegion.center.longitude = location.longitude;
-    mapRegion.span.latitudeDelta = 0.05;
-    mapRegion.span.longitudeDelta = 0.05;
-    
-    return mapRegion;
+- (void)handlePinch:(UIPinchGestureRecognizer *)pinch{
+    //    NSLog(@"map view pinch");
+}
+
+- (void)handlePan:(UIPanGestureRecognizer *)pan{
+    //    NSLog(@"map view pan");
 }
 
 - (void)showMe:(id)sender{
-
+    BOOL animated = self.isViewLoaded;
     
     [self.mapView setRegion:[self userMapRegion]
-                   animated: self.isViewLoaded];
+                   animated:animated];
     self.mapView.centerCoordinate = self.mapView.userLocation.coordinate;
-}
-
-#pragma mark - Setters
-
-- (void)setItems:(NSArray *)items{
-    if (_items != items) {
-        _items = items;
-    }
+    
+    
 }
 
 #pragma mark - Getters
@@ -109,7 +96,98 @@
     }
 }
 
+#pragma mark - Private
+
+- (MKCoordinateRegion)userMapRegion{
+    CLLocationCoordinate2D location = self.mapView.userLocation.coordinate;
+    NSLog(@"is valid location = %d", CLLocationCoordinate2DIsValid(location));
+    MKCoordinateRegion mapRegion;
+    mapRegion.center.latitude = location.latitude;
+    mapRegion.center.longitude = location.longitude;
+    mapRegion.span.latitudeDelta = 0.05;
+    mapRegion.span.longitudeDelta = 0.05;
+    
+    return mapRegion;
+}
+
+- (void)attachToMapViewGestureRecognizers{
+    NSArray *mapViewGestureRecognizers;
+    
+    for (UIView *mapViewSubview in self.mapView.subviews) {
+        if (mapViewSubview.gestureRecognizers.count == 0) {
+            continue;
+        }
+        
+        mapViewGestureRecognizers = mapViewSubview.gestureRecognizers;
+        break;
+    }
+    
+    UIPinchGestureRecognizer *pinchGestureRecognizer;
+    UIPanGestureRecognizer *panGestureRecognizer;
+    
+    for (id gestureRecognizer in mapViewGestureRecognizers) {
+        if (![NSStringFromClass([gestureRecognizer class]) hasPrefix:@"UI"]) {
+            continue;
+        }
+        if ([gestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]]) {
+            pinchGestureRecognizer = gestureRecognizer;
+        }
+        if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+            panGestureRecognizer = gestureRecognizer;
+        }
+    }
+    
+    [pinchGestureRecognizer addTarget:self action:@selector(handlePinch:)];
+    [panGestureRecognizer addTarget:self action:@selector(handlePan:)];
+}
+
+- (void)loadNavBarButton{
+    NSString *fileName ;
+    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+        fileName = @"arrow_io7";
+    }
+    else{
+        fileName = @"arrow_io6";
+    }
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:fileName]
+                                                                              style:(UIBarButtonItemStyleBordered)
+                                                                             target:self
+                                                                             action:@selector(showMe:)];
+}
+
 #pragma mark - MKMapViewDelegate
+
+- (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated{
+    
+    self.visibleAnnotationsBeforeUpdate = [NSSet setWithArray:[mapView annotations]];
+}
+
+- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
+    [self updateAnnotationsInRegion:[mapView region]];
+}
+
+- (void)updateAnnotationsInRegion:(MKCoordinateRegion)region{
+    __unsafe_unretained typeof(self) bself = self;
+    dispatch_async(self.queue, ^{
+        @autoreleasepool {
+            NSArray *visibleAnnotations = [[PGSQLController sharedController] exportParcelsFromRegion:region];
+            NSMutableSet *annotationsThatShouldBeVisible = [[NSSet setWithArray:visibleAnnotations] mutableCopy];
+            
+            NSSet *annotationsThatShouldBeVisibleCopy = [annotationsThatShouldBeVisible copy];
+            [annotationsThatShouldBeVisible minusSet:bself.visibleAnnotationsBeforeUpdate];
+            NSArray *annotationToAdd = [annotationsThatShouldBeVisible sortedArrayUsingDescriptors:bself.sortDescriptors];
+            
+            NSMutableSet *toRemove = [bself.visibleAnnotationsBeforeUpdate mutableCopy];
+            [toRemove minusSet:annotationsThatShouldBeVisibleCopy];
+            NSArray *annotationsToRemove = [toRemove sortedArrayUsingDescriptors:bself.sortDescriptors];
+            bself.visibleAnnotationsBeforeUpdate = nil;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [bself.mapView removeAnnotations:annotationsToRemove];
+                [bself.mapView addAnnotations:annotationToAdd];
+            });
+        }
+    });
+}
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control{
     TKParcelLocker *locker = (TKParcelLocker *)view.annotation;
@@ -120,13 +198,14 @@
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView
             viewForAnnotation:(id <MKAnnotation>)annotation{
+    static NSString *annotationIdentifier = @"Pin";
 	MKPinAnnotationView *annotationView = nil;
 	if ([annotation isKindOfClass:[TKParcelLocker class]])
 	{
-		annotationView = (MKPinAnnotationView *)[self.mapView dequeueReusableAnnotationViewWithIdentifier:@"Pin"];
+		annotationView = (MKPinAnnotationView *)[self.mapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];
 		if (annotationView == nil)
 		{
-			annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"Pin"];
+			annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annotationIdentifier];
 			annotationView.canShowCallout = YES;
 			annotationView.animatesDrop = NO;
             
@@ -139,6 +218,17 @@
 }
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
+    
+    if (userLocation.location.horizontalAccuracy > 1000) {
+        return;
+    }
+    
+    
+    if (_userLocationWasShown) {
+        return;
+    }
+    _userLocationWasShown = YES;
+    
     [self showMe:nil];
 }
 

@@ -85,8 +85,22 @@
     XCTAssertEqualObjects(locker1, exportLocker, @"objects should be equal");
 }
 
-- (void)testExample{
-    XCTAssertTrue(YES, @"");
+- (void)testRegionExport{
+    CLLocationCoordinate2D location1 = CLLocationCoordinate2DMake(12.12312, 51.23123);
+    
+    TKParcelLocker *locker1 = [self lockerWithName:@"ABS123" location:location1];
+    location1.latitude += 0.6;
+    TKParcelLocker *locker2 = [self lockerWithName:@"QWE312" location:location1];
+    
+    [self.sqlController importParcelsToDataBase:@[locker1, locker2]];
+    MKCoordinateRegion region;
+    region.center = location1;
+    region.span.latitudeDelta = 0.5;
+    region.span.longitudeDelta = 0.5;
+    NSArray *exportedObjects = [self.sqlController exportParcelsFromRegion:region];
+    TKParcelLocker *exportLocker = (TKParcelLocker *)exportedObjects[0];
+    XCTAssertEqualObjects(exportLocker, locker2, @"only first locker should be found");
+    
 }
 
 @end

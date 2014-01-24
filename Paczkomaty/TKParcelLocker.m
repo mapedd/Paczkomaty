@@ -31,6 +31,10 @@
 
 @implementation TKParcelLocker
 
+- (void)dealloc{
+    NSLog(@"parcel dealloc");
+}
+
 + (TKParcelLocker *)lockerWithSQLStatement:(sqlite3_stmt *)statement{
     TKParcelLocker *locker = [[TKParcelLocker alloc] init];
     
@@ -181,6 +185,12 @@
     return [NSString stringWithFormat:@"%@, %@ %@", self.town ?: @"", self.street ?: @"", self.buildingNumber ?: @""];
 }
 
+#pragma mark - Description
+
+- (NSString *)description{
+    return [NSString stringWithFormat:@"%@, %@ %@ %@ %@",self.name, self.street,self.buildingNumber, self.town, TKNSStringFromCLLocationCoordinate2D(self.coordinate) ];
+}
+
 #pragma mark - IsEqual
 
 - (BOOL)isEqual:(id)object{
@@ -209,3 +219,7 @@
 }
 
 @end
+
+NSString * TKNSStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coordinate){
+    return [NSString stringWithFormat:@"(%f, %f)", coordinate.latitude, coordinate.longitude];
+}

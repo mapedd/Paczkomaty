@@ -39,7 +39,6 @@
 - (id)init{
     self = [super initWithNibName:nil bundle:nil];
     if(!self)return nil;
-    [self reloadData];
     [self addToNotificationCenter];
     self.navigationItem.title = NSLocalizedString(@"Paczkomaty",nil);
     self.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"List",nil) image:[self tabBarImage] tag:1];
@@ -74,6 +73,17 @@
     self.searchDisplay.delegate = self;
     [self.searchDisplay setSearchResultsDataSource:self];
     
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self reloadData];
+}
+
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    self.parcelLockers = nil;
+    [self.tableView reloadData];
 }
 
 #pragma mark - Private

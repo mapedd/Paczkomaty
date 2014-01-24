@@ -270,7 +270,7 @@ static dispatch_once_t onceToken;
                        minLatitude];
     
     NSError * __autoreleasing error;
-    NSArray *array = [self exportParcelsFromDataBase:nil error:&error];
+    NSArray *array = [self exportParcelsFromDataBase:query error:&error];
     return array;
 }
 
