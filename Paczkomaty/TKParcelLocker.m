@@ -32,7 +32,7 @@
 @implementation TKParcelLocker
 
 - (void)dealloc{
-    NSLog(@"parcel dealloc");
+
 }
 
 + (TKParcelLocker *)lockerWithSQLStatement:(sqlite3_stmt *)statement{

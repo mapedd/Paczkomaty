@@ -64,6 +64,8 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [self mapView:self.mapView regionWillChangeAnimated:NO];
+    [self mapView:self.mapView regionDidChangeAnimated:NO];
 }
 
 #pragma mark - Action
