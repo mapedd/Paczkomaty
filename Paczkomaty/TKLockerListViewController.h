@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TKViewController : UIViewController
+@interface TKLockerListViewController : UIViewController
 
 @end

@@ -8,15 +8,27 @@
 
 #import "TKParcelView.h"
 #import "TKParcelLocker.h"
+#import "UIImageView+AFNetworking.h"
+
+#define MAP_BANNER_INDEX 0
+#define PHOTO_BANNER_INDEX 1
+
+#define BANNER_HEIGHT 150.0f
 
 @interface TKParcelView () <MKMapViewDelegate>
 
 @property (readwrite, strong, nonatomic) MKMapView *mapView;
+@property (readwrite, strong, nonatomic) UIImageView *imageView;
+/**********************************************************************/
+@property (readwrite, strong, nonatomic) UISegmentedControl *segmentedControl;
+/**********************************************************************/
 @property (readwrite, strong, nonatomic) UILabel *nameLabel;
 @property (readwrite, strong, nonatomic) UILabel *addressLabel;
 @property (readwrite, strong, nonatomic) UILabel *localisationLabel;
 @property (readwrite, strong, nonatomic) UILabel *hoursLabel;
 @property (readwrite, strong, nonatomic) UILabel *paymentLabel;
+
+@property (assign, nonatomic) NSInteger shownBanner;
 
 @end
 
@@ -53,6 +65,10 @@
     CGFloat labelWidth = width - 2 * inset;
     
     CGRect mapViewFrame = CGRectZero;
+    CGRect imageViewFrame = CGRectZero;
+    
+    CGRect segmentedControlFrame = CGRectZero;
+    
     CGRect nameLabelFrame = CGRectZero;
     CGRect addressLabelFrame = CGRectZero;
     
@@ -60,29 +76,31 @@
     CGRect hoursLabeFrame = CGRectZero;
     CGRect paymentLabelFrame = CGRectZero;
     
-    CGFloat nameLabelHeight = [self.nameLabel.text sizeWithFont:self.nameLabel.font constrainedToSize:CGSizeMake(labelWidth, 999)].height;
-    CGFloat addressLabelHeight = [self.addressLabel.text sizeWithFont:self.addressLabel.font constrainedToSize:CGSizeMake(labelWidth, 999)].height;
+    CGFloat nameLabelHeight = [self.nameLabel tk_attributedTextHeightWithWidth:labelWidth];
     
+    CGFloat addressLabelHeight = [self.addressLabel tk_attributedTextHeightWithWidth:labelWidth];
     
-    CGFloat localisaitonLabelHeight = [self.localisationLabel.attributedText boundingRectWithSize:CGSizeMake(labelWidth, 9999)
-                                                                         options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                                                         context:0].size.height;
-    CGFloat hoursLabelHeight = [self.hoursLabel.attributedText boundingRectWithSize:CGSizeMake(labelWidth, 9999)
-                                                                                   options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                                                                   context:0].size.height;
-    CGFloat paymentLabelHeight = [self.paymentLabel.attributedText boundingRectWithSize:CGSizeMake(labelWidth, 9999)
-                                                                                     options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                                                                     context:0].size.height;
+    CGFloat localisaitonLabelHeight = [self.localisationLabel tk_attributedTextHeightWithWidth:labelWidth];
     
-    mapViewFrame = CGRectMake(0.0f, 0.0f, width, 100.0f);
-    nameLabelFrame = CGRectMake(inset,inset + CGRectGetMaxY(mapViewFrame), labelWidth, nameLabelHeight);
+    CGFloat hoursLabelHeight = [self.hoursLabel tk_attributedTextHeightWithWidth:labelWidth];
+    
+    CGFloat paymentLabelHeight = [self.paymentLabel tk_attributedTextHeightWithWidth:labelWidth];
+    
+    mapViewFrame = CGRectMake(0.0f, 0.0f, width, BANNER_HEIGHT);
+    imageViewFrame = CGRectMake(0.0f, 0.0f, width, BANNER_HEIGHT);
+    
+    segmentedControlFrame = CGRectMake(inset, inset + CGRectGetMaxY(mapViewFrame), labelWidth, 40.0f);
+    
+    nameLabelFrame = CGRectMake(inset,inset + CGRectGetMaxY(segmentedControlFrame), labelWidth, nameLabelHeight);
     addressLabelFrame = CGRectMake(inset, inset + CGRectGetMaxY(nameLabelFrame), labelWidth, addressLabelHeight);
     
     localistaionLabelFrame = CGRectMake(inset, inset + CGRectGetMaxY(addressLabelFrame), labelWidth, localisaitonLabelHeight);
     hoursLabeFrame = CGRectMake(inset, inset + CGRectGetMaxY(localistaionLabelFrame), labelWidth, hoursLabelHeight);
     paymentLabelFrame = CGRectMake(inset, inset + CGRectGetMaxY(hoursLabeFrame), labelWidth, paymentLabelHeight);
     
+    self.imageView.frame = imageViewFrame;
     self.nameLabel.frame = nameLabelFrame;
+    self.segmentedControl.frame = segmentedControlFrame;
     self.addressLabel.frame = addressLabelFrame;
     self.mapView.frame = mapViewFrame;
     self.localisationLabel.frame = localistaionLabelFrame;
@@ -97,6 +115,14 @@
     
     self.scrollView.contentSize = CGSizeMake(self.scrollView.contentSize.width, height);
     
+    if (self.shownBanner == PHOTO_BANNER_INDEX) {
+        self.mapView.hidden = YES;
+        self.imageView.hidden = NO;
+    }else if (self.shownBanner == MAP_BANNER_INDEX){
+        self.mapView.hidden = NO;
+        self.imageView.hidden = YES;
+    }
+    
 }
 
 #pragma mark - Setters
@@ -105,6 +131,13 @@
     if (_parcel != parcel) {
         _parcel = parcel;
         [self reloadData];
+    }
+}
+
+- (void)setShownBanner:(NSInteger)shownBanner{
+    if (_shownBanner != shownBanner) {
+        _shownBanner = shownBanner;
+        [self setNeedsLayout];
     }
 }
 
@@ -136,6 +169,15 @@
     mapView.showsUserLocation = YES;
     mapView.delegate = self;
     
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+
+    NSArray *items = @[NSLocalizedString(@"Map",nil), NSLocalizedString(@"Photo",nil)];
+    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:items];
+    [segmentedControl setSelectedSegmentIndex:MAP_BANNER_INDEX];
+    [segmentedControl addTarget:self action:@selector(setVisibleBanner:) forControlEvents:(UIControlEventValueChanged)];
+
+    
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     nameLabel.font = [self TKBoldFontOfSize:20.0f];
     nameLabel.textColor = textColor;
@@ -159,13 +201,19 @@
     paymentLabel.textColor = textColor;
     
     
+    
     [self addSubview:nameLabel];
     [self addSubview:addressLabel];
+    [self addSubview:imageView];
+    imageView.hidden = YES;
     [self addSubview:mapView];
+    [self addSubview:segmentedControl];
     [self addSubview:localisationLabel];
     [self addSubview:hoursLabel];
     [self addSubview:paymentLabel];
     
+    self.segmentedControl = segmentedControl;
+    self.imageView = imageView;
     self.nameLabel = nameLabel;
     self.addressLabel = addressLabel;
     self.mapView = mapView;
@@ -175,9 +223,14 @@
 }
 
 - (void)reloadData{
+    
+    
     [self.mapView removeAnnotations:self.mapView.annotations];
     [self.mapView addAnnotation:self.parcel];
     
+    NSString *imageAddress = [NSString stringWithFormat:@"http://paczkomaty.pl/images/paczkomaty/big/%@.jpg", self.parcel.name];
+    NSURL *url = [NSURL URLWithString:imageAddress];
+    [self.imageView setImageWithURL:url];
     
     MKCoordinateRegion mapRegion;
     mapRegion.center.latitude = self.parcel.coordinate.latitude;
@@ -188,8 +241,11 @@
     [self.mapView setRegion:mapRegion animated: YES];
     self.mapView.centerCoordinate = self.parcel.coordinate;
 
-    self.nameLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Paczkomat",nil), self.parcel.name];
-    self.addressLabel.text = [NSString stringWithFormat:@"%@ %@\r%@ %@", self.parcel.street, self.parcel.buildingNumber, self.parcel.postalCode, self.parcel.town];
+    self.nameLabel.attributedText = [self attributesStringWithBoldString:NSLocalizedString(@"Locker: ",nil) normalString:self.parcel.name];
+    
+    NSString *boldString = NSLocalizedString(@"Address: ",nil);
+    NSString *normalString = [NSString stringWithFormat:@"%@ %@\r%@ %@", self.parcel.street, self.parcel.buildingNumber, self.parcel.postalCode, self.parcel.town];
+    self.addressLabel.attributedText = [self attributesStringWithBoldString:boldString normalString:normalString];
     self.localisationLabel.attributedText = [self attributesStringWithBoldString:NSLocalizedString(@"Localisation: ",nil)
                                                           normalString:self.parcel.locationDescription ?: NSLocalizedString(@"No info",nil)];
     self.hoursLabel.attributedText = [self attributesStringWithBoldString:NSLocalizedString(@"Hour opened: ",nil)
@@ -198,11 +254,18 @@
                                                                normalString:self.parcel.paymentType ?: NSLocalizedString(@"No info",nil)];
 }
 
+
+#pragma mark - Actions
+
+- (void)setVisibleBanner:(UISegmentedControl *)segmentedControl{
+    [self setShownBanner:segmentedControl.selectedSegmentIndex];
+}
+
 #pragma mark - Helpers
 
 - (NSAttributedString *)attributesStringWithBoldString:(NSString *)boldString normalString:(NSString *)normalString{
     
-    NSDictionary *boldAttrs = @{UITextAttributeFont : [self TKBoldFontOfSize:18.0f]};
+    NSDictionary *boldAttrs = @{UITextAttributeFont : [self TKBoldFontOfSize:18.0f], UITextAttributeTextColor : [UIColor grayColor]};
     NSDictionary *normalAttrs = @{UITextAttributeFont : [self TKMediumFontOfSize:15.0f]};
     
     NSAttributedString *bold = [[NSAttributedString alloc] initWithString:boldString attributes:boldAttrs];
@@ -222,5 +285,16 @@
     return [UIFont fontWithName:@"HelveticaNeue-Medium" size:size];
 }
 
+
+@end
+
+
+@implementation UILabel (Paczkomaty_Additions)
+
+- (CGFloat)tk_attributedTextHeightWithWidth:(CGFloat)width{
+    return fmaxf(ceilf([self.attributedText boundingRectWithSize:CGSizeMake(width, 9999)
+                                                        options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                                        context:0].size.height), 50.0f);
+}
 
 @end

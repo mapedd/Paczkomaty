@@ -20,3 +20,10 @@
 
 @property (weak, nonatomic) UIScrollView *scrollView;
 @end
+
+
+@interface UILabel (Paczkomaty_Additions)
+
+- (CGFloat)tk_attributedTextHeightWithWidth:(CGFloat)width;
+
+@end

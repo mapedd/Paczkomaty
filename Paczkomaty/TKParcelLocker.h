@@ -33,6 +33,11 @@ NSString * TKNSStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coordinat
 @property (readonly, strong, nonatomic) NSString *type;
 @property (readonly, strong, nonatomic) NSString *status;
 
+
+@property (readwrite, assign, nonatomic) BOOL isClosest;
+/* In kilometers */
+@property (readwrite, assign, nonatomic) CGFloat curentDistanceFromUser;
+
 #pragma mark - MKAnnotation
 @property (readonly, assign, nonatomic) CLLocationCoordinate2D coordinate;
 @property (nonatomic, readonly, copy) NSString *title;

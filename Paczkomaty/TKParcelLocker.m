@@ -178,7 +178,12 @@
 #pragma mark - MKAnnotaion
 
 - (NSString *)title{
-    return [NSString stringWithFormat:@"%@", self.name];
+    if(self.isClosest){
+        return [NSString stringWithFormat:@"%@ (%.3fkm)", self.name, self.curentDistanceFromUser];
+    }
+    else{
+        return [NSString stringWithFormat:@"%@", self.name];
+    }
 }
 
 - (NSString *)subtitle{

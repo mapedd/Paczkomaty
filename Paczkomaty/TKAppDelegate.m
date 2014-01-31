@@ -7,13 +7,13 @@
 //
 
 #import "TKAppDelegate.h"
-#import "TKParcelViewContoller.h"
+#import "TKParcelTestViewController.h"
 
 @implementation TKAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = [TKParcelViewContoller new];
+    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[TKParcelTestViewController new]];
     [self.window makeKeyAndVisible];
     return YES;
 }

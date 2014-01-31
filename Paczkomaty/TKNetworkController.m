@@ -22,6 +22,11 @@ NSString *const TKNetworkControllerFetchedLockerDataNotificaiton = @"TKNetworkCo
 
 @implementation TKNetworkController
 
+
+- (void)dealloc{
+    
+}
+
 - (id)init{
     NSURL *baseURL = [NSURL URLWithString:@"http://api.paczkomaty.pl"];
     self = [super initWithBaseURL:baseURL];
@@ -31,22 +36,12 @@ NSString *const TKNetworkControllerFetchedLockerDataNotificaiton = @"TKNetworkCo
     [self setDefaultHeader:@"Accept" value:@"text/html"];
     return self;
 }
-+ (TKNetworkController *)sharedController{
-    
-    static id _sharedController = nil;
-    static dispatch_once_t onceToken;
-    
-    dispatch_once(&onceToken, ^{
-        _sharedController = [[self class] new];
-    });
-    return _sharedController;
-}
 
 - (BOOL)isFetchingParcels{
     return self.operation != nil;
 }
 
-- (void)getAndImportData{
+- (void)getAndImportData:(PGSQLController *)controller{
     __unsafe_unretained typeof(self) bself = self;
     
     [self getPath:@"?do=listmachines_xml&paymentavailable="
@@ -59,7 +54,7 @@ NSString *const TKNetworkControllerFetchedLockerDataNotificaiton = @"TKNetworkCo
                   [array addObject:locker];
               }];
               
-              [bself importLockersData:[NSArray arrayWithArray:array]];
+              [bself importLockersData:[NSArray arrayWithArray:array] withController:controller];
               [bself postFetchSuccess:YES error:nil];
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               [bself postFetchSuccess:YES error:nil];
@@ -79,8 +74,8 @@ NSString *const TKNetworkControllerFetchedLockerDataNotificaiton = @"TKNetworkCo
                                                       userInfo:userInfo];
 }
 
-- (void)importLockersData:(NSArray *)lockers{
-    [[PGSQLController sharedController] importParcelsToDataBase:lockers];
+- (void)importLockersData:(NSArray *)lockers withController:(PGSQLController *)controller{
+    [controller importParcelsToDataBase:lockers];
 }
 
 @end

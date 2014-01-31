@@ -16,9 +16,6 @@ extern NSString *const PGSQLControllerImportedDataNotificaiton;
 @class TKParcelLocker;
 
 @interface PGSQLController : NSObject
-+ (PGSQLController *)sharedController;
-+ (void)setSharedController:(id)sharedController;
-
 - (void)importParcelsToDataBase:(NSArray *)parcels;
 
 - (NSArray *)exportParcelsFromDataBase;

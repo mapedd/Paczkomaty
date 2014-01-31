@@ -7,7 +7,7 @@
 //
 
 #import "PGSQLController.h"
-#import "TKParcelLocker.h"
+#import "TKParcelLocker+Helpers.h"
 
 #define DEG2RAD(degrees) (degrees * 0.01745327) // degrees * pi over 180
 
@@ -33,24 +33,8 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
 
 @end
 
-static id _sharedController = nil;
-static dispatch_once_t onceToken;
 
 @implementation PGSQLController
-
-+ (PGSQLController *)sharedController{
-    
-    dispatch_once(&onceToken, ^{
-        if(_sharedController == nil)
-            _sharedController = [[self class] new];
-    });
-    return _sharedController;
-}
-
-+ (void)setSharedController:(id)sharedController{
-    onceToken = 0;
-    _sharedController = sharedController;
-}
 
 - (void)dealloc {
     sqlite3_close(_database);
@@ -285,9 +269,16 @@ static dispatch_once_t onceToken;
 
 - (TKParcelLocker *)closestLockerToLocation:(CLLocation *)location{
     NSError * __autoreleasing error;
-    NSString *query = [NSString stringWithFormat:@"SELECT * FROM lockers ORDER BY distance(latitude, longitude, %f, %f)", location.coordinate.longitude,location.coordinate.latitude];
+    NSString *query = [NSString stringWithFormat:@"SELECT * FROM lockers ORDER BY distance(longitude, latitude, %f, %f) LIMIT 10", location.coordinate.longitude,location.coordinate.latitude];
     NSArray *array = [self exportParcelsFromDataBase:query error:&error];
-    return [array lastObject];
+    TKParcelLocker *locker = [array firstObject];
+    if (locker == nil) {
+        return nil;
+    }
+    
+    locker.isClosest = YES;
+    [locker assignDistanceFromLocation:location];
+    return locker;
 }
 
 - (NSArray *)search:(NSString *)string{

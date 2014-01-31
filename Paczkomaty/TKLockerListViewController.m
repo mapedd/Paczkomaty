@@ -6,15 +6,17 @@
 //  Copyright (c) 2014 mapedd. All rights reserved.
 //
 
-#import "TKViewController.h"
+#import "TKLockerListViewController.h"
 #import "TKParcelLocker.h"
 #import "PGSQLController.h"
 #import "TKParcelTableViewCell.h"
+#import "TKParcelViewContoller.h"
 #import "TKParcelTableViewCell+Configuration.h"
+#import "UIViewController+Lockers.h"
 #import "TKNetworkController.h"
 #import "TKParcelDetailViewController.h"
 
-@interface TKViewController () <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate>
+@interface TKLockerListViewController () <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate>
 
 @property (strong, nonatomic) NSArray *parcelLockers;
 
@@ -26,9 +28,11 @@
 
 @property (strong, nonatomic) UISearchBar *searchBar;
 
+@property (strong, nonatomic) TKNetworkController *networkController;
+
 @end
 
-@implementation TKViewController
+@implementation TKLockerListViewController
 
 #pragma mark - NSObject
 
@@ -42,6 +46,10 @@
     [self addToNotificationCenter];
     self.navigationItem.title = NSLocalizedString(@"Paczkomaty",nil);
     self.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"List",nil) image:[self tabBarImage] tag:1];
+    self.parcelLockers = [[self sqlController] exportParcelsFromDataBase];
+    if (self.parcelLockers.count == 0) {
+        [self get];
+    }
     return self;
 }
 
@@ -58,7 +66,7 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:(UIBarButtonSystemItemRefresh) target:self action:@selector(get)];
+    
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:(UITableViewStylePlain)];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -72,6 +80,10 @@
                                                             contentsController:self];
     self.searchDisplay.delegate = self;
     [self.searchDisplay setSearchResultsDataSource:self];
+    
+    if (![[self networkController] isFetchingParcels]) {
+        [self showActivityIndicator:NO];
+    }
     
 }
 
@@ -102,29 +114,39 @@
 }
 
 - (void)get{
-    if (![[TKNetworkController sharedController] isFetchingParcels]) {
-        [[TKNetworkController sharedController] getAndImportData];
+    if (![[self networkController] isFetchingParcels]) {
+        [[self networkController] getAndImportData:[self sqlController]];
         [self showActivityIndicator:YES];
     }
 }
 
 - (void)showActivityIndicator:(BOOL)show{
-    
+    UIBarButtonItem *barButtonItem;
     if (show) {
         UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:(UIActivityIndicatorViewStyleGray)];
-        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:indicator];
+        barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:indicator];
         [indicator startAnimating];
-        self.navigationItem.rightBarButtonItem = barButtonItem;
     }
     else{
-        self.navigationItem.rightBarButtonItem = nil;
+        barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:(UIBarButtonSystemItemRefresh) target:self action:@selector(get)];
     }
-    self.navigationItem.leftBarButtonItem.enabled = !show;
+    self.navigationItem.rightBarButtonItem = barButtonItem;
+    
 }
 
 - (void)reloadData{
-    self.parcelLockers = [[PGSQLController sharedController] exportParcelsFromDataBase];
+    self.parcelLockers = [[self sqlController] exportParcelsFromDataBase];
     [self.tableView reloadData];
+}
+
+
+#pragma mark - Getters
+
+- (TKNetworkController *)networkController{
+    if (_networkController == nil) {
+        _networkController = [TKNetworkController new];
+    }
+    return _networkController;
 }
 
 #pragma mark - UITableViewDataSource
@@ -177,6 +199,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    TKParcelViewContoller *parcel = (TKParcelViewContoller *)self.parentViewController.parentViewController;
+    if ([parcel isKindOfClass:[TKParcelViewContoller class]]) {
+        [parcel didSelectLocker:[self tableView:tableView lockerAtIndexPath:indexPath]];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -193,7 +220,7 @@
 
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
-    self.searchResults = [[PGSQLController sharedController] search:searchString];
+    self.searchResults = [[self sqlController] search:searchString];
     return YES;
 }
 

@@ -8,6 +8,8 @@
 
 #import "TKParcelDetailViewController.h"
 #import "TKParcelView.h"
+#import "TKParcelViewContoller.h"
+#import "UIViewController+Lockers.h"
 #import "TKParcelLocker.h"
 
 @interface TKParcelDetailViewController ()
@@ -61,7 +63,7 @@
 #pragma mark - Actions
 
 - (void)select:(id)sender{
-    
+    [self lockerControllerDidSelectLocker:self.parcel];
 }
 
 #pragma mark - Setters

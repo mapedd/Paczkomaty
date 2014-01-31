@@ -11,8 +11,9 @@
 
 extern NSString *const TKNetworkControllerFetchedLockerDataNotificaiton;
 
+@class PGSQLController;
+
 @interface TKNetworkController : AFHTTPClient
-+ (TKNetworkController *)sharedController;
-- (void)getAndImportData;
+- (void)getAndImportData:(PGSQLController *)controller;
 - (BOOL)isFetchingParcels;
 @end

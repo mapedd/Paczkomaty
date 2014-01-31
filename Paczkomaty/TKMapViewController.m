@@ -12,6 +12,7 @@
 #import "TKParcelViewContoller.h"
 #import "TKParcelLocker.h"
 #import "PGSQLController.h"
+#import "UIViewController+Lockers.h"
 
 @interface TKMapViewController () <MKMapViewDelegate>{
     BOOL _userLocationWasShown;
@@ -22,6 +23,9 @@
 
 @property (strong, nonatomic) dispatch_queue_t queue;
 
+@property (assign, nonatomic) BOOL shownClosestLockerAnnotationView;
+
+@property (assign, nonatomic) BOOL isUpdatingAnnotations;
 
 @property (strong, nonatomic) NSArray *sortDescriptors;
 @end
@@ -29,6 +33,10 @@
 @implementation TKMapViewController
 
 #pragma mark - NSObject
+
+- (void)dealloc{
+    
+}
 
 - (id)init{
     self = [super initWithNibName:nil bundle:nil];
@@ -60,7 +68,7 @@
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     [self.mapView removeAnnotations:self.mapView.annotations];
-    
+    self.shownClosestLockerAnnotationView = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -89,6 +97,22 @@
     [self.mapView setRegion:[self mapRegionWithLocation:userLocation.location]
                    animated:YES];
 
+}
+
+- (void)showClosestLocker{
+    if (self.shownClosestLockerAnnotationView)
+        return;
+    
+    if (self.isUpdatingAnnotations)
+        return;
+    
+    TKParcelLocker *locker = [[self sqlController] closestLockerToLocation:self.mapView.userLocation.location];
+    if ([self.mapView.annotations containsObject:locker] && locker) {
+        self.shownClosestLockerAnnotationView = YES;
+        [self.mapView removeAnnotation:locker];
+        [self.mapView addAnnotation:locker];
+        [self.mapView selectAnnotation:locker animated:YES];
+    }
 }
 
 #pragma mark - Getters
@@ -160,22 +184,12 @@
                                                                              action:@selector(showMe:)];
 }
 
-#pragma mark - MKMapViewDelegate
-
-- (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated{
-    
-    self.visibleAnnotationsBeforeUpdate = [NSSet setWithArray:[mapView annotations]];
-}
-
-- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
-    [self updateAnnotationsInRegion:[mapView region]];
-}
-
-- (void)updateAnnotationsInRegion:(MKCoordinateRegion)region{
+- (void)updateAnnotationsInRegion:(MKCoordinateRegion)region completion:(void (^) (void))completion{
     __unsafe_unretained typeof(self) bself = self;
+    self.isUpdatingAnnotations = YES;
     dispatch_async(self.queue, ^{
         @autoreleasepool {
-            NSArray *visibleAnnotations = [[PGSQLController sharedController] exportParcelsFromRegion:region];
+            NSArray *visibleAnnotations = [[bself sqlController] exportParcelsFromRegion:region];
             NSMutableSet *annotationsThatShouldBeVisible = [[NSSet setWithArray:visibleAnnotations] mutableCopy];
             
             NSSet *annotationsThatShouldBeVisibleCopy = [annotationsThatShouldBeVisible copy];
@@ -189,9 +203,25 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [bself.mapView removeAnnotations:annotationsToRemove];
                 [bself.mapView addAnnotations:annotationToAdd];
+                bself.isUpdatingAnnotations = NO;
+                if(completion) completion();
             });
         }
     });
+}
+
+#pragma mark - MKMapViewDelegate
+
+- (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated{
+    
+    self.visibleAnnotationsBeforeUpdate = [NSSet setWithArray:[mapView annotations]];
+}
+
+- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated{
+    [self updateAnnotationsInRegion:[mapView region] completion:^{
+        [self showClosestLocker];
+    }];
+    
 }
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control{
@@ -207,13 +237,14 @@
 	MKPinAnnotationView *annotationView = nil;
 	if ([annotation isKindOfClass:[TKParcelLocker class]])
 	{
+        TKParcelLocker *locker = (TKParcelLocker *)annotation;
 		annotationView = (MKPinAnnotationView *)[self.mapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];
 		if (annotationView == nil)
 		{
 			annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annotationIdentifier];
 			annotationView.canShowCallout = YES;
 			annotationView.animatesDrop = NO;
-            
+            annotationView.pinColor = locker.isClosest ? MKPinAnnotationColorGreen : MKPinAnnotationColorRed;
             UIButton *rightCallout = [UIButton buttonWithType:UIButtonTypeInfoLight];
             
             annotationView.rightCalloutAccessoryView = rightCallout;
