@@ -8,7 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
+#import <CoreLocation/CoreLocation.h>
+#import <sqlite3.h>
+
 extern NSString *const PGSQLControllerImportedDataNotificaiton;
+
+@class TKParcelLocker;
 
 @interface PGSQLController : NSObject
 + (PGSQLController *)sharedController;
@@ -19,6 +24,7 @@ extern NSString *const PGSQLControllerImportedDataNotificaiton;
 - (NSArray *)exportParcelsFromDataBase;
 - (NSArray *)exportParcelsFromRegion:(MKCoordinateRegion)region;
 - (NSArray *)search:(NSString *)string;
+- (TKParcelLocker *)closestLockerToLocation:(CLLocation *)location;
 
 - (BOOL)databaseConnectionExists;
 - (BOOL)databaseModelIsValid;

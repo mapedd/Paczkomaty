@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Paczkomaty"
-  s.version      = "0.0.2"
+  s.version      = "0.0.3"
   s.summary      = "Parcel locker browser and component."
 
   # s.description  = <<-DESC
@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
   s.social_media_url = "http://twitter.com/mapedd"
 
   s.platform     = :ios, '6.0'
-  s.source       = { :git => "https://github.com/mapedd/Paczkomaty.git", :tag => "0.0.2" }
+  s.source       = { :git => "https://github.com/mapedd/Paczkomaty.git", :tag => "0.0.3" }
 
   s.source_files  = 'Paczkomaty/*.{h,m}'
   s.exclude_files = 'Paczkomaty/main.m','Paczkomaty/TKAppDelegate*{h,m}'
@@ -39,5 +39,7 @@ Pod::Spec.new do |s|
   s.dependency 'NSString+TextAndNumberValidation', '~>0.11'
   s.dependency 'AFNetworking', '~>1.3.1'
   s.dependency 'RaptureXML', '~>1.0.1'
+  
+  s.xcconfig = { 'HEADER_SEARCH_PATHS' => '$(SDKROOT)/usr/include/libxml2' }
 
 end

@@ -103,4 +103,24 @@
     
 }
 
+- (void)testClosestPoint{
+    
+    CLLocationCoordinate2D startLocation = CLLocationCoordinate2DMake(52.1971083, 21.02257);
+    CLLocation *searchLocation = [[CLLocation alloc] initWithLatitude:startLocation.latitude longitude:startLocation.longitude];
+    
+    TKParcelLocker *lockerA = [self lockerWithName:@"ABC1" location:CLLocationCoordinate2DMake(52.197872, 21.022672)];
+    
+    TKParcelLocker *lockerB = [self lockerWithName:@"ABC2" location:CLLocationCoordinate2DMake(52.194727, 21.0236972)];
+    
+    TKParcelLocker *lockerC = [self lockerWithName:@"ABC3" location:CLLocationCoordinate2DMake(52.1949583, 21.01434)];
+    
+    
+    [self.sqlController importParcelsToDataBase:@[lockerA, lockerB, lockerC]];
+    
+    TKParcelLocker *locker = [self.sqlController  closestLockerToLocation:searchLocation];
+
+    XCTAssertEqualObjects(locker, lockerA, @"first locker should be closest");
+    
+}
+
 @end

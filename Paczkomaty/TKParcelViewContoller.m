@@ -10,11 +10,16 @@
 #import "TKViewController.h"
 #import "TKMapViewController.h"
 
-@interface TKParcelViewContoller ()
-
+@interface TKParcelViewContoller () <CLLocationManagerDelegate>
+@property (strong, nonatomic) CLLocationManager *locationManager;
+@property (readwrite, strong, nonatomic) CLLocation *userLocation;
 @end
 
 @implementation TKParcelViewContoller
+
+- (void)dealloc{
+    [self.locationManager stopUpdatingLocation];
+}
 
 - (id)init{
     self = [super init];
@@ -29,6 +34,10 @@
     
     [self setViewControllers:@[nc1,nc2]];
     
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    [self.locationManager startUpdatingLocation];
+    
     return self;
 }
 
@@ -38,6 +47,17 @@
 
 - (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
+}
+
+#pragma mark - CLLocationManagerDelegate
+
+- (void)locationManager:(CLLocationManager *)manager
+	didUpdateToLocation:(CLLocation *)newLocation
+		   fromLocation:(CLLocation *)oldLocation{
+    if (newLocation.horizontalAccuracy < 1000.0 && newLocation.horizontalAccuracy > 0.0f) {
+        self.userLocation = newLocation;
+        [self.locationManager stopUpdatingLocation];
+    }
 }
 
 @end

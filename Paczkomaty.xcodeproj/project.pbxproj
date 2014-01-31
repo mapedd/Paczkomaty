@@ -48,6 +48,7 @@
 		046CFD0C18912B39009B2208 /* TKParcelLocker.m in Sources */ = {isa = PBXBuildFile; fileRef = 04300B9F187C57A600499DC9 /* TKParcelLocker.m */; };
 		046CFD0E18912C26009B2208 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 046CFD0D18912C26009B2208 /* libPods.a */; };
 		046CFD1018912C2C009B2208 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 046CFD0F18912C2C009B2208 /* MapKit.framework */; };
+		04A4EB2A189BA04300673AC4 /* Paczkomaty.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 04A4EB29189BA04300673AC4 /* Paczkomaty.podspec */; };
 		04D63A9C187D615E0030166E /* TKMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D63A9B187D615E0030166E /* TKMapViewController.m */; };
 		04D63A9F187D63B60030166E /* PGSQLController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D63A9E187D63B60030166E /* PGSQLController.m */; };
 		09993E06F753473BB4146D5E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9606C99E49D24398A2C28CDE /* libPods.a */; };
@@ -115,6 +116,7 @@
 		046CFD0A18912A4D009B2208 /* TKParcelLocker_tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKParcelLocker_tests.m; sourceTree = "<group>"; };
 		046CFD0D18912C26009B2208 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Debug-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		046CFD0F18912C2C009B2208 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/MapKit.framework; sourceTree = DEVELOPER_DIR; };
+		04A4EB29189BA04300673AC4 /* Paczkomaty.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Paczkomaty.podspec; sourceTree = SOURCE_ROOT; };
 		04D63A9A187D615E0030166E /* TKMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKMapViewController.h; sourceTree = "<group>"; };
 		04D63A9B187D615E0030166E /* TKMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKMapViewController.m; sourceTree = "<group>"; };
 		04D63A9D187D63B60030166E /* PGSQLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGSQLController.h; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 		04300B6C187C520E00499DC9 /* Paczkomaty */ = {
 			isa = PBXGroup;
 			children = (
+				04A4EB29189BA04300673AC4 /* Paczkomaty.podspec */,
 				046CFCE5188FF845009B2208 /* Assets */,
 				04300B75187C520E00499DC9 /* TKAppDelegate.h */,
 				04300B76187C520E00499DC9 /* TKAppDelegate.m */,
@@ -399,6 +402,7 @@
 				043AE116189168AB00075EB0 /* location_ios6.png in Resources */,
 				04300B71187C520E00499DC9 /* InfoPlist.strings in Resources */,
 				043AE114189168AB00075EB0 /* list_ios6.png in Resources */,
+				04A4EB2A189BA04300673AC4 /* Paczkomaty.podspec in Resources */,
 				043AE113189168AB00075EB0 /* list_ios7@2x.png in Resources */,
 				043AE118189168AB00075EB0 /* arrow_io6.png in Resources */,
 				043AE112189168AB00075EB0 /* list_ios7.png in Resources */,

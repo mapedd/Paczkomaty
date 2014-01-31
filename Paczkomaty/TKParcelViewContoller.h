@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 @interface TKParcelViewContoller : UITabBarController
-
+@property (readonly, strong, nonatomic) CLLocation *userLocation;
 @end

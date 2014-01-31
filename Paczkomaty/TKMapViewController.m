@@ -9,6 +9,7 @@
 #import "TKMapViewController.h"
 #import <MapKit/MapKit.h>
 #import "TKParcelDetailViewController.h"
+#import "TKParcelViewContoller.h"
 #import "TKParcelLocker.h"
 #import "PGSQLController.h"
 
@@ -64,6 +65,11 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    TKParcelViewContoller *vc = (TKParcelViewContoller *)self.parentViewController;
+    if ([vc isKindOfClass:[TKParcelViewContoller class]]) {
+        [self.mapView setRegion:[self mapRegionWithLocation:vc.userLocation]
+                       animated:animated];
+    }
     [self mapView:self.mapView regionWillChangeAnimated:NO];
     [self mapView:self.mapView regionDidChangeAnimated:NO];
 }
@@ -79,13 +85,10 @@
 }
 
 - (void)showMe:(id)sender{
-    BOOL animated = self.isViewLoaded;
-    
-    [self.mapView setRegion:[self userMapRegion]
-                   animated:animated];
-    self.mapView.centerCoordinate = self.mapView.userLocation.coordinate;
-    
-    
+    MKUserLocation *userLocation = self.mapView.userLocation;
+    [self.mapView setRegion:[self mapRegionWithLocation:userLocation.location]
+                   animated:YES];
+
 }
 
 #pragma mark - Getters
@@ -100,8 +103,8 @@
 
 #pragma mark - Private
 
-- (MKCoordinateRegion)userMapRegion{
-    CLLocationCoordinate2D location = self.mapView.userLocation.coordinate;
+- (MKCoordinateRegion)mapRegionWithLocation:(CLLocation *)locationObject{
+    CLLocationCoordinate2D location = locationObject.coordinate;
     NSLog(@"is valid location = %d", CLLocationCoordinate2DIsValid(location));
     MKCoordinateRegion mapRegion;
     mapRegion.center.latitude = location.latitude;
