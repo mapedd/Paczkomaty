@@ -1,0 +1,41 @@
+﻿"button-title.cancel" = "Anuluj";
+
+"button-title.select" = "Wybierz";
+
+"button-title.list" = "Lista";
+
+"button-title.select-locker" = "Wybierz";
+
+
+"screen-title.paczkomaty" = "Paczkomaty";
+
+"screen-title.list" = "Lista";
+
+"screen-title.map" = "Mapa";
+
+"screen-title.demo" = "Paczkomaty Demo";
+
+
+"alert-message.selected-locker" = "Wybrany paczkomat : %@";
+
+"alert-title.success" = "Sukces";
+
+
+
+"picker-title.map" = "Mapa";
+
+"picker-title.photo" = "Zdjęcie";
+
+
+"label.locker" = "Paczkomat: ";
+
+"label.address" = "Adres: ";
+
+"label.localisation" = "Lokalizacja: ";
+
+"label.opening-hours" = "Godziny otwarcia: ";
+
+"label.payment" = "Płatność: ";
+
+
+"label.no-info" = "Brak informacji";

@@ -9,6 +9,7 @@
 #import "TKParcelView.h"
 #import "TKParcelLocker.h"
 #import "UIImageView+AFNetworking.h"
+#import "TKLockerHelper.h"
 
 #define MAP_BANNER_INDEX 0
 #define PHOTO_BANNER_INDEX 1
@@ -163,7 +164,6 @@
 
 - (void)setup{
     
-    UIColor *textColor = [UIColor colorWithRed:0.122 green:0.514 blue:0.984 alpha:1.000];
     
     MKMapView *mapView = [[MKMapView alloc] initWithFrame:CGRectZero];
     mapView.showsUserLocation = YES;
@@ -171,34 +171,30 @@
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
-
-    NSArray *items = @[NSLocalizedString(@"Map",nil), NSLocalizedString(@"Photo",nil)];
+    
+    NSArray *items = @[TKLocalizedStringWithToken(@"picker-title.map"),
+                       TKLocalizedStringWithToken(@"picker-title.photo")];
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:items];
     [segmentedControl setSelectedSegmentIndex:MAP_BANNER_INDEX];
     [segmentedControl addTarget:self action:@selector(setVisibleBanner:) forControlEvents:(UIControlEventValueChanged)];
-
+    
     
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     nameLabel.font = [self TKBoldFontOfSize:20.0f];
-    nameLabel.textColor = textColor;
     nameLabel.numberOfLines = 0;
     
     UILabel *addressLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     addressLabel.font = [self TKBoldFontOfSize:18.0f];
     addressLabel.numberOfLines = 0;
-    addressLabel.textColor = textColor;
     
     UILabel *localisationLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     localisationLabel.numberOfLines = 0;
-    localisationLabel.textColor = textColor;
     
     UILabel *hoursLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    hoursLabel.textColor = textColor;
     hoursLabel.numberOfLines = 0;
     
     UILabel *paymentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     paymentLabel.numberOfLines = 0;
-    paymentLabel.textColor = textColor;
     
     
     
@@ -240,18 +236,23 @@
     
     [self.mapView setRegion:mapRegion animated: YES];
     self.mapView.centerCoordinate = self.parcel.coordinate;
-
-    self.nameLabel.attributedText = [self attributesStringWithBoldString:NSLocalizedString(@"Locker: ",nil) normalString:self.parcel.name];
     
-    NSString *boldString = NSLocalizedString(@"Address: ",nil);
+    self.nameLabel.attributedText = [self attributesStringWithBoldString:TKLocalizedStringWithToken(@"label.locker") normalString:self.parcel.name];
+    
+    NSString *boldString = TKLocalizedStringWithToken(@"label.address");
+    
     NSString *normalString = [NSString stringWithFormat:@"%@ %@\r%@ %@", self.parcel.street, self.parcel.buildingNumber, self.parcel.postalCode, self.parcel.town];
+    
     self.addressLabel.attributedText = [self attributesStringWithBoldString:boldString normalString:normalString];
-    self.localisationLabel.attributedText = [self attributesStringWithBoldString:NSLocalizedString(@"Localisation: ",nil)
-                                                          normalString:self.parcel.locationDescription ?: NSLocalizedString(@"No info",nil)];
-    self.hoursLabel.attributedText = [self attributesStringWithBoldString:NSLocalizedString(@"Hour opened: ",nil)
-                                                             normalString:self.parcel.operatingHours ?: NSLocalizedString(@"No info",nil)];
-    self.paymentLabel.attributedText = [self attributesStringWithBoldString:NSLocalizedString(@"Payment: ",nil)
-                                                               normalString:self.parcel.paymentType ?: NSLocalizedString(@"No info",nil)];
+    
+    self.localisationLabel.attributedText = [self attributesStringWithBoldString:TKLocalizedStringWithToken(@"label.localisation")
+                                                                    normalString:self.parcel.locationDescription ?: TKLocalizedStringWithToken(@"label.no-info")];
+    
+    self.hoursLabel.attributedText = [self attributesStringWithBoldString:TKLocalizedStringWithToken(@"label.opening-hours")
+                                                             normalString:self.parcel.operatingHours ?: TKLocalizedStringWithToken(@"label.no-info")];
+    
+    self.paymentLabel.attributedText = [self attributesStringWithBoldString:TKLocalizedStringWithToken(@"label.payment")
+                                                               normalString:self.parcel.paymentType ?: TKLocalizedStringWithToken(@"label.no-info")];
 }
 
 
@@ -265,8 +266,15 @@
 
 - (NSAttributedString *)attributesStringWithBoldString:(NSString *)boldString normalString:(NSString *)normalString{
     
-    NSDictionary *boldAttrs = @{UITextAttributeFont : [self TKBoldFontOfSize:18.0f], UITextAttributeTextColor : [UIColor grayColor]};
-    NSDictionary *normalAttrs = @{UITextAttributeFont : [self TKMediumFontOfSize:15.0f]};
+    NSDictionary *boldAttrs = (@{
+                                 NSFontAttributeName : [self TKBoldFontOfSize:18.0f],
+                                 NSForegroundColorAttributeName : [UIColor grayColor]
+                                 });
+    
+    NSDictionary *normalAttrs = (@{
+                                   NSFontAttributeName : [self TKMediumFontOfSize:15.0f],
+                                   NSForegroundColorAttributeName : [UIColor colorWithRed:0.122 green:0.514 blue:0.984 alpha:1.000]
+                                   });
     
     NSAttributedString *bold = [[NSAttributedString alloc] initWithString:boldString attributes:boldAttrs];
     NSAttributedString *normal = [[NSAttributedString alloc] initWithString:normalString attributes:normalAttrs];
@@ -293,8 +301,8 @@
 
 - (CGFloat)tk_attributedTextHeightWithWidth:(CGFloat)width{
     return fmaxf(ceilf([self.attributedText boundingRectWithSize:CGSizeMake(width, 9999)
-                                                        options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                                        context:0].size.height), 50.0f);
+                                                         options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                                         context:0].size.height), 50.0f);
 }
 
 @end

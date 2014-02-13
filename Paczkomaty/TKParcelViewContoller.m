@@ -9,6 +9,7 @@
 #import "TKParcelViewContoller.h"
 #import "TKLockerListViewController.h"
 #import "PGSQLController.h"
+#import "TKLockerHelper.h"
 #import "TKMapViewController.h"
 
 @interface TKParcelViewContoller () <CLLocationManagerDelegate>
@@ -29,7 +30,7 @@
     self = [super init];
     if (self == nil) return nil;
     
-    NSString *title = NSLocalizedString(@"Cancel",nil);
+    NSString *title = TKLocalizedStringWithToken(@"button-title.cancel");
     TKLockerListViewController *vc1 = [TKLockerListViewController new];
     UINavigationController *nc1 = [[UINavigationController alloc] initWithRootViewController:vc1];
     vc1.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:title style:(UIBarButtonItemStyleBordered) target:self action:@selector(cancelSelection)];

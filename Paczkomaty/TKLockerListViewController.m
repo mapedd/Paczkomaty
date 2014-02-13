@@ -14,6 +14,7 @@
 #import "TKParcelTableViewCell+Configuration.h"
 #import "UIViewController+Lockers.h"
 #import "TKNetworkController.h"
+#import "TKLockerHelper.h"
 #import "TKParcelDetailViewController.h"
 
 @interface TKLockerListViewController () <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate>
@@ -38,14 +39,15 @@
 
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.networkController cancelParcelLoading];
 }
 
 - (id)init{
     self = [super initWithNibName:nil bundle:nil];
     if(!self)return nil;
     [self addToNotificationCenter];
-    self.navigationItem.title = NSLocalizedString(@"Paczkomaty",nil);
-    self.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"List",nil) image:[self tabBarImage] tag:1];
+    self.navigationItem.title = TKLocalizedStringWithToken(@"screen-title.paczkomaty");
+    self.tabBarItem = [[UITabBarItem alloc] initWithTitle:TKLocalizedStringWithToken(@"screen-title.list") image:[self tabBarImage] tag:1];
     self.parcelLockers = [[self sqlController] exportParcelsFromDataBase];
     if (self.parcelLockers.count == 0) {
         [self get];

@@ -271,7 +271,13 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
     NSError * __autoreleasing error;
     NSString *query = [NSString stringWithFormat:@"SELECT * FROM lockers ORDER BY distance(longitude, latitude, %f, %f) LIMIT 10", location.coordinate.longitude,location.coordinate.latitude];
     NSArray *array = [self exportParcelsFromDataBase:query error:&error];
-    TKParcelLocker *locker = [array firstObject];
+    
+    TKParcelLocker *locker;
+    
+    if (array.count) {
+        locker = array[0];
+    }
+    
     if (locker == nil) {
         return nil;
     }

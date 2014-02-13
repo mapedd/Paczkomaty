@@ -8,6 +8,7 @@
 
 #import "TKParcelDetailViewController.h"
 #import "TKParcelView.h"
+#import "TKLockerHelper.h"
 #import "TKParcelViewContoller.h"
 #import "UIViewController+Lockers.h"
 #import "TKParcelLocker.h"
@@ -42,12 +43,12 @@
     [self.scrollView addSubview:self.parcelView];
     self.parcelView.scrollView = self.scrollView;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Select",nil)
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:TKLocalizedStringWithToken(@"button-title.list")
                                                                style:(UIBarButtonItemStyleBordered)
                                                               target:self
                                                               action:@selector(select:)];
     
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"List",nil)
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:TKLocalizedStringWithToken(@"List")
                                                                                style:(UIBarButtonItemStyleBordered)
                                                                               target:nil
                                                                               action:nil];

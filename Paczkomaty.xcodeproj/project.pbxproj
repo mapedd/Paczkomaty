@@ -21,6 +21,8 @@
 		04300B93187C520F00499DC9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04300B91187C520F00499DC9 /* InfoPlist.strings */; };
 		04300BA0187C57A600499DC9 /* TKParcelLocker.m in Sources */ = {isa = PBXBuildFile; fileRef = 04300B9F187C57A600499DC9 /* TKParcelLocker.m */; };
 		04300BA2187C586500499DC9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04300BA1187C586500499DC9 /* MapKit.framework */; };
+		0433ECBC18ACC6AC00CDD0FC /* Paczkomaty.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0433ECBB18ACC6AC00CDD0FC /* Paczkomaty.bundle */; };
+		0433ECBF18ACC76300CDD0FC /* TKLockerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0433ECBE18ACC76300CDD0FC /* TKLockerHelper.m */; };
 		043AE112189168AB00075EB0 /* list_ios7.png in Resources */ = {isa = PBXBuildFile; fileRef = 043AE106189168AB00075EB0 /* list_ios7.png */; };
 		043AE113189168AB00075EB0 /* list_ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 043AE107189168AB00075EB0 /* list_ios7@2x.png */; };
 		043AE114189168AB00075EB0 /* list_ios6.png in Resources */ = {isa = PBXBuildFile; fileRef = 043AE108189168AB00075EB0 /* list_ios6.png */; };
@@ -88,6 +90,11 @@
 		04300B9E187C57A600499DC9 /* TKParcelLocker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKParcelLocker.h; sourceTree = "<group>"; };
 		04300B9F187C57A600499DC9 /* TKParcelLocker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKParcelLocker.m; sourceTree = "<group>"; };
 		04300BA1187C586500499DC9 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		0433ECBB18ACC6AC00CDD0FC /* Paczkomaty.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Paczkomaty.bundle; sourceTree = "<group>"; };
+		0433ECBD18ACC76300CDD0FC /* TKLockerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKLockerHelper.h; sourceTree = "<group>"; };
+		0433ECBE18ACC76300CDD0FC /* TKLockerHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKLockerHelper.m; sourceTree = "<group>"; };
+		0433ECC118AD0C0900CDD0FC /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0433ECC218AD0C0900CDD0FC /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		043AE106189168AB00075EB0 /* list_ios7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = list_ios7.png; path = Assets/list_ios7.png; sourceTree = "<group>"; };
 		043AE107189168AB00075EB0 /* list_ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "list_ios7@2x.png"; path = "Assets/list_ios7@2x.png"; sourceTree = "<group>"; };
 		043AE108189168AB00075EB0 /* list_ios6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = list_ios6.png; path = Assets/list_ios6.png; sourceTree = "<group>"; };
@@ -263,6 +270,25 @@
 			name = Network;
 			sourceTree = "<group>";
 		};
+		0433ECBA18ACC62500CDD0FC /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				043AE106189168AB00075EB0 /* list_ios7.png */,
+				043AE107189168AB00075EB0 /* list_ios7@2x.png */,
+				043AE108189168AB00075EB0 /* list_ios6.png */,
+				043AE109189168AB00075EB0 /* list_ios6@2x.png */,
+				043AE10A189168AB00075EB0 /* location_ios6.png */,
+				043AE10B189168AB00075EB0 /* location_ios6@2x.png */,
+				043AE10C189168AB00075EB0 /* arrow_io6.png */,
+				043AE10D189168AB00075EB0 /* arrow_io6@2x.png */,
+				043AE10E189168AB00075EB0 /* arrow_io7.png */,
+				043AE10F189168AB00075EB0 /* arrow_io7@2x.png */,
+				043AE110189168AB00075EB0 /* location_ios7@2x.png */,
+				043AE111189168AB00075EB0 /* location_ios7.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		046CFCE3188FF726009B2208 /* Data Base */ = {
 			isa = PBXGroup;
 			children = (
@@ -292,18 +318,8 @@
 		046CFCE5188FF845009B2208 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				043AE106189168AB00075EB0 /* list_ios7.png */,
-				043AE107189168AB00075EB0 /* list_ios7@2x.png */,
-				043AE108189168AB00075EB0 /* list_ios6.png */,
-				043AE109189168AB00075EB0 /* list_ios6@2x.png */,
-				043AE10A189168AB00075EB0 /* location_ios6.png */,
-				043AE10B189168AB00075EB0 /* location_ios6@2x.png */,
-				043AE10C189168AB00075EB0 /* arrow_io6.png */,
-				043AE10D189168AB00075EB0 /* arrow_io6@2x.png */,
-				043AE10E189168AB00075EB0 /* arrow_io7.png */,
-				043AE10F189168AB00075EB0 /* arrow_io7@2x.png */,
-				043AE110189168AB00075EB0 /* location_ios7@2x.png */,
-				043AE111189168AB00075EB0 /* location_ios7.png */,
+				0433ECBB18ACC6AC00CDD0FC /* Paczkomaty.bundle */,
+				0433ECBA18ACC62500CDD0FC /* Images */,
 			);
 			name = Assets;
 			sourceTree = "<group>";
@@ -345,6 +361,8 @@
 			isa = PBXGroup;
 			children = (
 				04A4EB30189BD38300673AC4 /* Paczkomaty.h */,
+				0433ECBD18ACC76300CDD0FC /* TKLockerHelper.h */,
+				0433ECBE18ACC76300CDD0FC /* TKLockerHelper.m */,
 				046CFCE5188FF845009B2208 /* Assets */,
 				04A4EB37189BF52000673AC4 /* Categories */,
 				046CFCE4188FF734009B2208 /* View Controller */,
@@ -418,6 +436,7 @@
 			knownRegions = (
 				en,
 				Base,
+				pl,
 			);
 			mainGroup = 04300B5A187C520E00499DC9;
 			productRefGroup = 04300B64187C520E00499DC9 /* Products */;
@@ -447,6 +466,7 @@
 				043AE113189168AB00075EB0 /* list_ios7@2x.png in Resources */,
 				043AE118189168AB00075EB0 /* arrow_io6.png in Resources */,
 				043AE112189168AB00075EB0 /* list_ios7.png in Resources */,
+				0433ECBC18ACC6AC00CDD0FC /* Paczkomaty.bundle in Resources */,
 				043AE11B189168AB00075EB0 /* arrow_io7@2x.png in Resources */,
 				043AE11D189168AB00075EB0 /* location_ios7.png in Resources */,
 				043AE119189168AB00075EB0 /* arrow_io6@2x.png in Resources */,
@@ -511,6 +531,7 @@
 				046CFCE2188FECF6009B2208 /* TKNetworkController.m in Sources */,
 				04D63A9F187D63B60030166E /* PGSQLController.m in Sources */,
 				046CFCFC18900229009B2208 /* TKParcelViewContoller.m in Sources */,
+				0433ECBF18ACC76300CDD0FC /* TKLockerHelper.m in Sources */,
 				04300B73187C520E00499DC9 /* main.m in Sources */,
 				04300B77187C520E00499DC9 /* TKAppDelegate.m in Sources */,
 				046CFD0318900A1B009B2208 /* TKParcelTableViewCell+Configuration.m in Sources */,
@@ -546,6 +567,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				04300B70187C520E00499DC9 /* en */,
+				0433ECC118AD0C0900CDD0FC /* pl */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -554,6 +576,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				04300B92187C520F00499DC9 /* en */,
+				0433ECC218AD0C0900CDD0FC /* pl */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

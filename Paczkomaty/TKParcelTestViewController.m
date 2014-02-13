@@ -7,6 +7,7 @@
 //
 
 #import "TKParcelTestViewController.h"
+#import "TKLockerHelper.h"
 #import "Paczkomaty.h"
 
 @interface TKParcelTestViewController () <TKParcelViewContollerDelegate>
@@ -23,9 +24,9 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    self.title = NSLocalizedString(@"Paczkomaty test",nil);
+    self.title = TKLocalizedStringWithToken(@"screen-title.demo");
     self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Select locker",nil)
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:TKLocalizedStringWithToken(@"button-title.select-locker")
                                                                               style:(UIBarButtonItemStyleBordered)
                                                                              target:self
                                                                              action:@selector(buttonTap1)];
@@ -46,8 +47,8 @@
 - (void)parcelController:(TKParcelViewContoller *)parcelViewController didSelectLocker:(TKParcelLocker *)locker{
     [self.navigationController dismissViewControllerAnimated:YES
                                                   completion:^{
-                                                      NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Selected locker : %@",nil), locker.name];
-                                                     [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Success",nil)
+                                                      NSString *message = [NSString stringWithFormat:TKLocalizedStringWithToken(@"alert-message.selected-locker"), locker.name];
+                                                     [[[UIAlertView alloc] initWithTitle:TKLocalizedStringWithToken(@"alert-title.success")
                                                                                  message:message
                                                                                 delegate:nil
                                                                        cancelButtonTitle:@"OK"

@@ -41,10 +41,18 @@ NSString *const TKNetworkControllerFetchedLockerDataNotificaiton = @"TKNetworkCo
     return self.operation != nil;
 }
 
+- (NSString *)allParcelsPath{
+    return @"?do=listmachines_xml&paymentavailable=";
+}
+
+- (void)cancelParcelLoading{
+    [self cancelAllHTTPOperationsWithMethod:@"GET" path:[self allParcelsPath]];
+}
+
 - (void)getAndImportData:(PGSQLController *)controller{
     __unsafe_unretained typeof(self) bself = self;
     
-    [self getPath:@"?do=listmachines_xml&paymentavailable="
+    [self getPath:[self allParcelsPath]
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               NSMutableArray *array = [NSMutableArray array];

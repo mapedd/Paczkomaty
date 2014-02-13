@@ -27,7 +27,7 @@ Pod::Spec.new do |s|
   s.source_files  = 'Paczkomaty/*.{h,m}'
   s.exclude_files = 'Paczkomaty/main.m','Paczkomaty/TKAppDelegate*{h,m}'
 
-  s.resources = "Paczkomaty/Assets/*.png"
+  s.resources = 'Paczkomaty/Assets/*.png', 'Paczkomaty/Paczkomaty.bundle'
 
   s.framework = 'MapKit'
   s.library   = 'sqlite3'

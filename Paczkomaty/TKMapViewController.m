@@ -12,6 +12,7 @@
 #import "TKParcelViewContoller.h"
 #import "TKParcelLocker.h"
 #import "PGSQLController.h"
+#import "TKLockerHelper.h"
 #import "UIViewController+Lockers.h"
 
 @interface TKMapViewController () <MKMapViewDelegate>{
@@ -41,8 +42,8 @@
 - (id)init{
     self = [super initWithNibName:nil bundle:nil];
     if (!self) return nil;
-    self.title = NSLocalizedString(@"Paczkomaty",nil);
-    self.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"Map",nil) image:[self tabBarImage] tag:1];
+    self.title = TKLocalizedStringWithToken(@"screen-title.paczkomaty");
+    self.tabBarItem = [[UITabBarItem alloc] initWithTitle:TKLocalizedStringWithToken(@"screen-title.map") image:[self tabBarImage] tag:1];
     self.queue = dispatch_queue_create("com.paczkomaty.databaseFetchQueue", NULL);
     self.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"hash" ascending:YES]];
     return self;
