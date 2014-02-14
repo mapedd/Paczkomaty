@@ -130,7 +130,7 @@
 
 - (MKCoordinateRegion)mapRegionWithLocation:(CLLocation *)locationObject{
     CLLocationCoordinate2D location = locationObject.coordinate;
-    NSLog(@"is valid location = %d", CLLocationCoordinate2DIsValid(location));
+
     MKCoordinateRegion mapRegion;
     mapRegion.center.latitude = location.latitude;
     mapRegion.center.longitude = location.longitude;

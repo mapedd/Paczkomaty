@@ -43,12 +43,12 @@
     [self.scrollView addSubview:self.parcelView];
     self.parcelView.scrollView = self.scrollView;
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:TKLocalizedStringWithToken(@"button-title.list")
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:TKLocalizedStringWithToken(@"button-title.select")
                                                                style:(UIBarButtonItemStyleBordered)
                                                               target:self
                                                               action:@selector(select:)];
     
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:TKLocalizedStringWithToken(@"List")
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:TKLocalizedStringWithToken(@"button-title.list")
                                                                                style:(UIBarButtonItemStyleBordered)
                                                                               target:nil
                                                                               action:nil];

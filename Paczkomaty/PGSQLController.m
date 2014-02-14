@@ -306,7 +306,7 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
 
 
 void errorLogCallback(void *pArg, int iErrCode, const char *zMsg){
-    fprintf(stderr, "(%d) %s\n", iErrCode, zMsg);
+//    fprintf(stderr, "(%d) %s\n", iErrCode, zMsg);
 }
 
 int executeCallback(void*pArg, int iErrCode, char** something1,char** something2){
