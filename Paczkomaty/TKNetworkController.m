@@ -41,31 +41,50 @@ NSString *const TKNetworkControllerFetchedLockerDataNotificaiton = @"TKNetworkCo
     return self.operation != nil;
 }
 
-- (NSString *)allParcelsPath{
++ (NSString *)allParcelsPath{
     return @"?do=listmachines_xml&paymentavailable=";
 }
 
 - (void)cancelParcelLoading{
-    [self cancelAllHTTPOperationsWithMethod:@"GET" path:[self allParcelsPath]];
+    NSString *method = @"GET";
+    for (NSOperation *operation in [self.operationQueue operations]) {
+        if (![operation isKindOfClass:[AFHTTPRequestOperation class]]) {
+            continue;
+        }
+        
+        BOOL hasMatchingMethod = !method || [method isEqualToString:[[(AFHTTPRequestOperation *)operation request] HTTPMethod]];
+        
+        if (hasMatchingMethod) {
+            AFHTTPRequestOperation *afOperation = (AFHTTPRequestOperation *)operation;
+            [afOperation cancel];
+            afOperation.completionBlock = nil;
+        }
+    }
+    
 }
 
 - (void)getAndImportData:(PGSQLController *)controller{
     __unsafe_unretained typeof(self) bself = self;
     
-    [self getPath:[self allParcelsPath]
+    [self getPath:[TKNetworkController allParcelsPath]
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              NSMutableArray *array = [NSMutableArray array];
-              RXMLElement *element = [[RXMLElement alloc] initFromXMLData:responseObject];
-              [element iterate:@"machine" usingBlock: ^(RXMLElement *e) {
-                  TKParcelLocker *locker = [TKParcelLocker lockerWithXMLElement:e];
-                  [array addObject:locker];
-              }];
+              if (controller != nil) {
+                  NSMutableArray *array = [NSMutableArray array];
+                  RXMLElement *element = [[RXMLElement alloc] initFromXMLData:responseObject];
+                  [element iterate:@"machine" usingBlock: ^(RXMLElement *e) {
+                      TKParcelLocker *locker = [TKParcelLocker lockerWithXMLElement:e];
+                      [array addObject:locker];
+                  }];
+                  
+                  [bself importLockersData:[NSArray arrayWithArray:array] withController:controller];
+                  [bself postFetchSuccess:YES error:nil];
+              }else{
+                  [bself postFetchSuccess:NO error:nil];
+              }
               
-              [bself importLockersData:[NSArray arrayWithArray:array] withController:controller];
-              [bself postFetchSuccess:YES error:nil];
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              [bself postFetchSuccess:YES error:nil];
+              [bself postFetchSuccess:YES error:error];
           }];
     
     

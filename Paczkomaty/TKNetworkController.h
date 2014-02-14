@@ -17,4 +17,5 @@ extern NSString *const TKNetworkControllerFetchedLockerDataNotificaiton;
 - (void)getAndImportData:(PGSQLController *)controller;
 - (BOOL)isFetchingParcels;
 - (void)cancelParcelLoading;
++ (NSString *)allParcelsPath;
 @end
