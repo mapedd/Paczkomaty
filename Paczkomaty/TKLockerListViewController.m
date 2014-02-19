@@ -91,7 +91,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self reloadData];
+    [self fetchDataIfNeededOrReload];
 }
 
 - (void)viewDidDisappear:(BOOL)animated{
@@ -134,6 +134,15 @@
     }
     self.navigationItem.rightBarButtonItem = barButtonItem;
     
+}
+
+- (void)fetchDataIfNeededOrReload{
+    self.parcelLockers = [[self sqlController] exportParcelsFromDataBase];
+    if(self.parcelLockers.count == 0){
+        [self get];
+    }else{
+        [self reloadData];
+    }
 }
 
 - (void)reloadData{

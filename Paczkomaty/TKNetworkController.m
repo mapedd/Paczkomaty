@@ -102,7 +102,9 @@ NSString *const TKNetworkControllerFetchedLockerDataNotificaiton = @"TKNetworkCo
 }
 
 - (void)importLockersData:(NSArray *)lockers withController:(PGSQLController *)controller{
-    [controller importParcelsToDataBase:lockers];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+       [controller importParcelsToDataBase:lockers]; 
+    });
 }
 
 @end

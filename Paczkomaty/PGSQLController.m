@@ -205,9 +205,11 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
     if (error) {
         userInfo = @{@"error" : error};
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:PGSQLControllerImportedDataNotificaiton
-                                                        object:@(success)
-                                                      userInfo:userInfo];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:PGSQLControllerImportedDataNotificaiton
+                                                            object:@(success)
+                                                          userInfo:userInfo];
+    });
 }
 
 - (NSArray *)exportParcelsFromDataBase{
