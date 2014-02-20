@@ -56,6 +56,9 @@
 		04A4EB2F189BD2AF00673AC4 /* TKParcelTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A4EB2E189BD2AF00673AC4 /* TKParcelTestViewController.m */; };
 		04A4EB33189BE84900673AC4 /* TKParcelLocker+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A4EB32189BE84900673AC4 /* TKParcelLocker+Helpers.m */; };
 		04A4EB36189BF26B00673AC4 /* UIViewController+Lockers.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A4EB35189BF26B00673AC4 /* UIViewController+Lockers.m */; };
+		04A7863718B63A3800FC97F9 /* TKParcelViewController_tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A7863618B63A3800FC97F9 /* TKParcelViewController_tests.m */; };
+		04A7863818B63A4C00FC97F9 /* TKParcelViewContoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFCFB18900229009B2208 /* TKParcelViewContoller.m */; };
+		04A7863B18B63B9A00FC97F9 /* TKLockerMockingFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A7863A18B63B9A00FC97F9 /* TKLockerMockingFunctions.m */; };
 		04C785CB18AE7B960062EF82 /* TKParcelLocker+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A4EB32189BE84900673AC4 /* TKParcelLocker+Helpers.m */; };
 		04D63A9C187D615E0030166E /* TKMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D63A9B187D615E0030166E /* TKMapViewController.m */; };
 		04D63A9F187D63B60030166E /* PGSQLController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D63A9E187D63B60030166E /* PGSQLController.m */; };
@@ -138,6 +141,9 @@
 		04A4EB32189BE84900673AC4 /* TKParcelLocker+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TKParcelLocker+Helpers.m"; sourceTree = "<group>"; };
 		04A4EB34189BF26B00673AC4 /* UIViewController+Lockers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Lockers.h"; sourceTree = "<group>"; };
 		04A4EB35189BF26B00673AC4 /* UIViewController+Lockers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Lockers.m"; sourceTree = "<group>"; };
+		04A7863618B63A3800FC97F9 /* TKParcelViewController_tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKParcelViewController_tests.m; sourceTree = "<group>"; };
+		04A7863918B63B9A00FC97F9 /* TKLockerMockingFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKLockerMockingFunctions.h; sourceTree = "<group>"; };
+		04A7863A18B63B9A00FC97F9 /* TKLockerMockingFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKLockerMockingFunctions.m; sourceTree = "<group>"; };
 		04D63A9A187D615E0030166E /* TKMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKMapViewController.h; sourceTree = "<group>"; };
 		04D63A9B187D615E0030166E /* TKMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKMapViewController.m; sourceTree = "<group>"; };
 		04D63A9D187D63B60030166E /* PGSQLController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGSQLController.h; sourceTree = "<group>"; };
@@ -243,7 +249,10 @@
 				043AE12918916E3600075EB0 /* PGMockSQLController.h */,
 				043AE12A18916E3600075EB0 /* PGMockSQLController.m */,
 				046AF6C718AE79600033158F /* TKNetworkController_tests.m */,
+				04A7863618B63A3800FC97F9 /* TKParcelViewController_tests.m */,
 				04300B8F187C520F00499DC9 /* Supporting Files */,
+				04A7863918B63B9A00FC97F9 /* TKLockerMockingFunctions.h */,
+				04A7863A18B63B9A00FC97F9 /* TKLockerMockingFunctions.m */,
 			);
 			path = PaczkomatyTests;
 			sourceTree = "<group>";
@@ -552,11 +561,14 @@
 				046CFD0B18912A4D009B2208 /* TKParcelLocker_tests.m in Sources */,
 				046AF6C818AE79600033158F /* TKNetworkController_tests.m in Sources */,
 				043AE12B18916E3600075EB0 /* PGMockSQLController.m in Sources */,
+				04A7863818B63A4C00FC97F9 /* TKParcelViewContoller.m in Sources */,
+				04A7863718B63A3800FC97F9 /* TKParcelViewController_tests.m in Sources */,
 				046AF6C918AE79640033158F /* TKNetworkController.m in Sources */,
 				046CFD0C18912B39009B2208 /* TKParcelLocker.m in Sources */,
 				043AE12818916E1600075EB0 /* PGSQLController_tests.m in Sources */,
 				043AE12C18916E6400075EB0 /* PGSQLController.m in Sources */,
 				04C785CB18AE7B960062EF82 /* TKParcelLocker+Helpers.m in Sources */,
+				04A7863B18B63B9A00FC97F9 /* TKLockerMockingFunctions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

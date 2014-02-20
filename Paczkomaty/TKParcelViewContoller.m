@@ -10,6 +10,7 @@
 #import "TKLockerListViewController.h"
 #import "PGSQLController.h"
 #import "TKLockerHelper.h"
+#import "TKParcelLocker.h"
 #import "TKMapViewController.h"
 
 @interface TKParcelViewContoller () <CLLocationManagerDelegate>
@@ -72,6 +73,8 @@
 }
 
 - (void)didSelectLocker:(TKParcelLocker *)locker{
+    locker.isSelected = YES;
+    [self.sqlController setLockerAsSelected:locker];
     [self.parcelDelegate parcelController:self didSelectLocker:locker];
 }
 
