@@ -19,6 +19,8 @@
 @property (readonly, strong, nonatomic) PGSQLController *sqlController;
 - (void)didSelectLocker:(TKParcelLocker *)locker;
 + (TKParcelLocker *)lastSelectedParcelLocker;
+/* Will throw exception if lickerName == nil */
++ (TKParcelLocker *)lockerWithName:(NSString *)lockerName;
 @end
 
 

@@ -269,6 +269,25 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
     return array;
 }
 
+- (TKParcelLocker *)parcelWithName:(NSString *)parcelName{
+    NSParameterAssert(parcelName);
+    NSError * __autoreleasing error;
+    NSString *query = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE name = '%@'", [TKParcelLocker sqlTableName], parcelName];
+    NSArray *array = [self exportParcelsFromDataBase:query error:&error];
+    if (!array) {
+        NSLog(@"error exporting %@", error);
+        return nil;
+    }
+    else{
+        if ([array count] > 0) {
+            return array[0];
+        }
+        else{
+            return nil;
+        }
+    }
+}
+
 - (TKParcelLocker *)closestLockerToLocation:(CLLocation *)location{
     NSError * __autoreleasing error;
     NSString *query = [NSString stringWithFormat:@"SELECT * FROM lockers ORDER BY distance(longitude, latitude, %f, %f) LIMIT 10", location.coordinate.longitude,location.coordinate.latitude];

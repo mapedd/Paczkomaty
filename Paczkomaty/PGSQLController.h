@@ -16,17 +16,23 @@ extern NSString *const PGSQLControllerImportedDataNotificaiton;
 @class TKParcelLocker;
 
 @interface PGSQLController : NSObject
+
 - (void)importParcelsToDataBase:(NSArray *)parcels;
 
 - (NSArray *)exportParcelsFromDataBase;
 - (NSArray *)exportParcelsFromRegion:(MKCoordinateRegion)region;
+
 - (NSArray *)search:(NSString *)string;
+
 - (TKParcelLocker *)closestLockerToLocation:(CLLocation *)location;
 - (TKParcelLocker *)lastSelectedLocker;
+- (TKParcelLocker *)parcelWithName:(NSString *)parcelName;
+
 - (BOOL)setLockerAsSelected:(TKParcelLocker *)locker;
 - (BOOL)updateLockersWithStatement:(NSString *)sqlStatement;
 
 - (BOOL)databaseConnectionExists;
 - (BOOL)databaseModelIsValid;
 - (NSString *)databasePath;
+
 @end

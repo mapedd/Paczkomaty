@@ -56,6 +56,12 @@
     return [sqlController lastSelectedLocker];
 }
 
++ (TKParcelLocker *)lockerWithName:(NSString *)lockerName{
+    PGSQLController *sqlController = [[PGSQLController alloc] init];
+    return [sqlController parcelWithName:lockerName];
+}
+
+
 #pragma mark - UIViewController
 
 - (void)viewDidLoad{

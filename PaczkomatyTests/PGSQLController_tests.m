@@ -96,7 +96,7 @@
     [self.sqlController importParcelsToDataBase:@[lockerA, lockerB, lockerC]];
     
     TKParcelLocker *locker = [self.sqlController  closestLockerToLocation:searchLocation];
-
+    
     XCTAssertEqualObjects(locker, lockerA, @"first locker should be closest");
     
 }
@@ -164,13 +164,39 @@
     TKParcelLocker *lockerA = lockerWithName(@"ABC1",CLLocationCoordinate2DMake(52.197872, 21.022672));
     TKParcelLocker *lockerB = lockerWithName(@"ABC2",CLLocationCoordinate2DMake(52.197872, 21.022672));
     TKParcelLocker *lockerC = lockerWithName(@"ABC3",CLLocationCoordinate2DMake(52.197872, 21.022672));
-
+    
     lockerA.isSelected = YES;
     [self.sqlController importParcelsToDataBase:@[lockerA, lockerB, lockerC]];
     
     XCTAssertTrue([self.sqlController setLockerAsSelected:lockerB], @"should update successfully");
     
     XCTAssertEqualObjects([self.sqlController lastSelectedLocker], lockerB, @"lockerB should be returned as selected");
+}
+
+- (void)testGettingParcelWithNameIfItExist{
+    TKParcelLocker *lockerA = lockerWithName(@"ABC1",CLLocationCoordinate2DMake(52.197872, 21.022672));
+    TKParcelLocker *lockerB = lockerWithName(@"ABC2",CLLocationCoordinate2DMake(52.197872, 21.022672));
+    TKParcelLocker *lockerC = lockerWithName(@"ABC3",CLLocationCoordinate2DMake(52.197872, 21.022672));
+    
+    [self.sqlController importParcelsToDataBase:@[lockerA, lockerB, lockerC]];
+    
+    
+    XCTAssertEqualObjects([self.sqlController parcelWithName:@"ABC2"], lockerB, @"lockerB should be returned");
+}
+
+- (void)testGettingParcelWithNameIfItNotExist{
+    TKParcelLocker *lockerA = lockerWithName(@"ABC1",CLLocationCoordinate2DMake(52.197872, 21.022672));
+    TKParcelLocker *lockerB = lockerWithName(@"ABC2",CLLocationCoordinate2DMake(52.197872, 21.022672));
+    TKParcelLocker *lockerC = lockerWithName(@"ABC3",CLLocationCoordinate2DMake(52.197872, 21.022672));
+    
+    [self.sqlController importParcelsToDataBase:@[lockerA, lockerB, lockerC]];
+    
+    
+    XCTAssertNil([self.sqlController parcelWithName:@"ABC4"]);
+}
+
+- (void)testGettingParcelWithNameIfNilParamter{
+    XCTAssertThrows([self.sqlController parcelWithName:nil],@"should throw since name could not be nil");
 }
 
 @end
