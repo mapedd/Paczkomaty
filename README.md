@@ -10,9 +10,9 @@ Deployment target **iOS 6.0**
 
 Screenshots:
 
-[[map.png]]
-[[list.png]]
-[[detail.png]]
+[[Screenshots/map.png]]
+[[Screenshots/list.png]]
+[[Screenshots/detail.png]]
 
 ---
 
