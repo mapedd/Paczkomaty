@@ -289,6 +289,61 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
     return locker;
 }
 
+- (TKParcelLocker *)lastSelectedLocker{
+    NSError * __autoreleasing error;
+    NSString *query = @"SELECT * FROM lockers WHERE isSelected = 1";
+    NSArray *array = [self exportParcelsFromDataBase:query error:&error];
+    
+    TKParcelLocker *locker;
+    
+    if (array.count) {
+        locker = array[0];
+    }
+    
+    if (locker == nil) {
+        return nil;
+    }
+    
+    return locker;
+}
+
+- (BOOL)setLockerAsSelected:(TKParcelLocker *)locker{
+    /* First we will deselect all lockers in the db */
+    NSString *deselectStatement = [TKParcelLocker deselectSelectedStatement];
+    BOOL success = [self updateLockersWithStatement:deselectStatement];
+    if (!success) {
+        return NO;
+    }
+    NSString *selectStatement = [locker selectStatement];
+    success = [self updateLockersWithStatement:selectStatement];
+    
+    return success;
+}
+
+
+- (BOOL)updateLockersWithStatement:(NSString *)sqlStatement{
+    BOOL success = NO;
+    
+    const char *dbpath = [self.databasePath UTF8String];
+    
+    if (sqlite3_open(dbpath, &_database) == SQLITE_OK){
+        char *errMsg;
+        const char *sql_stmt = [sqlStatement UTF8String];
+        
+        if (sqlite3_exec(_database, sql_stmt, &executeCallback, NULL, &errMsg) != SQLITE_OK){
+            NSLog(@"Failed to update table %@", [[NSString alloc] initWithUTF8String:errMsg]);
+            success = NO;
+        }
+        else{
+            NSLog(@"updated table with statement %@", sqlStatement);
+            success = YES;
+        }
+            
+        sqlite3_close(_database);
+    }
+    return success;
+}
+
 - (NSArray *)search:(NSString *)string{
     if (string.length == 0) {
         return @[];

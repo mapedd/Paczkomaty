@@ -48,6 +48,13 @@
     return self;
 }
 
+#pragma mark - Public
+
++ (TKParcelLocker *)lastSelectedParcelLocker{
+    PGSQLController *sqlController = [[PGSQLController alloc] init];
+    return [sqlController lastSelectedLocker];
+}
+
 #pragma mark - UIViewController
 
 - (void)viewDidLoad{

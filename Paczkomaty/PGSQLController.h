@@ -22,6 +22,9 @@ extern NSString *const PGSQLControllerImportedDataNotificaiton;
 - (NSArray *)exportParcelsFromRegion:(MKCoordinateRegion)region;
 - (NSArray *)search:(NSString *)string;
 - (TKParcelLocker *)closestLockerToLocation:(CLLocation *)location;
+- (TKParcelLocker *)lastSelectedLocker;
+- (BOOL)setLockerAsSelected:(TKParcelLocker *)locker;
+- (BOOL)updateLockersWithStatement:(NSString *)sqlStatement;
 
 - (BOOL)databaseConnectionExists;
 - (BOOL)databaseModelIsValid;

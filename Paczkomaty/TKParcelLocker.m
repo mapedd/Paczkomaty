@@ -32,13 +32,13 @@
 @implementation TKParcelLocker
 
 - (void)dealloc{
-
+    
 }
 
 + (TKParcelLocker *)lockerWithSQLStatement:(sqlite3_stmt *)statement{
     TKParcelLocker *locker = [[TKParcelLocker alloc] init];
     
-
+    
     char *name              = (char *) sqlite3_column_text  (statement, 0);
     char *postalCode        = (char *) sqlite3_column_text  (statement, 1);
     char *province          = (char *) sqlite3_column_text  (statement, 2);
@@ -55,6 +55,7 @@
     char *status            = (char *) sqlite3_column_text  (statement, 13);
     BOOL paymentAvailable   = (BOOL)   sqlite3_column_int   (statement, 14);
     char *type              = (char *) sqlite3_column_text  (statement, 15);
+    BOOL isSelected         = (BOOL)   sqlite3_column_int   (statement, 16);
     
     CLLocationCoordinate2D location;
     location.latitude = latitude;
@@ -75,7 +76,7 @@
     locker.status = [[NSString alloc] initWithUTF8String:status];
     locker.paymentAvailable = paymentAvailable;
     locker.type = [[NSString alloc] initWithUTF8String:type];
-    
+    locker.isSelected = isSelected;
     return locker;
 }
 
@@ -105,7 +106,7 @@
     NSString *paymentavailable = [[element child:@"paymentavailable"] text];;
     locker.paymentAvailable = [paymentavailable isEqualToString:@"f"] ? YES :([paymentavailable isEqualToString:@"t"] ? NO : NO);
     locker.type = [[element child:@"type"] text];
-
+    
     return locker;
 }
 
@@ -142,11 +143,19 @@
 }
 
 + (NSString *)sqlTableModel{
-    return @"lockers (name TEXT NOT NULL, postalCode TEXT NOT NULL, province TEXT, street TEXT, buildingNumber TEXT, town TEXT, longitude DOUBLE, latitude DOUBLE, locationDescription TEXT, paymentPointDescription TEXT, parterId INTEGER, paymentType TEXT, operatingHours TEXT, status TEXT, paymentAvailable INTEGER, type TEXT)";
+    return @"lockers (name TEXT NOT NULL, postalCode TEXT NOT NULL, province TEXT, street TEXT, buildingNumber TEXT, town TEXT, longitude DOUBLE, latitude DOUBLE, locationDescription TEXT, paymentPointDescription TEXT, parterId INTEGER, paymentType TEXT, operatingHours TEXT, status TEXT, paymentAvailable INTEGER, type TEXT, isSelected INTEGER)";
 }
 
 + (NSString *)sqlInsertFormat{
-    return @"INSERT INTO lockers VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%f\", \"%f\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%@\", \"%d\", \"%@\")";
+    return @"INSERT INTO lockers VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%f\", \"%f\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%@\", \"%d\", \"%@\",\"%d\")";
+}
+
++ (NSString *)deselectSelectedStatement{
+    return [NSString stringWithFormat:@"UPDATE %@ SET isSelected = 0 WHERE isSelected = 1 ", [self sqlTableName]];
+}
+
+- (NSString *)selectStatement{
+    return [NSString stringWithFormat:@"UPDATE %@ SET isSelected = 1 WHERE name = '%@'", [TKParcelLocker sqlTableName], self.name];
 }
 
 - (NSString *)sqlInsert{
@@ -156,23 +165,26 @@
     
     NSString *escapedPaymentPointDescription = [self.paymentPointDescription stringByReplacingOccurrencesOfString:@"\"" withString:@"'"];
     
-    return [NSString stringWithFormat:format,
-            self.name ?: @"",
-            self.postalCode ?: @"",
-            self.province ?: @"",
-            self.street ?: @"",
-            self.buildingNumber ?: @"",
-            self.town ?: @"",
-            self.coordinate.longitude,
-            self.coordinate.latitude,
-            escapedLocationDescription ?: @"",
-            escapedPaymentPointDescription ?: @"",
-            self.parternId,
-            self.paymentType ?: @"",
-            self.operatingHours ?: @"",
-            self.status ?: @"",
-            self.paymentAvailable,
-            self.type ?: @""];
+    NSString *sqlInsertStatement = [NSString stringWithFormat:format,
+                                    self.name ?: @"",
+                                    self.postalCode ?: @"",
+                                    self.province ?: @"",
+                                    self.street ?: @"",
+                                    self.buildingNumber ?: @"",
+                                    self.town ?: @"",
+                                    self.coordinate.longitude,
+                                    self.coordinate.latitude,
+                                    escapedLocationDescription ?: @"",
+                                    escapedPaymentPointDescription ?: @"",
+                                    self.parternId,
+                                    self.paymentType ?: @"",
+                                    self.operatingHours ?: @"",
+                                    self.status ?: @"",
+                                    self.paymentAvailable,
+                                    self.type ?: @"",
+                                    self.isSelected ? 1 : 0];
+    
+    return sqlInsertStatement;
 }
 
 #pragma mark - MKAnnotaion

@@ -123,4 +123,83 @@
     
 }
 
+- (void)testGettingSelectedLockerIfOneIsSelected{
+    
+    TKParcelLocker *lockerA = [self lockerWithName:@"ABC1" location:CLLocationCoordinate2DMake(52.197872, 21.022672)];
+    lockerA.isSelected = YES;
+    
+    TKParcelLocker *lockerB = [self lockerWithName:@"ABC2" location:CLLocationCoordinate2DMake(52.194727, 21.0236972)];
+    lockerB.isSelected = NO;
+    
+    TKParcelLocker *lockerC = [self lockerWithName:@"ABC3" location:CLLocationCoordinate2DMake(52.1949583, 21.01434)];
+    lockerC.isSelected = NO;
+    
+    [self.sqlController importParcelsToDataBase:@[lockerA, lockerB, lockerC]];
+    
+    TKParcelLocker *locker = [self.sqlController  lastSelectedLocker];
+    
+    XCTAssertEqualObjects(locker, lockerA, @"locker A should be returned");
+    XCTAssertTrue(locker.isSelected, @"returned locker should be selected");
+}
+
+- (void)testGettingSelectedLockerIfNoneIsSelected{
+    
+    TKParcelLocker *lockerA = [self lockerWithName:@"ABC1" location:CLLocationCoordinate2DMake(52.197872, 21.022672)];
+    lockerA.isSelected = NO;
+    
+    TKParcelLocker *lockerB = [self lockerWithName:@"ABC2" location:CLLocationCoordinate2DMake(52.194727, 21.0236972)];
+    lockerB.isSelected = NO;
+    
+    TKParcelLocker *lockerC = [self lockerWithName:@"ABC3" location:CLLocationCoordinate2DMake(52.1949583, 21.01434)];
+    lockerC.isSelected = NO;
+    
+    [self.sqlController importParcelsToDataBase:@[lockerA, lockerB, lockerC]];
+    
+    TKParcelLocker *locker = [self.sqlController  lastSelectedLocker];
+    
+    XCTAssertNil(locker, @"nil should be returned");
+}
+
+- (void)testUpdatingTableWithName{
+    
+    TKParcelLocker *lockerA = [self lockerWithName:@"ABC1" location:CLLocationCoordinate2DMake(52.197872, 21.022672)];
+    
+    [self.sqlController importParcelsToDataBase:@[lockerA]];
+    
+    XCTAssertTrue([self.sqlController  updateLockersWithStatement:@"UPDATE lockers SET name = 'ABC2' WHERE name = 'ABC1'"], @"should end with success");
+    
+    NSArray *lockers = [self.sqlController exportParcelsFromDataBase];
+    
+    XCTAssertEqual([lockers count], (NSUInteger)1, @"");
+    
+    TKParcelLocker *locker = lockers[0];
+    
+    XCTAssertEqualObjects(locker.name, @"ABC2", @"name should be updated");
+}
+
+- (void)testSelectingIfNoneWasSelected{
+    
+    TKParcelLocker *lockerA = [self lockerWithName:@"ABC1" location:CLLocationCoordinate2DMake(52.197872, 21.022672)];
+    TKParcelLocker *lockerB = [self lockerWithName:@"ABC2" location:CLLocationCoordinate2DMake(52.197872, 21.022672)];
+    TKParcelLocker *lockerC = [self lockerWithName:@"ABC3" location:CLLocationCoordinate2DMake(52.197872, 21.022672)];
+    [self.sqlController importParcelsToDataBase:@[lockerA, lockerB, lockerC]];
+    
+    XCTAssertTrue([self.sqlController setLockerAsSelected:lockerA], @"should update successfully");
+    
+    XCTAssertEqualObjects([self.sqlController lastSelectedLocker], lockerA, @"lockerA should be returned as selected");
+}
+
+- (void)testSelectingIfOtherWasSelected{
+    
+    TKParcelLocker *lockerA = [self lockerWithName:@"ABC1" location:CLLocationCoordinate2DMake(52.197872, 21.022672)];
+    lockerA.isSelected = YES;
+    TKParcelLocker *lockerB = [self lockerWithName:@"ABC2" location:CLLocationCoordinate2DMake(52.197872, 21.022672)];
+    TKParcelLocker *lockerC = [self lockerWithName:@"ABC3" location:CLLocationCoordinate2DMake(52.197872, 21.022672)];
+    [self.sqlController importParcelsToDataBase:@[lockerA, lockerB, lockerC]];
+    
+    XCTAssertTrue([self.sqlController setLockerAsSelected:lockerB], @"should update successfully");
+    
+    XCTAssertEqualObjects([self.sqlController lastSelectedLocker], lockerB, @"lockerB should be returned as selected");
+}
+
 @end

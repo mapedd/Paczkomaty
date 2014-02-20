@@ -35,6 +35,7 @@ NSString * TKNSStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coordinat
 
 
 @property (readwrite, assign, nonatomic) BOOL isClosest;
+@property (readwrite, assign, nonatomic) BOOL isSelected;
 /* In kilometers */
 @property (readwrite, assign, nonatomic) CGFloat curentDistanceFromUser;
 
@@ -49,5 +50,8 @@ NSString * TKNSStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coordinat
 + (TKParcelLocker *)lockerWithSQLStatement:(sqlite3_stmt *)statement;
 + (NSString *)sqlTableName;
 + (NSString *)sqlTableModel;
++ (NSString *)deselectSelectedStatement;
 - (NSString *)sqlInsert;
+- (NSString *)selectStatement;
+
 @end

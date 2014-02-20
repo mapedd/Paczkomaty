@@ -18,6 +18,7 @@
 @property (weak, nonatomic) id<TKParcelViewContollerDelegate> parcelDelegate;
 @property (readonly, strong, nonatomic) PGSQLController *sqlController;
 - (void)didSelectLocker:(TKParcelLocker *)locker;
++ (TKParcelLocker *)lastSelectedParcelLocker;
 @end
 
 
