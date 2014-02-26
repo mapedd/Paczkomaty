@@ -34,7 +34,7 @@ static NSString * formatXML =
     @"<operatinghours><![CDATA[%@]]></operatinghours>"
     @"<paymentpointdescr><![CDATA[%@]]></paymentpointdescr>"
     @"<partnerid>%ld</partnerid>"
-    @"<paymenttype>%@</paymenttype>"
+    @"<paymenttype>%ld</paymenttype>"
 @"</machine>";
 
 NSString * machineXML(NSString *name,
@@ -52,7 +52,7 @@ NSString * machineXML(NSString *name,
                       NSString *operatingHours,
                       NSString *paymentPointDescription,
                       long parterId,
-                      NSString *paymentType){
+                      NSInteger paymentType){
     return [NSString stringWithFormat:formatXML,
             name,
             type,
@@ -89,7 +89,7 @@ NSString * machineXML(NSString *name,
     NSString *operatingHours;
     NSString *paymentPointDescription;
     long parterId;
-    NSString *paymentType;
+    NSInteger paymentType;
     
     NSString *lockersXML;
 
@@ -117,7 +117,7 @@ NSString * machineXML(NSString *name,
     operatingHours = @"Paczkomat: 24/7";
     paymentPointDescription = @"Super opis";
     parterId = 0;
-    paymentType = @"type";
+    paymentType = 2;
     
     lockersXML =  [NSString stringWithFormat:parcelXML, machineXML(name,
                                                             type,
@@ -153,7 +153,7 @@ NSString * machineXML(NSString *name,
     operatingHours = nil;
     paymentPointDescription = nil;
     parterId = 0;
-    paymentType = nil;
+    paymentType = 0;
     lockersXML = nil;
     [super tearDown];
 }
@@ -192,7 +192,7 @@ NSString * machineXML(NSString *name,
         XCTAssertEqualObjects(locker.paymentPointDescription, paymentPointDescription, @"paymentPointDescription should be equal");
         
         XCTAssertEqual(locker.parternId, parterId, @"partnerId should be equal");
-        XCTAssertEqualObjects(locker.paymentType, paymentType, @"paymentType should be equal");
+        XCTAssertEqual(locker.paymentType, paymentType, @"paymentType should be equal");
     }];
 }
 

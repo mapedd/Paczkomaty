@@ -23,7 +23,7 @@
 @property (readwrite, strong, nonatomic) NSString *locationDescription;
 @property (readwrite, strong, nonatomic) NSString *paymentPointDescription;
 @property (readwrite, assign, nonatomic) long parternId;
-@property (readwrite, strong, nonatomic) NSString *paymentType;
+@property (readwrite, assign, nonatomic) TKLockerPaymentType paymentType;
 @property (readwrite, strong, nonatomic) NSString *type;
 @property (readwrite, strong, nonatomic) NSString *status;
 
@@ -50,7 +50,7 @@
     char *locationDesc      = (char *) sqlite3_column_text  (statement, 8);
     char *paymentPointDesc  = (char *) sqlite3_column_text  (statement, 9);
     NSInteger partnerId     =          sqlite3_column_int   (statement, 10);
-    char *paymentType       = (char *) sqlite3_column_text  (statement, 11);
+    NSInteger paymentType   =          sqlite3_column_int   (statement, 11);
     char *operatingHours    = (char *) sqlite3_column_text  (statement, 12);
     char *status            = (char *) sqlite3_column_text  (statement, 13);
     BOOL paymentAvailable   = (BOOL)   sqlite3_column_int   (statement, 14);
@@ -71,7 +71,7 @@
     locker.locationDescription = [[NSString alloc] initWithUTF8String:locationDesc];
     locker.paymentPointDescription = [[NSString alloc] initWithUTF8String:paymentPointDesc];
     locker.parternId = partnerId;
-    locker.paymentType = [[NSString alloc] initWithUTF8String:paymentType];
+    locker.paymentType = paymentType;
     locker.operatingHours = [[NSString alloc] initWithUTF8String:operatingHours];
     locker.status = [[NSString alloc] initWithUTF8String:status];
     locker.paymentAvailable = paymentAvailable;
@@ -100,11 +100,14 @@
     locker.paymentPointDescription = [[element child:@"paymentpointdescr"] text];
     
     locker.parternId = [[element child:@"partnerid"] textAsInt];
-    locker.paymentType = [[element child:@"paymenttype"] text];
+    locker.paymentType = [[element child:@"paymenttype"] textAsInt];
     locker.operatingHours = [[element child:@"operatinghours"] text];
     locker.status = [[element child:@"status"] text];
-    NSString *paymentavailable = [[element child:@"paymentavailable"] text];;
-    locker.paymentAvailable = [paymentavailable isEqualToString:@"f"] ? YES :([paymentavailable isEqualToString:@"t"] ? NO : NO);
+    
+    /* This string field can be equal to 'f' -> false, or 't' -> true */
+    NSString *paymentavailable = [[element child:@"paymentavailable"] text];
+    BOOL paymentAvailable = [paymentavailable isEqualToString:@"t"];
+    locker.paymentAvailable = paymentAvailable;
     locker.type = [[element child:@"type"] text];
     
     return locker;
@@ -129,7 +132,7 @@
     locker.paymentPointDescription = dictionary[@"paymentpointdescr"];
     
     locker.parternId = [dictionary[@"partnerid"] integerValue];
-    locker.paymentType = dictionary[@"paymenttype"];
+    locker.paymentType = [dictionary[@"paymenttype"] integerValue];
     locker.operatingHours = dictionary[@"operatinghours"];
     locker.status = dictionary[@"status"];
     locker.paymentAvailable = [dictionary[@"paymentavailable"] boolValue];
@@ -143,11 +146,11 @@
 }
 
 + (NSString *)sqlTableModel{
-    return @"lockers (name TEXT NOT NULL, postalCode TEXT NOT NULL, province TEXT, street TEXT, buildingNumber TEXT, town TEXT, longitude DOUBLE, latitude DOUBLE, locationDescription TEXT, paymentPointDescription TEXT, parterId INTEGER, paymentType TEXT, operatingHours TEXT, status TEXT, paymentAvailable INTEGER, type TEXT, isSelected INTEGER)";
+    return @"lockers (name TEXT NOT NULL, postalCode TEXT NOT NULL, province TEXT, street TEXT, buildingNumber TEXT, town TEXT, longitude DOUBLE, latitude DOUBLE, locationDescription TEXT, paymentPointDescription TEXT, parterId INTEGER, paymentType INTEGER, operatingHours TEXT, status TEXT, paymentAvailable INTEGER, type TEXT, isSelected INTEGER)";
 }
 
 + (NSString *)sqlInsertFormat{
-    return @"INSERT INTO lockers VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%f\", \"%f\", \"%@\", \"%@\", \"%d\", \"%@\", \"%@\", \"%@\", \"%d\", \"%@\",\"%d\")";
+    return @"INSERT INTO lockers VALUES (\"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%@\", \"%f\", \"%f\", \"%@\", \"%@\", \"%d\", \"%d\", \"%@\", \"%@\", \"%d\", \"%@\",\"%d\")";
 }
 
 + (NSString *)deselectSelectedStatement{
@@ -177,7 +180,7 @@
                                     escapedLocationDescription ?: @"",
                                     escapedPaymentPointDescription ?: @"",
                                     self.parternId,
-                                    self.paymentType ?: @"",
+                                    self.paymentType,
                                     self.operatingHours ?: @"",
                                     self.status ?: @"",
                                     self.paymentAvailable,

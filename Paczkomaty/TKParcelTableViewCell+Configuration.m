@@ -12,7 +12,12 @@
 @implementation TKParcelTableViewCell (Configuration)
 
 - (void)configureWithParcel:(TKParcelLocker *)locker{
-    self.textLabel.text = [NSString stringWithFormat:@"%@, %@ %@",locker.name,locker.street, locker.buildingNumber];
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@, %@ %@",locker.name,locker.street, locker.buildingNumber]];;
+    if (locker.paymentAvailable) {
+        NSAttributedString *paymentAvailable = [[NSAttributedString alloc] initWithString:@" ($)" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithRed:0.122 green:0.514 blue:0.984 alpha:1.000]}];
+        [string appendAttributedString:paymentAvailable];
+    }
+    self.textLabel.attributedText = string;
     self.detailTextLabel.text = [NSString stringWithFormat:@"%@,%@",locker.postalCode, locker.town];
     
 }

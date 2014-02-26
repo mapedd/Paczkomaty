@@ -11,7 +11,7 @@
 
 NSBundle *paczkomatyBundle(void) {
     static NSBundle* bundle = nil;
-    if (!bundle) {
+    if (bundle == nil) {
         NSString* path = [[[NSBundle mainBundle] resourcePath]
                           stringByAppendingPathComponent:@"Paczkomaty.bundle"];
         bundle = [NSBundle bundleWithPath:path];
@@ -21,10 +21,11 @@ NSBundle *paczkomatyBundle(void) {
 
 
 NSString *TKLocalizedStringWithToken(NSString *token){
+    NSString *localizedToken = token;
+    
     if (paczkomatyBundle() != nil) {
-        return NSLocalizedStringFromTableInBundle(token, @"Paczkomaty", paczkomatyBundle(), @"");
-    } else {
-        return token;
+        localizedToken = NSLocalizedStringFromTableInBundle(token, @"Paczkomaty", paczkomatyBundle(), @"");
     }
+    return localizedToken;
 }
 

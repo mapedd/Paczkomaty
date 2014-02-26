@@ -11,6 +11,13 @@
 #import <sqlite3.h>
 
 
+typedef NS_ENUM(NSInteger, TKLockerPaymentType) {
+    TKLockerPaymentTypeNotAvailable = 0,// – payment is not available at the locker
+    TKLockerPaymentTypeCash = 1,        // – cash payment available
+    TKLockerPaymentTypeCard = 2,        // – debit/credit card payment available
+    TKLockerPaymentTypeCashAndCard = 3  //– możliwe obie formy płatności.
+};
+
 NSString * TKNSStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coordinate);
 
 @class RXMLElement;
@@ -29,7 +36,7 @@ NSString * TKNSStringFromCLLocationCoordinate2D(CLLocationCoordinate2D coordinat
 @property (readonly, strong, nonatomic) NSString *locationDescription;
 @property (readonly, strong, nonatomic) NSString *paymentPointDescription;
 @property (readonly, assign, nonatomic) long parternId;
-@property (readonly, strong, nonatomic) NSString *paymentType;
+@property (readonly, assign, nonatomic) TKLockerPaymentType paymentType;
 @property (readonly, strong, nonatomic) NSString *type;
 @property (readonly, strong, nonatomic) NSString *status;
 

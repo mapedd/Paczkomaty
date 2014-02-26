@@ -248,11 +248,40 @@
     self.localisationLabel.attributedText = [self attributesStringWithBoldString:TKLocalizedStringWithToken(@"label.localisation")
                                                                     normalString:self.parcel.locationDescription ?: TKLocalizedStringWithToken(@"label.no-info")];
     
-    self.hoursLabel.attributedText = [self attributesStringWithBoldString:TKLocalizedStringWithToken(@"label.opening-hours")
-                                                             normalString:self.parcel.operatingHours ?: TKLocalizedStringWithToken(@"label.no-info")];
+    normalString = (self.parcel.operatingHours.length > 0 ?
+                    self.parcel.operatingHours :
+                    TKLocalizedStringWithToken(@"label.no-info"));
     
-    self.paymentLabel.attributedText = [self attributesStringWithBoldString:TKLocalizedStringWithToken(@"label.payment")
-                                                               normalString:self.parcel.paymentType ?: TKLocalizedStringWithToken(@"label.no-info")];
+    self.hoursLabel.attributedText = [self attributesStringWithBoldString:TKLocalizedStringWithToken(@"label.opening-hours")
+                                                             normalString:normalString];
+    
+    normalString = (self.parcel.paymentAvailable ?
+                    TKLocalizedStringWithToken(@"label.cash-on-delivery-available") :
+                    TKLocalizedStringWithToken(@"label.cash-on-delivery-not-available"));
+    
+    NSString *paymentTypeString;
+    switch (self.parcel.paymentType) {
+        case TKLockerPaymentTypeNotAvailable:
+            break;
+        case TKLockerPaymentTypeCash:
+            paymentTypeString = TKLocalizedStringWithToken(@"label.payment-type-cash");
+            break;
+        case TKLockerPaymentTypeCard:
+            paymentTypeString = TKLocalizedStringWithToken(@"label.payment-type-card");
+            break;
+        case TKLockerPaymentTypeCashAndCard:
+            paymentTypeString = TKLocalizedStringWithToken(@"label.-payment-type-cash-and-card");
+            break;
+        default:
+            break;
+    }
+    
+    if (paymentTypeString != nil) {
+        normalString = [normalString stringByAppendingFormat:@" (%@)", paymentTypeString];
+    }
+    
+    self.paymentLabel.attributedText = [self attributesStringWithBoldString:TKLocalizedStringWithToken(@"label.paymentOnDelivery")
+                                                               normalString:normalString];
 }
 
 

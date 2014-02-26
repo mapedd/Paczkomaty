@@ -35,7 +35,18 @@
 
 "label.opening-hours" = "Godziny otwarcia: ";
 
-"label.payment" = "Płatność: ";
+"label.cash-on-delivery-available" = "dostępna";
+
+"label.cash-on-delivery-not-available" = "niedostępna";
+
+"label.paymentOnDelivery" = "Płatność przy odbiorze: ";
 
 
 "label.no-info" = "Brak informacji";
+
+
+"label.payment-type-cash" = "Gotówka";
+
+"label.payment-type-card" = "Karta";
+
+"label.-payment-type-cash-and-card" = "Gotówka i karta";
