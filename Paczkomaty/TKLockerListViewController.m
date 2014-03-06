@@ -46,13 +46,28 @@
     self = [super initWithNibName:nil bundle:nil];
     if(!self)return nil;
     [self addToNotificationCenter];
-    self.navigationItem.title = TKLocalizedStringWithToken(@"screen-title.paczkomaty");
+    [self setTitleForState:TKLoadingStateIdle];
     self.tabBarItem = [[UITabBarItem alloc] initWithTitle:TKLocalizedStringWithToken(@"screen-title.list") image:[self tabBarImage] tag:1];
-    self.parcelLockers = [[self sqlController] exportParcelsFromDataBase];
-    if (self.parcelLockers.count == 0) {
-        [self get];
-    }
     return self;
+}
+
+- (void)setTitleForState:(TKLoadingState)state{
+    NSString *title;
+    switch (state) {
+        case TKLoadingStateIdle:
+            title = TKLocalizedStringWithToken(@"screen-title.paczkomaty");
+            break;
+        case TKLoadingStateFetching:
+            title = TKLocalizedStringWithToken(@"screen-title.fetching");
+            break;
+        case TKLoadingStateImporting:
+            title = TKLocalizedStringWithToken(@"screen-title.importing");
+            break;
+            
+        default:
+            break;
+    }
+    self.navigationItem.title = title;
 }
 
 - (UIImage *)tabBarImage{
@@ -68,6 +83,11 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    self.parcelLockers = [[self sqlController] exportParcelsFromDataBase];
+    if (self.parcelLockers.count == 0) {
+        [self get];
+    }
     
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:(UITableViewStylePlain)];
     self.tableView.delegate = self;
@@ -103,7 +123,7 @@
 #pragma mark - Private
 
 - (void)addToNotificationCenter{
-    NSNotificationCenter *c = [NSNotificationCenter defaultCenter];
+    NSNotificationCenter *c = [NSNotificationCenter  defaultCenter];
     SEL selector = @selector(notificationReceived:);
     [c addObserver:self
           selector:selector
@@ -113,10 +133,15 @@
           selector:selector
               name:PGSQLControllerImportedDataNotificaiton
             object:nil];
+    [c addObserver:self
+          selector:selector
+              name:PGSQLControllerImportStartNotificaiton
+            object:nil];
 }
 
 - (void)get{
     if (![[self networkController] isFetchingParcels]) {
+        [self setTitleForState:TKLoadingStateFetching];
         [[self networkController] getAndImportData:[self sqlController]];
         [self showActivityIndicator:YES];
     }
@@ -127,6 +152,12 @@
     if (show) {
         UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:(UIActivityIndicatorViewStyleGray)];
         barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:indicator];
+        if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+            [indicator setColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0]];
+        }
+        else{
+            [indicator setColor:[UIColor whiteColor]];
+        }
         [indicator startAnimating];
     }
     else{
@@ -249,9 +280,15 @@
 
 - (void)notificationReceived:(NSNotification *)note{
     if ([note.name isEqualToString:TKNetworkControllerFetchedLockerDataNotificaiton]) {
-        [self showActivityIndicator:NO];
-    }else if([note.name isEqualToString:PGSQLControllerImportedDataNotificaiton]){
+
+    }
+    else if([note.name isEqualToString:PGSQLControllerImportStartNotificaiton]){
+        [self setTitleForState:TKLoadingStateImporting];
+    }
+    else if([note.name isEqualToString:PGSQLControllerImportedDataNotificaiton]){
+        [self setTitleForState:TKLoadingStateIdle];
         [self reloadData];
+        [self showActivityIndicator:NO];
     }
 }
 

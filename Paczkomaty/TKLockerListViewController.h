@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, TKLoadingState) {
+    TKLoadingStateIdle,
+    TKLoadingStateFetching,
+    TKLoadingStateImporting,
+};
+
 @interface TKLockerListViewController : UIViewController
 
 @end

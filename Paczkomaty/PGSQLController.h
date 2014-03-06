@@ -11,6 +11,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <sqlite3.h>
 
+extern NSString *const PGSQLControllerImportStartNotificaiton;
 extern NSString *const PGSQLControllerImportedDataNotificaiton;
 
 @class TKParcelLocker;

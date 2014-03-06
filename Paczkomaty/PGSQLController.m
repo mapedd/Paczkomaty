@@ -11,6 +11,7 @@
 
 #define DEG2RAD(degrees) (degrees * 0.01745327) // degrees * pi over 180
 
+NSString *const PGSQLControllerImportStartNotificaiton = @"PGSQLControllerImportStartNotificaiton";
 NSString *const PGSQLControllerImportedDataNotificaiton = @"PGSQLControllerImportedDataNotificaiton";
 
 void errorLogCallback(void *pArg, int iErrCode, const char *zMsg);
@@ -155,6 +156,7 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
     NSError * __autoreleasing error;
     if (sqlite3_open(dbpath, &_database) == SQLITE_OK)
     {
+        [self postImportStart];
         sqlite3_stmt    *statement;
         for (TKParcelLocker *p in parcels) {
             NSString *insertSQL = [p sqlInsert];
@@ -198,6 +200,14 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
         error = [NSError errorWithDomain:@"com.paczkomaty.sql" code:-1 userInfo:nil];
         [self postImportSuccess:NO error:error];
     }
+}
+
+- (void)postImportStart{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:PGSQLControllerImportStartNotificaiton
+                                                            object:nil
+                                                          userInfo:nil];
+    });
 }
 
 - (void)postImportSuccess:(BOOL)success error:(NSError *)error{

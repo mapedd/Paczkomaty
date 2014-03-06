@@ -9,6 +9,10 @@
 
 "screen-title.paczkomaty" = "Paczkomaty";
 
+"screen-title.fetching" = "Pobieranie";
+
+"screen-title.importing" = "Importowanie";
+
 "screen-title.list" = "Lista";
 
 "screen-title.map" = "Mapa";
