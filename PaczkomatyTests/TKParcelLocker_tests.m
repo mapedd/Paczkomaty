@@ -111,7 +111,7 @@ NSString * machineXML(NSString *name,
     town = @"Aleksandrów Łódzki";
     latitude = 51.81284;
     longitude = 19.31626;
-    paymentAvailable = @"f";
+    paymentAvailable = @"t";
     status = @"Operating";
     locationDescription = @"Przy markecie Polomarket";
     operatingHours = @"Paczkomat: 24/7";

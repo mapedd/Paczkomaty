@@ -85,9 +85,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.parcelLockers = [[self sqlController] exportParcelsFromDataBase];
-    if (self.parcelLockers.count == 0) {
-        [self get];
-    }
+
     
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:(UITableViewStylePlain)];
     self.tableView.delegate = self;

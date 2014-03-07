@@ -18,6 +18,10 @@ NSString *const TKNetworkControllerFetchedLockerDataNotificaiton = @"TKNetworkCo
 
 @property (weak, nonatomic) AFHTTPRequestOperation *operation;
 
+@property (assign, nonatomic) BOOL isFetchingData;
+
+@property (strong, nonatomic) dispatch_queue_t importQueue;
+
 @end
 
 @implementation TKNetworkController
@@ -38,7 +42,7 @@ NSString *const TKNetworkControllerFetchedLockerDataNotificaiton = @"TKNetworkCo
 }
 
 - (BOOL)isFetchingParcels{
-    return self.operation != nil;
+    return self.isFetchingData;
 }
 
 + (NSString *)allParcelsPath{
@@ -65,7 +69,7 @@ NSString *const TKNetworkControllerFetchedLockerDataNotificaiton = @"TKNetworkCo
 
 - (void)getAndImportData:(PGSQLController *)controller{
     __unsafe_unretained typeof(self) bself = self;
-    
+    self.isFetchingData = YES;
     [self getPath:[TKNetworkController allParcelsPath]
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -82,9 +86,11 @@ NSString *const TKNetworkControllerFetchedLockerDataNotificaiton = @"TKNetworkCo
               }else{
                   [bself postFetchSuccess:NO error:nil];
               }
+                bself.isFetchingData = NO;
               
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               [bself postFetchSuccess:YES error:error];
+              bself.isFetchingData = NO;
           }];
     
     
@@ -102,8 +108,20 @@ NSString *const TKNetworkControllerFetchedLockerDataNotificaiton = @"TKNetworkCo
 }
 
 - (void)importLockersData:(NSArray *)lockers withController:(PGSQLController *)controller{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-       [controller importParcelsToDataBase:lockers]; 
+    if (self.importQueue == nil) {
+        self.importQueue = dispatch_queue_create("com.Paczkomaty.Import", DISPATCH_QUEUE_SERIAL);
+    }
+    
+#define IMPORT_BACKGROUND_THREAD
+    
+#ifdef IMPORT_BACKGROUND_THREAD
+    dispatch_queue_t queue = self.importQueue;
+#else
+    dispatch_queue_t queue = dispatch_get_main_queue();
+#endif
+    
+    dispatch_async(queue, ^{
+       [controller importParcelsToDataBase:lockers];
     });
 }
 

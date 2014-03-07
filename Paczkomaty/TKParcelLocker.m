@@ -146,7 +146,7 @@
 }
 
 + (NSString *)sqlTableModel{
-    return @"lockers (name TEXT NOT NULL, postalCode TEXT NOT NULL, province TEXT, street TEXT, buildingNumber TEXT, town TEXT, longitude DOUBLE, latitude DOUBLE, locationDescription TEXT, paymentPointDescription TEXT, parterId INTEGER, paymentType INTEGER, operatingHours TEXT, status TEXT, paymentAvailable INTEGER, type TEXT, isSelected INTEGER)";
+    return @"lockers (name TEXT NOT NULL PRIMARY KEY, postalCode TEXT NOT NULL, province TEXT, street TEXT, buildingNumber TEXT, town TEXT, longitude DOUBLE, latitude DOUBLE, locationDescription TEXT, paymentPointDescription TEXT, parterId INTEGER, paymentType INTEGER, operatingHours TEXT, status TEXT, paymentAvailable INTEGER, type TEXT, isSelected INTEGER)";
 }
 
 + (NSString *)sqlInsertFormat{

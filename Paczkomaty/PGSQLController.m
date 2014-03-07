@@ -38,11 +38,49 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
 @implementation PGSQLController
 
 - (void)dealloc {
-    sqlite3_close(_database);
+    [self close];
 }
 
 - (BOOL)databaseConnectionExists{
     return _database != NULL;
+}
+
+- (BOOL)open{
+    if (_database != NULL) {
+        return YES;
+    }
+    
+    int err = sqlite3_open([self.databasePath UTF8String], &_database);
+    if (err != SQLITE_OK) {
+        NSLog(@"can't open data base %d", err);
+        return NO;
+    }
+    
+    err = sqlite3_create_function(_database, "distance", 4, SQLITE_UTF8, NULL, &distanceFunc, NULL, NULL);
+    if (err != SQLITE_OK) {
+        NSLog(@"can't create distance function %d", err);
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (BOOL)close{
+    if (_database == NULL) {
+        return YES;
+    }
+    
+    int err =  sqlite3_close(_database);
+    
+    if (err != SQLITE_OK) {
+        NSLog(@"can't close data base %d", err);
+        return YES;
+    }
+    
+    _database = NULL;
+    
+    return YES;
+    
 }
 
 - (id)init{
@@ -51,14 +89,45 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
     
     if (self == nil) return nil;
     
-    [self addErrorCallbackToDataBase];
-    
     _queue = dispatch_queue_create([[self description] UTF8String], 0);
+    
+#ifdef DEBUG
+    int err = sqlite3_config(SQLITE_CONFIG_LOG, errorLogCallback, NULL);
+    if (err != SQLITE_OK) {
+        NSLog(@"can't register error callback %d", err);
+    }
+#endif
     
     [self createDataBaseIfNotExist];
     
     return self;
     
+}
+
+- (BOOL)databaseModelIsValid{
+
+    BOOL onlyOneGoodTable = NO;
+    if ([self open]){
+        sqlite3_stmt *statement = NULL;
+        
+        const char * select_stmt = [@"SELECT name FROM sqlite_master WHERE type IN ('table','view') AND name NOT LIKE 'sqlite_%'" UTF8String];
+        
+        NSInteger status = sqlite3_prepare_v2(_database, select_stmt, -1, &statement, NULL);
+        if (status == SQLITE_OK) {
+            NSInteger i = 0;
+            while (sqlite3_step(statement)==SQLITE_ROW) {
+                char *name = (char *) sqlite3_column_text  (statement, 0);
+                NSString *tableName = [[NSString alloc] initWithUTF8String:name];
+                onlyOneGoodTable = i == 0 && [tableName isEqualToString:@"lockers"];
+            }
+            
+            sqlite3_finalize(statement);
+//            [self close];
+        }else{
+            NSLog(@"can't comple statement (%ld)", (long)status);
+        }
+    }
+    return onlyOneGoodTable;
 }
 
 - (id)debugQuickLookObject{
@@ -84,77 +153,31 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
 
 - (void)createDataBaseIfNotExist{
     
-    NSFileManager *filemgr = [[NSFileManager alloc] init];
-    const char *dbpath = [self.databasePath UTF8String];
-    if (![filemgr fileExistsAtPath: self.databasePath])
-    {
-        NSInteger status = sqlite3_open(dbpath, &_database);
-        if (status == SQLITE_OK)
-        {
-            char *errMsg;
-            NSString *tableModel = [TKParcelLocker sqlTableModel];
-            const char *sql_stmt = [[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@", tableModel] UTF8String];
-            
-            if (sqlite3_exec(_database, sql_stmt, &executeCallback, NULL, &errMsg) != SQLITE_OK){
-                NSLog(@"Failed to create table %@", [[NSString alloc] initWithUTF8String:errMsg]);
-            }
-            else{
-                NSLog(@"Create DB and added table 'lockers'");
-            }
-            if (_database != NULL) {
-                sqlite3_close(NULL);
-            }
-            
-        } else {
-            NSLog(@"Failed to open/create database (%ld)", (long)status);
+    if([self open]){
+        char *errMsg;
+        NSString *tableModel = [TKParcelLocker sqlTableModel];
+        const char *sql_stmt = [[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@", tableModel] UTF8String];
+        
+        if (sqlite3_exec(_database, sql_stmt, &executeCallback, NULL, &errMsg) != SQLITE_OK){
+            NSLog(@"Failed to create table %@", [[NSString alloc] initWithUTF8String:errMsg]);
         }
+        else{
+            NSLog(@"Create DB and added table 'lockers'");
+        }
+//        [self close];
     }
-    else{
-        NSLog(@"Data base exists");
-
+    
+    if (![self databaseModelIsValid]) {
+        NSLog(@"data model is invalid");
     }
     
 }
 
-- (BOOL)databaseModelIsValid{
-    const char *dbpath = [self.databasePath UTF8String];
-    NSInteger status = sqlite3_open(dbpath, &_database);
-    BOOL onlyOneGoodTable = NO;
-    if (status == SQLITE_OK){
-        sqlite3_stmt *statement = NULL;
-        
-        const char * select_stmt = [@"SELECT name FROM sqlite_master WHERE type IN ('table','view') AND name NOT LIKE 'sqlite_%'" UTF8String];
-        
-        status = sqlite3_prepare_v2(_database, select_stmt, -1, &statement, NULL);
-        if (status == SQLITE_OK) {
-            NSInteger i = 0;
-            while (sqlite3_step(statement)==SQLITE_ROW) {
-                char *name = (char *) sqlite3_column_text  (statement, 0);
-                NSString *tableName = [[NSString alloc] initWithUTF8String:name];
-                onlyOneGoodTable = i == 0 && [tableName isEqualToString:@"lockers"];
-            }
-            
-            sqlite3_finalize(statement);
-            sqlite3_close(_database);
-        }else{
-            NSLog(@"can't comple statement (%ld)", (long)status);
-        }
-    }
-    return onlyOneGoodTable;
-}
-
-- (void)addErrorCallbackToDataBase{
-    NSInteger status = sqlite3_config(SQLITE_CONFIG_LOG, errorLogCallback, NULL);
-    if (status != SQLITE_OK) {
-        NSLog(@"can't register error callback %ld", (long)status);
-    }
-}
 
 - (void)importParcelsToDataBase:(NSArray *)parcels{
-        
-    const char *dbpath = [self.databasePath UTF8String];
+    NSLog(@"import start");
     NSError * __autoreleasing error;
-    if (sqlite3_open(dbpath, &_database) == SQLITE_OK)
+    if ([self open])
     {
         [self postImportStart];
         sqlite3_stmt    *statement;
@@ -191,12 +214,10 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
             sqlite3_finalize(statement);
         }
         
-        
-        sqlite3_close(_database);
+//        [self close];
         [self postImportSuccess:YES error:nil];
         
     }else{
-        NSLog(@"Can't open database");
         error = [NSError errorWithDomain:@"com.paczkomaty.sql" code:-1 userInfo:nil];
         [self postImportSuccess:NO error:error];
     }
@@ -232,11 +253,8 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
     NSString *query = searchQuery ?: @"SELECT * FROM lockers ORDER BY name";
     
     sqlite3_stmt *statement;
-    const char *dbpath = [self.databasePath UTF8String];
     
-    if (sqlite3_open(dbpath, &_database) == SQLITE_OK){
-        // Adding distance function
-        sqlite3_create_function(_database, "distance", 4, SQLITE_UTF8, NULL, &distanceFunc, NULL, NULL);
+    if ([self open]){
         
         NSInteger status = sqlite3_prepare_v2(_database, [query UTF8String], -1, &statement, nil);
         
@@ -254,7 +272,7 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
             }
             return nil;
         }
-        sqlite3_close(_database);
+//        [self close];
     }
     return retval;
 }
@@ -353,9 +371,7 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
 - (BOOL)updateLockersWithStatement:(NSString *)sqlStatement{
     BOOL success = NO;
     
-    const char *dbpath = [self.databasePath UTF8String];
-    
-    if (sqlite3_open(dbpath, &_database) == SQLITE_OK){
+    if ([self open]){
         char *errMsg;
         const char *sql_stmt = [sqlStatement UTF8String];
         
@@ -367,8 +383,8 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
             NSLog(@"updated table with statement %@", sqlStatement);
             success = YES;
         }
-            
-        sqlite3_close(_database);
+        
+//        [self close];
     }
     return success;
 }
@@ -392,7 +408,7 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
 
 
 void errorLogCallback(void *pArg, int iErrCode, const char *zMsg){
-//    fprintf(stderr, "(%d) %s\n", iErrCode, zMsg);
+    fprintf(stderr, "(%d) %s\n", iErrCode, zMsg);
 }
 
 int executeCallback(void*pArg, int iErrCode, char** something1,char** something2){

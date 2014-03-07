@@ -37,6 +37,7 @@
 #pragma mark - Tests
 
 - (void)testDataBaseExist{
+    [self.sqlController performSelector:@selector(open)];
     XCTAssertTrue([self.sqlController databaseConnectionExists], @"should be created when initializing sql controller");
 }
 
