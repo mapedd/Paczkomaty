@@ -35,5 +35,5 @@ extern NSString *const PGSQLControllerImportedDataNotificaiton;
 - (BOOL)databaseConnectionExists;
 - (BOOL)databaseModelIsValid;
 - (NSString *)databasePath;
-
++ (NSString *)databaseFilePath;
 @end

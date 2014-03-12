@@ -10,6 +10,11 @@
 #import "TKLockerHelper.h"
 #import "Paczkomaty.h"
 
+
+#ifdef DEBUG
+//#define DELETE_CACHE_AT_STARTUP
+#endif
+
 @interface TKParcelTestViewController () <TKParcelViewContollerDelegate>
 
 @end
@@ -19,6 +24,16 @@
 - (id)init{
     self = [super init];
     if (self == nil) return nil;
+    
+#ifdef DELETE_CACHE_AT_STARTUP
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSString *filePath = [PGSQLController databaseFilePath];
+    if ([fm fileExistsAtPath:filePath]) {
+        NSLog(@"old data base removed");
+        [fm removeItemAtPath:filePath error:nil];
+    }
+#endif
+    
     return self;
 }
 

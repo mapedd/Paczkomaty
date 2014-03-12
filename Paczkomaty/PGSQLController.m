@@ -9,20 +9,30 @@
 #import "PGSQLController.h"
 #import "TKParcelLocker+Helpers.h"
 
+#ifdef DEBUG
+//#define DEBUG_SQLITE
+#endif
+
 #define DEG2RAD(degrees) (degrees * 0.01745327) // degrees * pi over 180
 
 NSString *const PGSQLControllerImportStartNotificaiton = @"PGSQLControllerImportStartNotificaiton";
 NSString *const PGSQLControllerImportedDataNotificaiton = @"PGSQLControllerImportedDataNotificaiton";
 
+/* Error callback */
 void errorLogCallback(void *pArg, int iErrCode, const char *zMsg);
 
-int executeCallback(void*pArg, int iErrCode, char** ,char**);
+#ifdef DEBUG_SQLITE
+/* Profiling */
+static void profile(void *context, const char *sql, sqlite3_uint64 ns);
+#endif
 
 static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **argv);
 
 @interface PGSQLController (){
     sqlite3 *_database;
 }
+
+
 
 /* Source : http://www.thismuchiknow.co.uk/?p=71 */
 
@@ -61,6 +71,9 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
         NSLog(@"can't create distance function %d", err);
         return NO;
     }
+#ifdef DEBUG_SQLITE
+    sqlite3_profile(_database, &profile, NULL);
+#endif
     
     return YES;
 }
@@ -91,7 +104,7 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
     
     _queue = dispatch_queue_create([[self description] UTF8String], 0);
     
-#ifdef DEBUG
+#ifdef DEBUG_SQLITE
     int err = sqlite3_config(SQLITE_CONFIG_LOG, errorLogCallback, NULL);
     if (err != SQLITE_OK) {
         NSLog(@"can't register error callback %d", err);
@@ -122,7 +135,6 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
             }
             
             sqlite3_finalize(statement);
-//            [self close];
         }else{
             NSLog(@"can't comple statement (%ld)", (long)status);
         }
@@ -134,18 +146,19 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
     return @"Hello!";
 }
 
++ (NSString *)databaseFilePath{
+    
+    NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    
+    NSString *docsDir = dirPaths[0];
+    
+    return [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent:@"paczkomaty.db"]];
+}
+
 - (NSString *)databasePath{
     if (_databasePath == nil) {
-        NSString *docsDir;
-        NSArray *dirPaths;
-        
-        // Get the documents directory
-        dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        
-        docsDir = dirPaths[0];
-        
         // Build the path to the database file
-        _databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent:@"paczkomaty.db"]];
+        _databasePath = [PGSQLController databaseFilePath];
         
     }
     return _databasePath;
@@ -158,13 +171,12 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
         NSString *tableModel = [TKParcelLocker sqlTableModel];
         const char *sql_stmt = [[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@", tableModel] UTF8String];
         
-        if (sqlite3_exec(_database, sql_stmt, &executeCallback, NULL, &errMsg) != SQLITE_OK){
+        if (sqlite3_exec(_database, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK){
             NSLog(@"Failed to create table %@", [[NSString alloc] initWithUTF8String:errMsg]);
         }
         else{
             NSLog(@"Create DB and added table 'lockers'");
         }
-//        [self close];
     }
     
     if (![self databaseModelIsValid]) {
@@ -173,14 +185,17 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
     
 }
 
-
 - (void)importParcelsToDataBase:(NSArray *)parcels{
-    NSLog(@"import start");
+    
+    CFAbsoluteTime importStartTime = CFAbsoluteTimeGetCurrent();
+    
     NSError * __autoreleasing error;
     if ([self open])
     {
         [self postImportStart];
         sqlite3_stmt    *statement;
+        char *errMsg;
+        sqlite3_exec(_database, "BEGIN TRANSACTION", NULL, NULL, &errMsg);
         for (TKParcelLocker *p in parcels) {
             NSString *insertSQL = [p sqlInsert];
             
@@ -214,7 +229,11 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
             sqlite3_finalize(statement);
         }
         
-//        [self close];
+        sqlite3_exec(_database, "END TRANSACTION", NULL, NULL, &errMsg);
+        
+        
+        CFAbsoluteTime importEndTime = CFAbsoluteTimeGetCurrent();
+        NSLog(@"import time for %lu items is %f sec", (unsigned long)parcels.count, importEndTime - importStartTime);
         [self postImportSuccess:YES error:nil];
         
     }else{
@@ -272,7 +291,6 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
             }
             return nil;
         }
-//        [self close];
     }
     return retval;
 }
@@ -367,7 +385,6 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
     return success;
 }
 
-
 - (BOOL)updateLockersWithStatement:(NSString *)sqlStatement{
     BOOL success = NO;
     
@@ -375,7 +392,7 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
         char *errMsg;
         const char *sql_stmt = [sqlStatement UTF8String];
         
-        if (sqlite3_exec(_database, sql_stmt, &executeCallback, NULL, &errMsg) != SQLITE_OK){
+        if (sqlite3_exec(_database, sql_stmt, NULL, NULL, &errMsg) != SQLITE_OK){
             NSLog(@"Failed to update table %@", [[NSString alloc] initWithUTF8String:errMsg]);
             success = NO;
         }
@@ -383,8 +400,6 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
             NSLog(@"updated table with statement %@", sqlStatement);
             success = YES;
         }
-        
-//        [self close];
     }
     return success;
 }
@@ -408,12 +423,13 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
 
 
 void errorLogCallback(void *pArg, int iErrCode, const char *zMsg){
-    fprintf(stderr, "(%d) %s\n", iErrCode, zMsg);
+    fprintf(stderr, "SQLite  Error : CODE (%d) MESSAGE %s\n", iErrCode, zMsg);
 }
-
-int executeCallback(void*pArg, int iErrCode, char** something1,char** something2){
-    return 1;
+#ifdef DEBUG_SQLITE
+void profile(void *context, const char *sql, sqlite3_uint64 ns){
+    fprintf(stderr, "SQLite Profile : QUERY:%s, EXECUTION TIME %llu ms\r",sql, ns/1000000);
 }
+#endif
 
 void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **argv){
     // check that we have four arguments (lat1, lon1, lat2, lon2)
