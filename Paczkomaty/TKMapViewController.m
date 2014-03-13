@@ -11,6 +11,7 @@
 #import "TKParcelDetailViewController.h"
 #import "TKParcelViewContoller.h"
 #import "TKParcelLocker.h"
+#import "TKParcelViewContoller.h"
 #import "PGSQLController.h"
 #import "TKLockerHelper.h"
 #import "UIViewController+Lockers.h"
@@ -77,8 +78,10 @@
     TKParcelViewContoller *vc = (TKParcelViewContoller *)self.parentViewController;
     if ([vc isKindOfClass:[TKParcelViewContoller class]]) {
         [self.mapView setRegion:[self mapRegionWithLocation:vc.userLocation]
-                       animated:animated];
+                       animated:NO];
     }
+    
+    [self showMe:nil];
     [self mapView:self.mapView regionWillChangeAnimated:NO];
     [self mapView:self.mapView regionDidChangeAnimated:NO];
 }
@@ -94,8 +97,7 @@
 }
 
 - (void)showMe:(id)sender{
-    MKUserLocation *userLocation = self.mapView.userLocation;
-    [self.mapView setRegion:[self mapRegionWithLocation:userLocation.location]
+    [self.mapView setRegion:[self mapRegionWithLocation:self.userLocation]
                    animated:YES];
 
 }
@@ -186,7 +188,13 @@
 }
 
 - (void)updateAnnotationsInRegion:(MKCoordinateRegion)region completion:(void (^) (void))completion{
+    
     __unsafe_unretained typeof(self) bself = self;
+    
+    if (!CLLocationCoordinate2DIsValid(region.center)) {
+        return;
+    }
+    
     self.isUpdatingAnnotations = YES;
     dispatch_async(self.queue, ^{
         @autoreleasepool {
@@ -255,17 +263,16 @@
 }
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
-    
-    if (userLocation.location.horizontalAccuracy > 1000) {
+    self.userLocation = userLocation.location;
+    if (userLocation.location.horizontalAccuracy > MIN_HORIZONTAL_ACCURACY) {
         return;
     }
-    
     
     if (_userLocationWasShown) {
         return;
     }
     _userLocationWasShown = YES;
-    
+    [self mapView:mapView regionDidChangeAnimated:YES];
     [self showMe:nil];
 }
 

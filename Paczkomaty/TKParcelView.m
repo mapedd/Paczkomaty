@@ -96,8 +96,8 @@
     addressLabelFrame = CGRectMake(inset, inset + CGRectGetMaxY(nameLabelFrame), labelWidth, addressLabelHeight);
     
     localistaionLabelFrame = CGRectMake(inset, inset + CGRectGetMaxY(addressLabelFrame), labelWidth, localisaitonLabelHeight);
-    hoursLabeFrame = CGRectMake(inset, inset + CGRectGetMaxY(localistaionLabelFrame), labelWidth, hoursLabelHeight);
-    paymentLabelFrame = CGRectMake(inset, inset + CGRectGetMaxY(hoursLabeFrame), labelWidth, paymentLabelHeight);
+    hoursLabeFrame = CGRectMake(inset, 5 + CGRectGetMaxY(localistaionLabelFrame), labelWidth, hoursLabelHeight);
+    paymentLabelFrame = CGRectMake(inset, 5 + CGRectGetMaxY(hoursLabeFrame), labelWidth, paymentLabelHeight);
     
     self.imageView.frame = imageViewFrame;
     self.nameLabel.frame = nameLabelFrame;

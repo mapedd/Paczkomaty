@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <CoreLocation/CoreLocation.h>
 @interface TKMapViewController : UIViewController
-
+@property (strong, nonatomic) CLLocation *userLocation;
 @end

@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
+#define MIN_HORIZONTAL_ACCURACY 500.0f
+
 @class TKParcelLocker, PGSQLController;
 
 @protocol TKParcelViewContollerDelegate;

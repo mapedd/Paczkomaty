@@ -10,7 +10,7 @@
 #import "TKParcelLocker+Helpers.h"
 
 #ifdef DEBUG
-//#define DEBUG_SQLITE
+#define DEBUG_SQLITE
 #endif
 
 #define DEG2RAD(degrees) (degrees * 0.01745327) // degrees * pi over 180
