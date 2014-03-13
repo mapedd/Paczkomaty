@@ -18,7 +18,9 @@ extern NSString *const PGSQLControllerImportedDataNotificaiton;
 
 @interface PGSQLController : NSObject
 
+/* Internaly calling  importParcelsToDataBase_PrecompiledStatement */
 - (void)importParcelsToDataBase:(NSArray *)parcels;
+- (void)importParcelsToDataBase_PrecompiledStatement:(NSArray *)parcels;
 
 - (NSArray *)exportParcelsFromDataBase;
 - (NSArray *)exportParcelsFromRegion:(MKCoordinateRegion)region;

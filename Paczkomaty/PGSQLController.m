@@ -118,7 +118,7 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
 }
 
 - (BOOL)databaseModelIsValid{
-
+    
     BOOL onlyOneGoodTable = NO;
     if ([self open]){
         sqlite3_stmt *statement = NULL;
@@ -186,6 +186,8 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
 }
 
 - (void)importParcelsToDataBase:(NSArray *)parcels{
+    [self importParcelsToDataBase_PrecompiledStatement:parcels];
+    return;
     
     CFAbsoluteTime importStartTime = CFAbsoluteTimeGetCurrent();
     
@@ -230,6 +232,97 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
         }
         
         sqlite3_exec(_database, "END TRANSACTION", NULL, NULL, &errMsg);
+        
+        
+        CFAbsoluteTime importEndTime = CFAbsoluteTimeGetCurrent();
+        NSLog(@"import time for %lu items is %f sec", (unsigned long)parcels.count, importEndTime - importStartTime);
+        [self postImportSuccess:YES error:nil];
+        
+    }else{
+        error = [NSError errorWithDomain:@"com.paczkomaty.sql" code:-1 userInfo:nil];
+        [self postImportSuccess:NO error:error];
+    }
+}
+
+- (void)importParcelsToDataBase_PrecompiledStatement:(NSArray *)parcels{
+    CFAbsoluteTime importStartTime = CFAbsoluteTimeGetCurrent();
+    
+    NSError * __autoreleasing error;
+    if ([self open])
+    {
+        [self postImportStart];
+        
+        
+        char *insert = "INSERT INTO lockers VALUES ("
+        "@name,"                        // 1
+        "@postalCode, "                 // 2
+        "@province, "                   // 3
+        "@street, "                     // 4
+        "@buildingNumber, "             // 5
+        "@town, "                       // 6
+        "@longitude, "                  // 7
+        "@latitude, "                   // 8
+        "@locationDescription, "        // 9
+        "@paymentPointDescription, "    // 10
+        "@parterId, "                   // 11
+        "@paymentType, "                // 12
+        "@operatingHours, "             // 13
+        "@status, "                     // 14
+        "@paymentAvailable, "           // 15
+        "@type, "                       // 16
+        "@isSelected)";                 // 17
+        
+        
+        int status;
+        char *errMsg;
+        
+        sqlite3_stmt    *statement;
+        status = sqlite3_prepare_v2(_database, insert ,-1, &statement, NULL);
+        if (status != SQLITE_OK) {
+            NSLog(@"can't compile statement");
+            return;
+        }
+        
+        status = sqlite3_exec(_database, "BEGIN TRANSACTION", NULL, NULL, &errMsg);
+        if (status != SQLITE_OK) {
+            NSLog(@"can't begin transaction %d, %s", status, errMsg);
+            return;
+        }
+        
+        for (TKParcelLocker *p in parcels) {
+            
+            sqlite3_bind_text(statement, 1, [[p name] UTF8String], -1, SQLITE_TRANSIENT);
+            sqlite3_bind_text(statement, 2, [[p postalCode] UTF8String], -1, SQLITE_TRANSIENT);
+            sqlite3_bind_text(statement, 3, [[p province] UTF8String], -1, SQLITE_TRANSIENT);
+            sqlite3_bind_text(statement, 4, [[p street] UTF8String], -1, SQLITE_TRANSIENT);
+            sqlite3_bind_text(statement, 5, [[p buildingNumber] UTF8String], -1, SQLITE_TRANSIENT);
+            sqlite3_bind_text(statement, 6, [[p town] UTF8String], -1, SQLITE_TRANSIENT);
+            sqlite3_bind_double(statement, 7, p.coordinate.longitude);
+            sqlite3_bind_double(statement, 8, p.coordinate.latitude);
+            sqlite3_bind_text(statement, 9, [[p locationDescription] UTF8String], -1, SQLITE_TRANSIENT);
+            sqlite3_bind_text(statement, 10, [[p paymentPointDescription] UTF8String], -1, SQLITE_TRANSIENT);
+            sqlite3_bind_int(statement, 11, (int)[p parternId]);
+            sqlite3_bind_int(statement, 12, [p paymentType]);
+            sqlite3_bind_text(statement, 13, [[p operatingHours] UTF8String], -1, SQLITE_TRANSIENT);
+            sqlite3_bind_text(statement, 14, [[p status] UTF8String], -1, SQLITE_TRANSIENT);
+            sqlite3_bind_int(statement, 15, (int)[p paymentAvailable]);
+            sqlite3_bind_text(statement, 16, [[p status] UTF8String], -1, SQLITE_TRANSIENT);
+            sqlite3_bind_int(statement, 17, (int)[p isSelected]);
+            
+            
+            status = sqlite3_step(statement);
+            if (status != SQLITE_DONE){
+                NSLog(@"error stepping : %d", status);
+            }
+            sqlite3_clear_bindings(statement);
+            sqlite3_reset(statement);
+        }
+
+        
+        status = sqlite3_exec(_database, "END TRANSACTION", NULL, NULL, &errMsg);
+        if (status != SQLITE_OK) {
+            NSLog(@"cant' end transaction %d %s", status, errMsg);
+        }
         
         
         CFAbsoluteTime importEndTime = CFAbsoluteTimeGetCurrent();
