@@ -56,3 +56,7 @@
 "label.-payment-type-cash-and-card" = "Gotówka i karta";
 
 "alert-title.cant-fetch-parcels" = "Nie można pobrać listy paczkomatów";
+
+"section-title.last-selected-locker" = "Ostatnio wybrany paczkomat";
+
+"section-title.all-lockers" = "Wszystkie paczkomaty";

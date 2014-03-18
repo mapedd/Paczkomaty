@@ -31,6 +31,8 @@
 
 @property (strong, nonatomic) TKNetworkController *networkController;
 
+@property (strong, nonatomic) TKParcelLocker *lastSelectedLocker;
+
 @end
 
 @implementation TKLockerListViewController
@@ -85,7 +87,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.parcelLockers = [[self sqlController] exportParcelsFromDataBase];
-
+    
     
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:(UITableViewStylePlain)];
     self.tableView.delegate = self;
@@ -176,6 +178,7 @@
 
 - (void)reloadData{
     self.parcelLockers = [[self sqlController] exportParcelsFromDataBase];
+    self.lastSelectedLocker = [[self sqlController] lastSelectedLocker];
     [self.tableView reloadData];
 }
 
@@ -201,12 +204,24 @@
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
+    if (tableView == self.searchDisplay.searchResultsTableView) {
+        return 1;
+    }
+    else if (self.lastSelectedLocker != nil){
+        return 2;
+    }
+    else{
+        return 1;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (tableView == self.tableView) {
-        return self.parcelLockers.count;
+        if (self.lastSelectedLocker != nil && section == 0) {
+            return 1;
+        }else{
+            return self.parcelLockers.count;
+        }
     }
     else if(tableView == self.searchDisplay.searchResultsTableView){
         return self.searchResults.count;
@@ -236,6 +251,10 @@
 - (TKParcelLocker *)tableView:(UITableView *)tableView lockerAtIndexPath:(NSIndexPath *)indexPath{
     NSArray *array;
     if (tableView == self.tableView) {
+        if (self.lastSelectedLocker != nil && indexPath.section == 0) {
+            return self.lastSelectedLocker;
+        }
+        
         array = self.parcelLockers;
     }
     else if (tableView == self.searchDisplay.searchResultsTableView){
@@ -263,6 +282,34 @@
     TKParcelDetailViewController *detail = [[TKParcelDetailViewController alloc] init];
     detail.parcel = [self tableView:tableView lockerAtIndexPath:indexPath];
     [self.navigationController pushViewController:detail animated:YES];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    if (tableView == self.searchDisplay.searchResultsTableView) {
+        return nil;
+    }
+    else if (self.lastSelectedLocker != nil) {
+        if(section == 0){
+            return TKLocalizedStringWithToken(@"section-title.last-selected-locker");
+        }
+        else{
+            return TKLocalizedStringWithToken(@"section-title.all-lockers");
+        }
+    }
+    else{
+        return nil;
+    }
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    if (tableView == self.searchDisplay.searchResultsTableView) {
+        return 0.0f;
+    }
+    else if (self.lastSelectedLocker != nil) {
+        return 30.0f;
+    }
+    else{
+        return 0.0f;
+    }
 }
 
 #pragma mark - UISearchDisplayDelegate
