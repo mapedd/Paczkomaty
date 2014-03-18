@@ -9,4 +9,4 @@
 #import <Foundation/Foundation.h>
 
 NSString *TKLocalizedStringWithToken(NSString *token);
-
+NSBundle *TKPaczkomatyBundle(void);

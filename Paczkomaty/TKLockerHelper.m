@@ -9,7 +9,7 @@
 #import "TKLockerHelper.h"
 
 
-NSBundle *paczkomatyBundle(void) {
+NSBundle *TKPaczkomatyBundle(void) {
     static NSBundle* bundle = nil;
     if (bundle == nil) {
         NSString* path = [[[NSBundle mainBundle] resourcePath]
@@ -23,8 +23,8 @@ NSBundle *paczkomatyBundle(void) {
 NSString *TKLocalizedStringWithToken(NSString *token){
     NSString *localizedToken = token;
     
-    if (paczkomatyBundle() != nil) {
-        localizedToken = NSLocalizedStringFromTableInBundle(token, @"Paczkomaty", paczkomatyBundle(), @"");
+    if (TKPaczkomatyBundle() != nil) {
+        localizedToken = NSLocalizedStringFromTableInBundle(token, @"Paczkomaty", TKPaczkomatyBundle(), @"");
     }
     return localizedToken;
 }
