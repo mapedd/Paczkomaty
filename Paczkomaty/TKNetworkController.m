@@ -89,7 +89,7 @@ NSString *const TKNetworkControllerFetchedLockerDataNotificaiton = @"TKNetworkCo
                 bself.isFetchingData = NO;
               
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              [bself postFetchSuccess:YES error:error];
+              [bself postFetchSuccess:NO error:error];
               bself.isFetchingData = NO;
           }];
     

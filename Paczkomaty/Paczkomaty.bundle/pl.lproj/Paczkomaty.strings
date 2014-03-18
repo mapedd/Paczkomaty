@@ -54,3 +54,5 @@
 "label.payment-type-card" = "Karta";
 
 "label.-payment-type-cash-and-card" = "Gotówka i karta";
+
+"alert-title.cant-fetch-parcels" = "Nie można pobrać listy paczkomatów";

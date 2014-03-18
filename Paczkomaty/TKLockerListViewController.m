@@ -179,6 +179,15 @@
     [self.tableView reloadData];
 }
 
+#pragma mark - Private
+
+- (void)presentError:(NSError *)error title:(NSString *)title{
+    [[[UIAlertView alloc] initWithTitle:title
+                                message:[error localizedDescription]
+                               delegate:nil
+                      cancelButtonTitle:@"OK"
+                      otherButtonTitles:nil] show];
+}
 
 #pragma mark - Getters
 
@@ -278,7 +287,13 @@
 
 - (void)notificationReceived:(NSNotification *)note{
     if ([note.name isEqualToString:TKNetworkControllerFetchedLockerDataNotificaiton]) {
-
+        BOOL success = [[note object] boolValue];
+        if (!success) {
+            NSError *error = [note userInfo][@"error"];
+            [self presentError:error title:TKLocalizedStringWithToken(@"alert-title.cant-fetch-parcels")];
+            [self setTitleForState:(TKLoadingStateIdle)];
+            [self showActivityIndicator:NO];
+        }
     }
     else if([note.name isEqualToString:PGSQLControllerImportStartNotificaiton]){
         [self setTitleForState:TKLoadingStateImporting];
