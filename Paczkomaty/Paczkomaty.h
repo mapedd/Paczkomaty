@@ -14,7 +14,7 @@
 #import "TKParcelView.h"
 
 #import "TKParcelTableViewCell.h"
-#import "TKParcelTableViewCell+Configuration.h"
+#import "TKLockerCellConfigurator.h"
 
 #import "PGSQLController.h"
 #import "TKNetworkController.h"

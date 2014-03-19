@@ -18,7 +18,14 @@
 }
 
 - (void)setup{
+    self.contentView.opaque = YES;
+    self.textLabel.backgroundColor = [UIColor whiteColor];
+    self.textLabel.opaque = YES;
+    self.detailTextLabel.backgroundColor = [UIColor whiteColor];
+    self.detailTextLabel.opaque = YES;
     self.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+    self.layer.shouldRasterize = YES;
+    self.layer.rasterizationScale = [[UIScreen mainScreen] scale];
 }
 
 @end

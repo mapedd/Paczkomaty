@@ -11,11 +11,11 @@
 #import "PGSQLController.h"
 #import "TKParcelTableViewCell.h"
 #import "TKParcelViewContoller.h"
-#import "TKParcelTableViewCell+Configuration.h"
 #import "UIViewController+Lockers.h"
 #import "TKNetworkController.h"
 #import "TKLockerHelper.h"
 #import "TKParcelDetailViewController.h"
+#import "TKLockerCellConfigurator.h"
 
 @interface TKLockerListViewController () <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate>
 
@@ -32,6 +32,8 @@
 @property (strong, nonatomic) TKNetworkController *networkController;
 
 @property (strong, nonatomic) TKParcelLocker *lastSelectedLocker;
+
+@property (strong, nonatomic) TKLockerCellConfigurator *cellConfigurator;
 
 @end
 
@@ -201,6 +203,13 @@
     return _networkController;
 }
 
+- (TKLockerCellConfigurator *)cellConfigurator{
+    if (_cellConfigurator == nil) {
+        _cellConfigurator = [TKLockerCellConfigurator new];
+    }
+    return _cellConfigurator;
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -243,7 +252,7 @@
         cell = [[TKParcelTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
-    [cell configureWithParcel:[self tableView:tableView lockerAtIndexPath:indexPath]];
+    [self.cellConfigurator configureCell:cell withLocker:[self tableView:tableView lockerAtIndexPath:indexPath]];
     
     return cell;
 }

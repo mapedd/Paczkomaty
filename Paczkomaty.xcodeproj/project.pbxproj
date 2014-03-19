@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0407304A18D9C9DC00DF63E8 /* TKLockerCellConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0407304918D9C9DC00DF63E8 /* TKLockerCellConfigurator.m */; };
+		0407304B18D9C9DC00DF63E8 /* TKLockerCellConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0407304918D9C9DC00DF63E8 /* TKLockerCellConfigurator.m */; };
 		04300B67187C520E00499DC9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04300B66187C520E00499DC9 /* Foundation.framework */; };
 		04300B69187C520E00499DC9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04300B68187C520E00499DC9 /* CoreGraphics.framework */; };
 		04300B6B187C520E00499DC9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04300B6A187C520E00499DC9 /* UIKit.framework */; };
@@ -45,7 +47,6 @@
 		046CFCE2188FECF6009B2208 /* TKNetworkController.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFCE1188FECF6009B2208 /* TKNetworkController.m */; };
 		046CFCFC18900229009B2208 /* TKParcelViewContoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFCFB18900229009B2208 /* TKParcelViewContoller.m */; };
 		046CFD00189008F4009B2208 /* TKParcelTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFCFF189008F4009B2208 /* TKParcelTableViewCell.m */; };
-		046CFD0318900A1B009B2208 /* TKParcelTableViewCell+Configuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFD0218900A1B009B2208 /* TKParcelTableViewCell+Configuration.m */; };
 		046CFD0618900C43009B2208 /* TKParcelDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFD0518900C43009B2208 /* TKParcelDetailViewController.m */; };
 		046CFD0918900D31009B2208 /* TKParcelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFD0818900D31009B2208 /* TKParcelView.m */; };
 		046CFD0B18912A4D009B2208 /* TKParcelLocker_tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 046CFD0A18912A4D009B2208 /* TKParcelLocker_tests.m */; };
@@ -76,6 +77,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0407304818D9C9DC00DF63E8 /* TKLockerCellConfigurator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKLockerCellConfigurator.h; sourceTree = "<group>"; };
+		0407304918D9C9DC00DF63E8 /* TKLockerCellConfigurator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKLockerCellConfigurator.m; sourceTree = "<group>"; };
 		04300B63187C520E00499DC9 /* Paczkomaty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Paczkomaty.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04300B66187C520E00499DC9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		04300B68187C520E00499DC9 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -124,8 +127,6 @@
 		046CFCFB18900229009B2208 /* TKParcelViewContoller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKParcelViewContoller.m; sourceTree = "<group>"; };
 		046CFCFE189008F4009B2208 /* TKParcelTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKParcelTableViewCell.h; sourceTree = "<group>"; };
 		046CFCFF189008F4009B2208 /* TKParcelTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKParcelTableViewCell.m; sourceTree = "<group>"; };
-		046CFD0118900A1B009B2208 /* TKParcelTableViewCell+Configuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKParcelTableViewCell+Configuration.h"; sourceTree = "<group>"; };
-		046CFD0218900A1B009B2208 /* TKParcelTableViewCell+Configuration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TKParcelTableViewCell+Configuration.m"; sourceTree = "<group>"; };
 		046CFD0418900C43009B2208 /* TKParcelDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKParcelDetailViewController.h; sourceTree = "<group>"; };
 		046CFD0518900C43009B2208 /* TKParcelDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKParcelDetailViewController.m; sourceTree = "<group>"; };
 		046CFD0718900D31009B2208 /* TKParcelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKParcelView.h; sourceTree = "<group>"; };
@@ -182,6 +183,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0407304C18D9CAD700DF63E8 /* DataTransformer */ = {
+			isa = PBXGroup;
+			children = (
+				0407304818D9C9DC00DF63E8 /* TKLockerCellConfigurator.h */,
+				0407304918D9C9DC00DF63E8 /* TKLockerCellConfigurator.m */,
+			);
+			name = DataTransformer;
+			sourceTree = "<group>";
+		};
 		04300B5A187C520E00499DC9 = {
 			isa = PBXGroup;
 			children = (
@@ -352,8 +362,6 @@
 		04A4EB37189BF52000673AC4 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				046CFD0118900A1B009B2208 /* TKParcelTableViewCell+Configuration.h */,
-				046CFD0218900A1B009B2208 /* TKParcelTableViewCell+Configuration.m */,
 				04A4EB31189BE84900673AC4 /* TKParcelLocker+Helpers.h */,
 				04A4EB32189BE84900673AC4 /* TKParcelLocker+Helpers.m */,
 			);
@@ -377,6 +385,7 @@
 				04A4EB30189BD38300673AC4 /* Paczkomaty.h */,
 				0433ECBD18ACC76300CDD0FC /* TKLockerHelper.h */,
 				0433ECBE18ACC76300CDD0FC /* TKLockerHelper.m */,
+				0407304C18D9CAD700DF63E8 /* DataTransformer */,
 				046CFCE5188FF845009B2208 /* Assets */,
 				04A4EB37189BF52000673AC4 /* Categories */,
 				046CFCE4188FF734009B2208 /* View Controller */,
@@ -541,6 +550,7 @@
 				046CFD0618900C43009B2208 /* TKParcelDetailViewController.m in Sources */,
 				04A4EB36189BF26B00673AC4 /* UIViewController+Lockers.m in Sources */,
 				04300BA0187C57A600499DC9 /* TKParcelLocker.m in Sources */,
+				0407304A18D9C9DC00DF63E8 /* TKLockerCellConfigurator.m in Sources */,
 				04A4EB33189BE84900673AC4 /* TKParcelLocker+Helpers.m in Sources */,
 				046CFCE2188FECF6009B2208 /* TKNetworkController.m in Sources */,
 				04D63A9F187D63B60030166E /* PGSQLController.m in Sources */,
@@ -548,7 +558,6 @@
 				0433ECBF18ACC76300CDD0FC /* TKLockerHelper.m in Sources */,
 				04300B73187C520E00499DC9 /* main.m in Sources */,
 				04300B77187C520E00499DC9 /* TKAppDelegate.m in Sources */,
-				046CFD0318900A1B009B2208 /* TKParcelTableViewCell+Configuration.m in Sources */,
 				046CFD0918900D31009B2208 /* TKParcelView.m in Sources */,
 				046CFD00189008F4009B2208 /* TKParcelTableViewCell.m in Sources */,
 			);
@@ -565,6 +574,7 @@
 				04A7863718B63A3800FC97F9 /* TKParcelViewController_tests.m in Sources */,
 				046AF6C918AE79640033158F /* TKNetworkController.m in Sources */,
 				046CFD0C18912B39009B2208 /* TKParcelLocker.m in Sources */,
+				0407304B18D9C9DC00DF63E8 /* TKLockerCellConfigurator.m in Sources */,
 				043AE12818916E1600075EB0 /* PGSQLController_tests.m in Sources */,
 				043AE12C18916E6400075EB0 /* PGSQLController.m in Sources */,
 				04C785CB18AE7B960062EF82 /* TKParcelLocker+Helpers.m in Sources */,
