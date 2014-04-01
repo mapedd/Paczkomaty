@@ -29,3 +29,9 @@ NSString *TKLocalizedStringWithToken(NSString *token){
     return localizedToken;
 }
 
+
+BOOL TKIsRunningTests(void){
+    NSDictionary* environment = [[NSProcessInfo processInfo] environment];
+    NSString* injectBundle = environment[@"XCInjectBundle"];
+    return [[injectBundle pathExtension] isEqualToString:@"octest"] | [[injectBundle pathExtension] isEqualToString:@"xctest"];
+}

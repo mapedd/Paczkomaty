@@ -10,3 +10,4 @@
 
 NSString *TKLocalizedStringWithToken(NSString *token);
 NSBundle *TKPaczkomatyBundle(void);
+BOOL TKIsRunningTests(void);

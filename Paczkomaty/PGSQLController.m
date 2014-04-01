@@ -104,14 +104,17 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
     if (self == nil) return nil;
 #define USE_BUNDLE_DB
 #ifdef USE_BUNDLE_DB
-    /* If we haven't create db yet, we can copy bundled version and use it */
-    NSFileManager *fm = [NSFileManager defaultManager];
-    if (![fm fileExistsAtPath:self.databasePath]) {
-        NSBundle *bundle = TKPaczkomatyBundle();
-        NSString *bundleDBPath = [bundle pathForResource:@"paczkomaty" ofType:@"db"];
-        NSError * __autoreleasing error;
-        if (![fm copyItemAtPath:bundleDBPath toPath:self.databasePath error:&error]) {
-            NSLog(@"can't user bundled db file");
+    /* Execute this code only when running app and not the tests */
+    if (!TKIsRunningTests()) {
+        /* If we haven't create db yet, we can copy bundled version and use it */
+        NSFileManager *fm = [NSFileManager defaultManager];
+        if (![fm fileExistsAtPath:self.databasePath]) {
+            NSBundle *bundle = TKPaczkomatyBundle();
+            NSString *bundleDBPath = [bundle pathForResource:@"paczkomaty" ofType:@"db"];
+            NSError * __autoreleasing error;
+            if (![fm copyItemAtPath:bundleDBPath toPath:self.databasePath error:&error]) {
+                NSLog(@"can't user bundled db file");
+            }
         }
     }
 #endif
